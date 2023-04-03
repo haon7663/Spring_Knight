@@ -553,7 +553,7 @@ MonoBehaviour:
   - arr: 0a0000000a0000000a0000000000000046000000
   - arr: 0000000000000000000000000000000064000000
   cinevirtual: {fileID: 877245976}
-  TileSize: 3
+  TileSize: 7
   MaxPower: 3
   m_MainCamera: {fileID: 0}
   m_Enemy: {fileID: 1498345847384431939, guid: 3f08258bb346fb64787f5a32312bdde1, type: 3}
@@ -562,7 +562,7 @@ MonoBehaviour:
   m_Mirror: {fileID: 770838304836623370, guid: 02a7ef7b91e0b5d46986ba8b793a981e, type: 3}
   m_Ork: {fileID: 4877853659518890853, guid: 196b5ffc614b02d428dcd46246e9f5c8, type: 3}
   m_ForestSpirit: {fileID: 0}
-  m_EnemySummonCount: 7
+  m_EnemySummonCount: 3
   m_EnemyCount: 1
   Managerhp: 3
   m_BlockTile: {fileID: 7291300013524886651, guid: 627a1b12006ab7a4cad2406b9438d887, type: 3}
