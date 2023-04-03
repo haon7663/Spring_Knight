@@ -1,0 +1,506 @@
+fileFormatVersion: 2
+guid: 1a7880b46ea3e63428b77275f964a07f
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 256
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: LogTile_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2944
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -128, y: -113.81264}
+        - {x: -128, y: -127.87514}
+        - {x: 128, y: -127.87514}
+        - {x: 128, y: -115.37514}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 807036049d760d8419811075c1c2ca74
+      internalID: 1061438432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogTile_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 2944
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -127.59376, y: -115.37514}
+        - {x: -127.59376, y: -127.87514}
+        - {x: 128, y: -127.87514}
+        - {x: 128, y: -116}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b2574a4495b145468d5db587906424d
+      internalID: -830861664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogTile_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 2944
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -127.843765, y: -113.81264}
+        - {x: -127.843765, y: -127.87514}
+        - {x: 128, y: -127.87514}
+        - {x: 128, y: -116.93764}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c017cdebc9d8e744bd596e60900b8f2
+      internalID: 63232161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogTile_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2688
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -128, y: 128}
+        - {x: -128, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 128}
+      tessellationDetail: 0
+      bones: []
+      spriteID: a27705cd28cd13645a8f6e7777c92f2d
+      internalID: 548512310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogTile_5
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 2688
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -127.59376, y: 128}
+        - {x: -128, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 128}
+      tessellationDetail: 0
+      bones: []
+      spriteID: cdba62ee5cb640b4f84fcb22a98734d4
+      internalID: 1829671560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogTile_6
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 2688
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -127.843765, y: 128}
+        - {x: -128, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 128}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76c7b00080bd18d49aa400101ccd9503
+      internalID: 173522919
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogTile_9
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1152
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -127.59376, y: -115.9688}
+        - {x: -127.59376, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: -117.5313}
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8d4cd7bd252ed049af637268c844f91
+      internalID: -1377490166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogTile_10
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1152
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -127.843765, y: -114.4063}
+        - {x: -127.843765, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: -115.9688}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91c6d3c7dfd1d7348918fee0dad7f339
+      internalID: 1331541741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogTile_13
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 896
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -127.59376, y: 128}
+        - {x: -127.59376, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 128}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8bbda612d75382c45b35c64914a06333
+      internalID: 233941893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogTile_14
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 896
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -127.843765, y: 128}
+        - {x: -127.843765, y: -128}
+        - {x: 128, y: -128}
+        - {x: 128, y: 128}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3706db6f67c3f3d43bd0de9f9b639a3a
+      internalID: 486285247
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogTile_17
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 640
+        width: 256
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -127.59376, y: 128}
+        - {x: -127.59376, y: -127.96879}
+        - {x: -62, y: -128}
+        - {x: -62, y: 128}
+      tessellationDetail: 0
+      bones: []
+      spriteID: aef4b50ca9bb66a4f8e0bdda121923ee
+      internalID: 967481610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogTile_18
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 640
+        width: 256
+        height: 255
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 59, y: 128}
+        - {x: 60, y: -128}
+        - {x: 128, y: -127.96879}
+        - {x: 128, y: 128}
+      tessellationDetail: 0
+      bones: []
+      spriteID: f40b8b52362a7f34387d1be8ef726bb5
+      internalID: -1373010951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogTile_21
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 384
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -127.59376, y: 128}
+        - {x: -127.59376, y: -87.09376}
+        - {x: -122.90626, y: -99.59376}
+        - {x: 128, y: -99.59376}
+        - {x: 128, y: 128}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f6b9d4cae7446b499669c013084310f
+      internalID: -83182874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LogTile_22
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 384
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c31b247a40c88324f8b46d2e8228ab37
+      internalID: -2080567021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      LogTile_0: 1061438432
+      LogTile_1: -830861664
+      LogTile_10: 1331541741
+      LogTile_11: -1768667537
+      LogTile_12: 153129595
+      LogTile_13: 233941893
+      LogTile_14: 486285247
+      LogTile_15: -656997320
+      LogTile_16: 1393614811
+      LogTile_17: 967481610
+      LogTile_18: -1373010951
+      LogTile_19: 167038329
+      LogTile_2: 63232161
+      LogTile_20: -1343773717
+      LogTile_21: -83182874
+      LogTile_22: -2080567021
+      LogTile_23: -1094925038
+      LogTile_3: -1985586102
+      LogTile_4: 548512310
+      LogTile_5: 1829671560
+      LogTile_6: 173522919
+      LogTile_7: 1313788059
+      LogTile_8: -1161343445
+      LogTile_9: -1377490166
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
