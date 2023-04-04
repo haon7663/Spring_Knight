@@ -11,10 +11,11 @@ public class taptostart : MonoBehaviour
     }
     private void Start()
     {
-        GameManager.Gm.paze = 0;
-        GameManager.Gm.TileSize = 7;
         GameManager.Gm.m_EnemySummonCount = 3;
+        GameManager.Gm.m_Score = 0;
+        GameManager.Gm.TileSize = 7;
         GameManager.Gm.MaxPower = 3;
+        GameManager.Gm.paze = 0;
     }
     private bool isOne = false;
     private void Update()

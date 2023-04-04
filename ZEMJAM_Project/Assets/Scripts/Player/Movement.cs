@@ -38,6 +38,7 @@ public class Movement : MonoBehaviour
 
     public LayerMask m_EnemyLayer;
 
+    public Vector3[] offset = new Vector3[5];
 
     private Vector3 startTouchPos;
     private Vector3 endTouchPos;
@@ -65,8 +66,6 @@ public class Movement : MonoBehaviour
     public bool m_isInv;
     public bool m_Swing;
     public bool m_isAtk;
-
-    public bool isTime = false;
 
     private bool isHit = false;
     private bool isSpin = false;
@@ -115,16 +114,16 @@ public class Movement : MonoBehaviour
         Dash();
 
         Time.timeScale = Mathf.Lerp(Time.timeScale, 1, Time.deltaTime * 5);
-        if (Physics2D.OverlapCircle(transform.position, 1.3f, m_EnemyLayer) && !isTime)
+        for (int i = 0; i < 5; i++)
         {
-            Time.timeScale = 0.5f;
+            if(Physics2D.Raycast(transform.position + offset[i], (Vector3)mRigidbody2D.velocity, m_BoostPower * 2, m_EnemyLayer)) Time.timeScale = 0.35f;
         }
 
         m_isAtk = atkTime > 0;
         if (atkTime > 0)
             atkTime -= Time.deltaTime;
 
-        GameManager.Gm.isJoom = m_Count > 0;
+        GameManager.Gm.isJoom = m_Count >= 0 && !isSpin;
         m_Ray.SetActive(Input.GetMouseButton(0) && m_Count < 0);
 
 
@@ -303,39 +302,40 @@ public class Movement : MonoBehaviour
             mRigidbody2D.velocity = dir * Mathf.Max(speed, 0f);
             saveVelocity = dir * Mathf.Max(speed, 0f);
 
-            GameObject combo = Instantiate(m_Combo, new Vector3(transform.position.x / 1.5f, transform.position.y), Quaternion.identity);
-
-            int com = m_BounceCount;
-            if (com < 0) com = 0; else if (com > 8) com = 8;
-            combo.GetComponent<SpriteRenderer>().sprite = m_ComboSprite[com];
-            combo.transform.localScale = new Vector3(1 + com / 10, 1 + com / 10);
-
-            m_BounceCount++;
+            ComboPlus();
             m_Count--;
         }
-        else if(collision.transform.CompareTag("Wall"))
+        else if (collision.transform.CompareTag("Wall"))
         {
             mRigidbody2D.velocity = Vector2.zero;
             saveVelocity = Vector2.zero;
             m_SlopeAngel = Vector2.Angle(collision.contacts[0].normal, Vector2.up);
             m_Count--;
         }
-
-        if (collision.transform.CompareTag("Enemy"))
+        else if (collision.transform.CompareTag("Enemy"))
         {
-            Time.timeScale = 0.15f;
-            if(!isCoroutine) StartCoroutine(Attack(collision));
+            //Time.timeScale = 0.15f;
+            if (!isCoroutine) StartCoroutine(Attack(collision));
         }
-
-        if (collision.transform.CompareTag("Damage"))
+        else if (collision.transform.CompareTag("Damage"))
         {
-            Time.timeScale = 0.5f;
+            //Time.timeScale = 0.5f;
             if (!m_isInv) m_Hp.OnDamage();
             StartCoroutine(InvTime());
             StartCoroutine(Hit(collision.transform));
         }
     }
+    private void ComboPlus()
+    {
+        GameObject combo = Instantiate(m_Combo, new Vector3(transform.position.x / 1.5f, transform.position.y), Quaternion.identity);
 
+        int com = m_BounceCount;
+        if (com < 0) com = 0; else if (com > 8) com = 8;
+        combo.GetComponent<SpriteRenderer>().sprite = m_ComboSprite[com];
+        combo.transform.localScale = new Vector3(1 + com / 10, 1 + com / 10);
+
+        m_BounceCount++;
+    }
     private IEnumerator Attack(Collision2D collision)
     {
         int N = m_BounceCount - collision.transform.GetComponent<Enemy>().m_Power + 1;
@@ -361,6 +361,7 @@ public class Movement : MonoBehaviour
             CinemachineShake.Instance.ShakeCamera(5, 0.3f);
             collision.transform.GetComponent<Enemy>().OnDamage();
             collision.transform.GetComponent<Defence>().DefenceBreak(collision.transform.GetComponent<Defence>().m_Defence);
+            ComboPlus();
         }
         else
         {
@@ -476,5 +477,12 @@ public class Movement : MonoBehaviour
         Gizmos.DrawWireSphere(endTouchPos, 0.2f);
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(startTouchPos, endTouchPos);
+
+        Gizmos.color = Color.cyan;
+        if(mRigidbody2D != null)
+        {
+            for(int i = 0; i < 5; i++)
+                Gizmos.DrawRay(transform.position + offset[i], (Vector3)mRigidbody2D.velocity * 1f);
+        }
     }
 }

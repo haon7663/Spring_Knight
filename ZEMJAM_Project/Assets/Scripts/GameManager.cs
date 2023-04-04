@@ -102,13 +102,14 @@ public class GameManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Gm = this;
-        mTile = GameObject.Find("Tile").transform;
+        mTile = GameObject.FindGameObjectWithTag("Wall").transform;
         mPlayer = GameObject.FindGameObjectWithTag("Player").transform;
         mPlayer.GetComponent<Movement>().m_MaxPower = MaxPower;
         m_ScoreText = GameObject.Find("Score").GetComponent<Text>();
         cinevirtual = Camera.main.transform.GetComponentInChildren<CinemachineVirtualCamera>();
         m_MainCamera = Camera.main;
         SummonCount = 2;
+        m_EnemyCount = 1;
         CinemacineSize = 3f + TileSize;
         mPlayer.GetComponent<Hp>().curhp = Managerhp;
         mPlayer.GetComponent<Hp>().OnHealth();        
