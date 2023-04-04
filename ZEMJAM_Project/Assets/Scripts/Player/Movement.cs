@@ -82,6 +82,7 @@ public class Movement : MonoBehaviour
 
         mRigidbody2D = GetComponent<Rigidbody2D>();
         mSpriteRenderer = GetComponent<SpriteRenderer>();
+        m_SpinSpriteRenderer = m_Spin.GetComponent<SpriteRenderer>();
         mSwordAnimator = m_SwordSpriteRenderer.GetComponent<Animator>();
         mAnimator = GetComponent<Animator>();
         m_Collison = GetComponent<Collison>();
