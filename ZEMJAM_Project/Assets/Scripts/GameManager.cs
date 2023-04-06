@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour
         CinemacineSize = 3f + TileSize;
         mPlayer.GetComponent<Hp>().curhp = Managerhp;
         mPlayer.GetComponent<Hp>().OnHealth();
-        //DrawMap();
+        DrawMap();
         int[,] summonPos = new int[TileSize, TileSize + 2];
         SummonEnemy(true);
         isLoadScene = false;
@@ -172,29 +172,32 @@ public class GameManager : MonoBehaviour
     private void DrawMap()
     {
         int j = 0;
-        mTiles[j++] = Instantiate(mWall_Left_Up_Deco, new Vector3(-(TileSize - 1) / 2, (TileSize - 1) / 2 + 2), Quaternion.identity);
-        mTiles[j++] = Instantiate(mWall_Left_Up, new Vector3(-(TileSize - 1) / 2, (TileSize - 1) / 2 + 1), Quaternion.identity);
-        mTiles[j++] = Instantiate(mWall_Left_Down, new Vector3(-(TileSize - 1) / 2, -(TileSize - 1) / 2 - 6), Quaternion.identity);
-        mTiles[j++] = Instantiate(mWall_Right_Up_Deco, new Vector3((TileSize - 1) / 2, (TileSize - 1) / 2 + 2), Quaternion.identity);
-        mTiles[j++] = Instantiate(mWall_Right_Up, new Vector3((TileSize - 1) / 2, (TileSize - 1) / 2 - 1 + 2), Quaternion.identity);
-        mTiles[j++] = Instantiate(mWall_Right_Down, new Vector3((TileSize - 1) / 2, -(TileSize - 1) / 2 - 6), Quaternion.identity);
+        int horizontalHalfPos = Mathf.RoundToInt(CinemacineSize * 0.5625f / 1.5f);
+        int verticalHalfPos = Mathf.RoundToInt(CinemacineSize / 2);
+        int verticalPos = Mathf.RoundToInt(CinemacineSize);
+        mTiles[j++] = Instantiate(mWall_Left_Up_Deco, new Vector3(-horizontalHalfPos, verticalHalfPos + 1), Quaternion.identity);
+        mTiles[j++] = Instantiate(mWall_Left_Up, new Vector3(-horizontalHalfPos, verticalHalfPos), Quaternion.identity);
+        mTiles[j++] = Instantiate(mWall_Left_Down, new Vector3(-horizontalHalfPos, -verticalPos), Quaternion.identity);
+        mTiles[j++] = Instantiate(mWall_Right_Up_Deco, new Vector3(horizontalHalfPos, verticalHalfPos + 1), Quaternion.identity);
+        mTiles[j++] = Instantiate(mWall_Right_Up, new Vector3(horizontalHalfPos, verticalHalfPos), Quaternion.identity);
+        mTiles[j++] = Instantiate(mWall_Right_Down, new Vector3(horizontalHalfPos, -verticalPos), Quaternion.identity);
 
-        for (int i = (TileSize - 1) / 2; i >= -(TileSize - 1) / 2 - 5; i--)
+        for (int i = verticalHalfPos; i >= -verticalPos; i--)
         {
-            mTiles[j++] = Instantiate(mWall_Left, new Vector3(-(TileSize - 1) / 2, i), Quaternion.identity);
-            mTiles[j++] = Instantiate(mWall_Right, new Vector3((TileSize - 1) / 2, i), Quaternion.identity);
+            mTiles[j++] = Instantiate(mWall_Left, new Vector3(-horizontalHalfPos, i), Quaternion.identity);
+            mTiles[j++] = Instantiate(mWall_Right, new Vector3(horizontalHalfPos, i), Quaternion.identity);
         }
 
-        for (int i = -(TileSize - 1) / 2 + 1; i <= (TileSize - 1) / 2 - 1; i++)
+        for (int i = -horizontalHalfPos; i <= horizontalHalfPos; i++)
         {
-            mTiles[j++] = Instantiate(mWall_Up, new Vector3(i, (TileSize - 1) / 2 + 1), Quaternion.identity);
-            mTiles[j++] = Instantiate(mWall_Up_Deco, new Vector3(i, (TileSize - 1) / 2 + 2), Quaternion.identity);
-            mTiles[j++] = Instantiate(mWall_Down, new Vector3(i, -(TileSize - 1) / 2 - 6), Quaternion.identity);
+            mTiles[j++] = Instantiate(mWall_Up, new Vector3(i, verticalHalfPos), Quaternion.identity);
+            mTiles[j++] = Instantiate(mWall_Up_Deco, new Vector3(i, verticalHalfPos + 1), Quaternion.identity);
+            mTiles[j++] = Instantiate(mWall_Down, new Vector3(i, -verticalPos), Quaternion.identity);
         }
 
-        for (int i = -(TileSize - 1) / 2; i <= (TileSize - 1) / 2; i++)
+        for (int i = -horizontalHalfPos; i <= horizontalHalfPos; i++)
         {
-            mTiles[j++] = Instantiate(mWall_DownDown, new Vector3(i, -(TileSize - 1) / 2 - 7), Quaternion.identity);
+            mTiles[j++] = Instantiate(mWall_DownDown, new Vector3(i, -verticalPos - 1), Quaternion.identity);
         }
 
         for (int i = 0; i < j; i++)
