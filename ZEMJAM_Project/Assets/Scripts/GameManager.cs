@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour
         CinemacineSize = 3f + TileSize;
         mPlayer.GetComponent<Hp>().curhp = Managerhp;
         mPlayer.GetComponent<Hp>().OnHealth();
-        DrawMap();
+        //DrawMap();
         int[,] summonPos = new int[TileSize, TileSize + 2];
         SummonEnemy(true);
         isLoadScene = false;

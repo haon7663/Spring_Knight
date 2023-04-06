@@ -4,9 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
+using Cinemachine;
 
 public class Movement : MonoBehaviour
 {
+    public CinemachineConfiner2D mCinemachineConfiner;
+
     public SpriteRenderer m_SwordSpriteRenderer;
 
     private Rigidbody2D mRigidbody2D;
@@ -110,6 +113,7 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
+        mCinemachineConfiner.InvalidateCache();
         mSpriteRenderer.material = m_InvTime > 0 ? WhiteMateral : DefaultMateral;
         if (m_InvTime > 0) m_InvTime -= Time.deltaTime;
         if (m_Hp.curhp <= 0) return;
