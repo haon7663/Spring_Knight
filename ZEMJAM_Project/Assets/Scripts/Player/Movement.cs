@@ -72,6 +72,8 @@ public class Movement : MonoBehaviour
 
     private float mTimer;
 
+    private bool isTouchDown = false;
+
 
     private void Start()
     {        
@@ -125,7 +127,7 @@ public class Movement : MonoBehaviour
             atkTime -= Time.deltaTime;
 
         GameManager.Gm.isJoom = m_Count >= 0 && !isSpin;
-        m_Ray.SetActive(Input.GetMouseButton(0) && m_Count < 0);
+        m_Ray.SetActive(Input.GetMouseButton(0) && m_Count < 0 && power >= 0.25f);
 
 
         if(m_Count >= 0)
@@ -202,17 +204,19 @@ public class Movement : MonoBehaviour
 
     private void Dash()
     {
-        if (m_Count < 0 || m_Collison.onCollision)
+        if (m_Count < 0)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                startTouchPos = m_MainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
-
-                JoyPanel.gameObject.SetActive(true);
-                JoyStick.gameObject.SetActive(true);
-            }
             if (Input.GetMouseButton(0))
             {
+                if(!isTouchDown)
+                {
+                    isTouchDown = true;
+                    JoyPanel.gameObject.SetActive(true);
+                    JoyStick.gameObject.SetActive(true);
+                    startTouchPos = m_MainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+                }
+
+
                 SetDistance();
                 m_Ray.transform.rotation = Quaternion.Euler(0, 0, m_Angle + 90);
 
@@ -234,22 +238,25 @@ public class Movement : MonoBehaviour
             }
             if (Input.GetMouseButtonUp(0))
             {
-                SetDistance();
-                m_Count = m_Power;
-                m_BounceCount = 0;
+                if (power >= 0.25f)
+                {
+                    SetDistance();
+                    m_Count = m_Power;
+                    m_BounceCount = 0;
 
-                mAudioSource.Play();
-                transform.rotation = Quaternion.Euler(0, 0, m_Angle);
-                transform.position += -transform.right * 0.5f;
-                mRigidbody2D.velocity = -transform.right * 17;
-                saveVelocity = -transform.right * 17;
-                transform.rotation = Quaternion.Euler(0, 0, 0);
+                    mAudioSource.Play();
+                    transform.rotation = Quaternion.Euler(0, 0, m_Angle);
+                    transform.position += -transform.right * 0.5f;
+                    mRigidbody2D.velocity = -transform.right * 17;
+                    saveVelocity = -transform.right * 17;
+                    transform.rotation = Quaternion.Euler(0, 0, 0);
 
+                    m_BoostPower = 2.25f;
+                    DOTween.To(() => m_BoostPower, x => m_BoostPower = x, 1f, 0.4f + m_Power * 0.25f).SetEase(Ease.OutQuint);
+                }
                 JoyPanel.gameObject.SetActive(false);
                 JoyStick.gameObject.SetActive(false);
-
-                m_BoostPower = 2.25f;
-                DOTween.To(() => m_BoostPower, x => m_BoostPower = x, 1f, 0.4f + m_Power * 0.25f).SetEase(Ease.OutQuint);
+                isTouchDown = false;
             }
         }
     }
@@ -269,7 +276,28 @@ public class Movement : MonoBehaviour
     private void SetAngle()
     {
         m_Angle = Mathf.Atan2(endTouchPos.y - startTouchPos.y, endTouchPos.x - startTouchPos.x) * Mathf.Rad2Deg;
-        if (m_Collison.onUp)
+
+        if (m_Collison.onDown && m_Collison.onLeft)
+        {
+            m_Angle = m_Angle <= -170 && m_Angle >= 0 ? -170 : m_Angle;
+            m_Angle = m_Angle >= -100 && m_Angle < 0 ? -100 : m_Angle;
+        }
+        else if (m_Collison.onDown && m_Collison.onRight)
+        {
+            m_Angle = m_Angle >= -10 && m_Angle <= 180 ? -10 : m_Angle;
+            m_Angle = m_Angle <= -80 && m_Angle > -180 ? -80 : m_Angle;
+        }
+        else if (m_Collison.onUp && m_Collison.onLeft)
+        {
+            m_Angle = m_Angle <= 100 && m_Angle >= -90 ? 100 : m_Angle;
+            m_Angle = m_Angle >= 170 || m_Angle < -90 ? 170 : m_Angle;
+        }
+        else if (m_Collison.onUp && m_Collison.onRight)
+        {
+            m_Angle = m_Angle >= 80 && m_Angle <= -135 ? 80 : m_Angle;
+            m_Angle = m_Angle <= 10 && m_Angle > -135 ? 10 : m_Angle;
+        }
+        else if (m_Collison.onUp)
         {
             m_Angle = m_Angle <= 10 && m_Angle >= -90 ? 10 : m_Angle;
             m_Angle = m_Angle >= 170 || m_Angle < -90 ? 170 : m_Angle;
@@ -324,6 +352,13 @@ public class Movement : MonoBehaviour
             if (!m_isInv) m_Hp.OnDamage();
             StartCoroutine(InvTime());
             StartCoroutine(Hit(collision.transform));
+        }
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Wall") && mRigidbody2D.velocity == Vector2.zero)
+        {
+            m_Count = -1;
         }
     }
     private void ComboPlus()

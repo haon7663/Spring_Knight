@@ -20,7 +20,7 @@ public class Animation : MonoBehaviour
         mAnimator.SetBool("onWall", mCollison.onRight || mCollison.onLeft);
         mAnimator.SetBool("onTopWall", mCollison.onUp);
         mAnimator.SetBool("onBottomWall", mCollison.onDown);
-        mAnimator.SetBool("onMove", !(mMovement.m_Count < 0 || mCollison.onCollision));
+        mAnimator.SetBool("onMove", mMovement.m_Count >= 0);
         mAnimator.SetBool("isAttack", mMovement.m_isAtk);
     }
 }

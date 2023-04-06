@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     public _2dArray[] persent = new _2dArray[5];
 
-    public int[,] array = new int[5,5];
+    public int[,] array = new int[5, 5];
 
     public CinemachineVirtualCamera cinevirtual;
 
@@ -81,6 +81,8 @@ public class GameManager : MonoBehaviour
     public int m_Score = 0;
     public Text m_ScoreText;
 
+    int[,] summonPos = new int[30, 30];
+
     private void Awake()
     {
         Screen.SetResolution(1080, 1920, true);
@@ -112,8 +114,9 @@ public class GameManager : MonoBehaviour
         m_EnemyCount = 1;
         CinemacineSize = 3f + TileSize;
         mPlayer.GetComponent<Hp>().curhp = Managerhp;
-        mPlayer.GetComponent<Hp>().OnHealth();        
+        mPlayer.GetComponent<Hp>().OnHealth();
         DrawMap();
+        int[,] summonPos = new int[TileSize, TileSize + 2];
         SummonEnemy(true);
         isLoadScene = false;
     }
@@ -125,7 +128,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        CinemacineSize = isJoom ? (1.5f + TileSize/1.25f)/1.9f : 2.5f + TileSize / 1.25f;
+        CinemacineSize = isJoom ? (1.5f + TileSize / 1.25f) / 1.9f : 2.5f + TileSize / 1.25f;
 
         if (CinemacineSize < 6) CinemacineSize = 6;
         real_CineSize = Mathf.Lerp(real_CineSize, CinemacineSize, Time.deltaTime * 4);
@@ -140,7 +143,7 @@ public class GameManager : MonoBehaviour
                 isLoadScene = true;
                 StartCoroutine(MoveScene());
             }
-            else if(SummonCount > 0)
+            else if (SummonCount > 0)
             {
                 SummonCount--;
                 SummonEnemy(false);
@@ -176,13 +179,13 @@ public class GameManager : MonoBehaviour
         mTiles[j++] = Instantiate(mWall_Right_Up, new Vector3((TileSize - 1) / 2, (TileSize - 1) / 2 - 1 + 2), Quaternion.identity);
         mTiles[j++] = Instantiate(mWall_Right_Down, new Vector3((TileSize - 1) / 2, -(TileSize - 1) / 2 - 6), Quaternion.identity);
 
-        for (int i = (TileSize - 1) / 2; i >= -(TileSize - 1) / 2 -5; i--)
+        for (int i = (TileSize - 1) / 2; i >= -(TileSize - 1) / 2 - 5; i--)
         {
             mTiles[j++] = Instantiate(mWall_Left, new Vector3(-(TileSize - 1) / 2, i), Quaternion.identity);
             mTiles[j++] = Instantiate(mWall_Right, new Vector3((TileSize - 1) / 2, i), Quaternion.identity);
         }
 
-        for(int i = -(TileSize - 1) / 2 + 1; i <= (TileSize - 1) / 2 - 1; i++)
+        for (int i = -(TileSize - 1) / 2 + 1; i <= (TileSize - 1) / 2 - 1; i++)
         {
             mTiles[j++] = Instantiate(mWall_Up, new Vector3(i, (TileSize - 1) / 2 + 1), Quaternion.identity);
             mTiles[j++] = Instantiate(mWall_Up_Deco, new Vector3(i, (TileSize - 1) / 2 + 2), Quaternion.identity);
@@ -191,7 +194,7 @@ public class GameManager : MonoBehaviour
 
         for (int i = -(TileSize - 1) / 2; i <= (TileSize - 1) / 2; i++)
         {
-            mTiles[j++] = Instantiate(mWall_DownDown, new Vector3(i, -(TileSize - 1) / 2-7), Quaternion.identity);
+            mTiles[j++] = Instantiate(mWall_DownDown, new Vector3(i, -(TileSize - 1) / 2 - 7), Quaternion.identity);
         }
 
         for (int i = 0; i < j; i++)
@@ -202,22 +205,20 @@ public class GameManager : MonoBehaviour
 
     private void SummonEnemy(bool isTile)
     {
-        int[,] summonPos = new int[TileSize, TileSize+2];
-
         for (int i = 0; i < TileSize; i++)
         {
-            for (int j = 0; j < TileSize+2; j++)
+            for (int j = 0; j < TileSize + 2; j++)
             {
                 summonPos[i, j] = 0;
             }
         }
 
-        for(int i = 0; i < (int)m_EnemySummonCount; i++)
+        for (int i = 0; i < (int)m_EnemySummonCount; i++)
         {
-            int m = Random.Range(0, TileSize), n = Random.Range(0, TileSize+2);
+            int m = Random.Range(0, TileSize), n = Random.Range(0, TileSize + 2);
             while (true)
             {
-                if(summonPos[m, n] == 0)
+                if (summonPos[m, n] == 0)
                 {
                     summonPos[m, n]++;
                     break;
@@ -228,16 +229,16 @@ public class GameManager : MonoBehaviour
                     n = Random.Range(0, TileSize + 2);
                 }
             }
-            Instantiate(SummonRandom(persent[paze].arr[0], persent[paze].arr[1], persent[paze].arr[2], persent[paze].arr[3], persent[paze].arr[4]), new Vector3(m - (TileSize - 1) / 2, n - (TileSize - 1) / 2 -2), Quaternion.identity);
+            Instantiate(SummonRandom(persent[paze].arr[0], persent[paze].arr[1], persent[paze].arr[2], persent[paze].arr[3], persent[paze].arr[4]), new Vector3(m - (TileSize - 1) / 2, n - (TileSize - 1) / 2 - 2), Quaternion.identity);
             m_EnemyCount++;
         }
         m_EnemyCount--;
 
-        if(isTile)
+        if (isTile)
         {
             for (int i = 0; i < m_BlockCount[paze]; i++)
             {
-                int k = Random.Range(0, TileSize - 2), l = Random.Range(0, TileSize + 1);
+                int k = Random.Range(0, TileSize), l = Random.Range(0, TileSize + 2);
                 while (true)
                 {
 
@@ -248,15 +249,15 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
-                        k = Random.Range(0, TileSize - 2);
-                        l = Random.Range(0, TileSize + 1);
+                        k = Random.Range(0, TileSize);
+                        l = Random.Range(0, TileSize + 2);
                     }
                 }
-                Instantiate(m_BlockTile, new Vector3(k - (TileSize - 1) / 2 + 1, l - (TileSize - 1) / 2 - 2), Quaternion.identity);
+                Instantiate(m_BlockTile, new Vector3(k - (TileSize - 1) / 2, l - (TileSize - 1) / 2 - 2), Quaternion.identity);
             }
             for (int i = 0; i < m_DamageCount[paze]; i++)
             {
-                int k = Random.Range(0, TileSize - 2), l = Random.Range(0, TileSize + 1);
+                int k = Random.Range(0, TileSize), l = Random.Range(0, TileSize + 2);
                 while (true)
                 {
 
@@ -267,15 +268,15 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
-                        k = Random.Range(0, TileSize - 2);
-                        l = Random.Range(0, TileSize + 1);
+                        k = Random.Range(0, TileSize);
+                        l = Random.Range(0, TileSize + 2);
                     }
                 }
-                Instantiate(m_DamageTile, new Vector3(k - (TileSize - 1) / 2 + 1, l - (TileSize - 1) / 2 - 2), Quaternion.identity);
+                Instantiate(m_DamageTile, new Vector3(k - (TileSize - 1) / 2, l - (TileSize - 1) / 2 - 2), Quaternion.identity);
             }
             for (int i = 0; i < m_ItemCount[paze]; i++)
             {
-                int k = Random.Range(0, TileSize - 2), l = Random.Range(0, TileSize + 1);
+                int k = Random.Range(0, TileSize), l = Random.Range(0, TileSize + 2);
                 while (true)
                 {
 
@@ -286,11 +287,11 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
-                        k = Random.Range(0, TileSize - 2);
-                        l = Random.Range(0, TileSize + 1);
+                        k = Random.Range(0, TileSize);
+                        l = Random.Range(0, TileSize + 2);
                     }
                 }
-                Instantiate(m_Item[Random.Range(0, 4)], new Vector3(k - (TileSize - 1) / 2 + 1, l - (TileSize - 1) / 2 - 2), Quaternion.identity);
+                Instantiate(m_Item[Random.Range(0, 4)], new Vector3(k - (TileSize - 1) / 2, l - (TileSize - 1) / 2 - 2), Quaternion.identity);
             }
         }
     }

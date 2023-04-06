@@ -23,7 +23,7 @@ public class Sword : MonoBehaviour
     }
     private void Update()
     {
-        if (!(mMovement.m_Count < 0 || mCollison.onCollision))
+        if (mMovement.m_Count >= 0)
         {
             mSpriteRenderer.enabled = true;
         }

@@ -64,8 +64,7 @@ public class Enemy : MonoBehaviour
     {
         GameManager.Gm.m_EnemyCount--;
         GameManager.Gm.m_Score++;
-        if (GetComponent<BombGob>()) GetComponent<BombGob>().SumBomb();
-        if (GetComponent<MirrorPrince>()) GetComponent<MirrorPrince>().Mirror();
+        if (GetComponent<EnemyDestroy>()) GetComponent<EnemyDestroy>().AfterDestroy();
         mAudioSource.Play();
         gameObject.layer = 9;
         mSpriteRenderer.enabled = false;
