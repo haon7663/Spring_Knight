@@ -241,6 +241,11 @@ public class Movement : MonoBehaviour
             {
                 if (power >= 0.25f)
                 {
+                    foreach(GameObject enemy in GameManager.Gm.m_EnemyArray)
+                    {
+                        if (enemy.GetComponent<EnemyDashSign>())
+                            enemy.GetComponent<EnemyDashSign>().AfterDash();
+                    }    
                     SetDistance();
                     m_Count = m_Power;
                     m_BounceCount = 0;

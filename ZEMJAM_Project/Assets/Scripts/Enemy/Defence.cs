@@ -35,14 +35,14 @@ public class Defence : MonoBehaviour
             Defences[i].SetActive(true);
         }
 
-        defencePos();
+        DefencePos();
     }
     private void Update()
     {
         hpBar.position = Camera.main.WorldToScreenPoint(transform.position + DefPos);
     }
 
-    private void defencePos()
+    public void DefencePos()
     {
         if (m_Defence == 1)
         {
