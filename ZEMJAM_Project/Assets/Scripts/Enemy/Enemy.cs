@@ -5,14 +5,17 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     private Transform mPlayer;
-    public int m_Power;
-    public int m_PlusDefence;
-    public int m_MinerDefence;
     private SpriteRenderer mSpriteRenderer;
     private AudioSource mAudioSource;
 
+    public int m_Power;
+    public int m_PlusDefence;
+    public int m_MinerDefence;
+    public bool donotFlip;
 
-    private void Start()
+    public int m_Count;
+
+    private void Awake()
     {
         mAudioSource = GetComponent<AudioSource>();
         mPlayer = GameObject.FindGameObjectWithTag("Player").transform;
@@ -57,7 +60,8 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        mSpriteRenderer.flipX = mPlayer.position.x - transform.position.x > 0 ? true : false;
+        if(!donotFlip)
+            mSpriteRenderer.flipX = mPlayer.position.x - transform.position.x > 0 ? true : false;
     }
 
     public void OnDamage()
@@ -68,6 +72,7 @@ public class Enemy : MonoBehaviour
         mAudioSource.Play();
         gameObject.layer = 9;
         mSpriteRenderer.enabled = false;
+        GameManager.Gm.m_EnemyArray[m_Count] = null;
         Destroy(gameObject, 0.5f);
     }
 }

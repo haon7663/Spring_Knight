@@ -10,6 +10,7 @@ public class BombGob : EnemyDestroy
     {
         Instantiate(BombParticle, transform.position, Quaternion.identity);
         Movement player = GameObject.FindGameObjectWithTag("Player").GetComponent<Movement>();
-        player.takeBomb(transform);
+        player.m_BoostPower = 3;
+        player.m_Count += 3;
     }
 }

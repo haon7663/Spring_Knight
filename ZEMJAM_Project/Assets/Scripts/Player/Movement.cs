@@ -280,43 +280,43 @@ public class Movement : MonoBehaviour
 
         if (m_Collison.onDown && m_Collison.onLeft)
         {
-            m_Angle = m_Angle <= -170 && m_Angle >= 0 ? -170 : m_Angle;
-            m_Angle = m_Angle >= -100 && m_Angle < 0 ? -100 : m_Angle;
+            m_Angle = m_Angle <= -177 && m_Angle >= 0 ? -177 : m_Angle;
+            m_Angle = m_Angle >= -93 && m_Angle < 0 ? -93 : m_Angle;
         }
         else if (m_Collison.onDown && m_Collison.onRight)
         {
-            m_Angle = m_Angle >= -10 && m_Angle <= 180 ? -10 : m_Angle;
-            m_Angle = m_Angle <= -80 && m_Angle > -180 ? -80 : m_Angle;
+            m_Angle = m_Angle >= -3 && m_Angle <= 180 ? -3 : m_Angle;
+            m_Angle = m_Angle <= -87 && m_Angle > -180 ? -87 : m_Angle;
         }
         else if (m_Collison.onUp && m_Collison.onLeft)
         {
-            m_Angle = m_Angle <= 100 && m_Angle >= -90 ? 100 : m_Angle;
-            m_Angle = m_Angle >= 170 || m_Angle < -90 ? 170 : m_Angle;
+            m_Angle = m_Angle <= 93 && m_Angle >= -90 ? 93 : m_Angle;
+            m_Angle = m_Angle >= 177 || m_Angle < -90 ? 177 : m_Angle;
         }
         else if (m_Collison.onUp && m_Collison.onRight)
         {
-            m_Angle = m_Angle >= 80 && m_Angle <= -135 ? 80 : m_Angle;
-            m_Angle = m_Angle <= 10 && m_Angle > -135 ? 10 : m_Angle;
+            m_Angle = m_Angle >= 87 && m_Angle <= -135 ? 87 : m_Angle;
+            m_Angle = m_Angle <= 3 && m_Angle > -135 ? 3 : m_Angle;
         }
         else if (m_Collison.onUp)
         {
-            m_Angle = m_Angle <= 10 && m_Angle >= -90 ? 10 : m_Angle;
-            m_Angle = m_Angle >= 170 || m_Angle < -90 ? 170 : m_Angle;
+            m_Angle = m_Angle <= 3 && m_Angle >= -90 ? 3 : m_Angle;
+            m_Angle = m_Angle >= 177 || m_Angle < -90 ? 177 : m_Angle;
         }
         else if (m_Collison.onDown)
         {
-            m_Angle = m_Angle >= -10 && m_Angle <= 90 ? -10 : m_Angle;
-            m_Angle = m_Angle <= -170 || m_Angle > 90 ? -170 : m_Angle;
+            m_Angle = m_Angle >= -3 && m_Angle <= 90 ? -3 : m_Angle;
+            m_Angle = m_Angle <= -177 || m_Angle > 90 ? -177 : m_Angle;
         }
         else if (m_Collison.onLeft)
         {
-            m_Angle = m_Angle <= 100 && m_Angle >= 0 ? 100 : m_Angle;
-            m_Angle = m_Angle >= -100 && m_Angle < 0 ? -100 : m_Angle;
+            m_Angle = m_Angle <= 93 && m_Angle >= 0 ? 93 : m_Angle;
+            m_Angle = m_Angle >= -93 && m_Angle < 0 ? -93 : m_Angle;
         }
         else if (m_Collison.onRight)
         {
-            m_Angle = m_Angle >= 80 && m_Angle <= 180 ? 80 : m_Angle;
-            m_Angle = m_Angle <= -80 && m_Angle > -180 ? -80 : m_Angle;
+            m_Angle = m_Angle >= 87 && m_Angle <= 180 ? 87 : m_Angle;
+            m_Angle = m_Angle <= -87 && m_Angle > -180 ? -87 : m_Angle;
         }
     }
 
@@ -412,15 +412,6 @@ public class Movement : MonoBehaviour
         m_BoostPower = 1.75f;
         DOTween.To(() => m_BoostPower, x => m_BoostPower = x, 1f, 0.15f + m_Count * 0.1f).SetEase(Ease.OutQuint);
         isCoroutine = false;
-    }
-
-    public void takeBomb(Transform target)
-    {
-        m_BoostPower = 3;
-        m_Count += 5;
-        m_BounceCount = 0;
-        Vector3 dir = target.position - transform.position;
-        mRigidbody2D.velocity = -dir * 20;
     }
     public void takeMirror(Transform target)
     {

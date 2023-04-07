@@ -19,7 +19,9 @@ public class GameManager : MonoBehaviour
 
     public _2dArray[] persent = new _2dArray[5];
 
-    public int[,] array = new int[5, 5];
+    public int[,] array = new int[5, 5];    
+    
+    public LayerMask m_PlatformLayer;
 
     public CinemachineVirtualCamera cinevirtual;
 
@@ -29,6 +31,7 @@ public class GameManager : MonoBehaviour
 
     public Camera m_MainCamera;
 
+    public GameObject[] m_EnemyArray = new GameObject[15];
     public GameObject m_Enemy;
     public GameObject m_Goblin;
     public GameObject m_BoomGoblin;
@@ -51,6 +54,7 @@ public class GameManager : MonoBehaviour
     public Transform mTile;
 
     private GameObject[] mTiles = new GameObject[150];
+
 
     public GameObject mWall_Left_Up;
     public GameObject mWall_Up;
@@ -83,6 +87,12 @@ public class GameManager : MonoBehaviour
 
     int[,] summonPos = new int[30, 30];
 
+    float tilesize;
+    public int horizontalHalfPos;
+    public int verticalHalfPos;
+    public int horizontalPos;
+    public int verticalPos;
+
     private void Awake()
     {
         Screen.SetResolution(1080, 1920, true);
@@ -95,6 +105,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        CinemacineSize = TileSize;
     }
     void OnEnable()
     {
@@ -112,13 +123,13 @@ public class GameManager : MonoBehaviour
         m_MainCamera = Camera.main;
         SummonCount = 2;
         m_EnemyCount = 1;
-        CinemacineSize = 3f + TileSize;
         mPlayer.GetComponent<Hp>().curhp = Managerhp;
         mPlayer.GetComponent<Hp>().OnHealth();
-        DrawMap();
+        StartCoroutine(DrawMap());
         int[,] summonPos = new int[TileSize, TileSize + 2];
-        SummonEnemy(true);
+        StartCoroutine(SummonEnemy(true));
         isLoadScene = false;
+        CinemacineSize = TileSize;
     }
 
     void OnDisable()
@@ -128,7 +139,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        CinemacineSize = isJoom ? (1.5f + TileSize / 1.25f) / 1.9f : 2.5f + TileSize / 1.25f;
+        CinemacineSize = isJoom ? (1.5f + TileSize / 1.25f) / 1.9f : TileSize;
 
         if (CinemacineSize < 6) CinemacineSize = 6;
         real_CineSize = Mathf.Lerp(real_CineSize, CinemacineSize, Time.deltaTime * 4);
@@ -146,7 +157,7 @@ public class GameManager : MonoBehaviour
             else if (SummonCount > 0)
             {
                 SummonCount--;
-                SummonEnemy(false);
+                StartCoroutine(SummonEnemy(false));
                 m_EnemyCount++;
             }
         }
@@ -169,20 +180,26 @@ public class GameManager : MonoBehaviour
         }
         SceneManager.LoadScene(1);
     }
-    private void DrawMap()
+    private IEnumerator DrawMap()
     {
-        int j = 0;
-        int horizontalHalfPos = Mathf.RoundToInt(CinemacineSize * 0.5625f / 1.5f);
-        int verticalHalfPos = Mathf.RoundToInt(CinemacineSize / 2);
-        int verticalPos = Mathf.RoundToInt(CinemacineSize);
-        mTiles[j++] = Instantiate(mWall_Left_Up_Deco, new Vector3(-horizontalHalfPos, verticalHalfPos + 1), Quaternion.identity);
-        mTiles[j++] = Instantiate(mWall_Left_Up, new Vector3(-horizontalHalfPos, verticalHalfPos), Quaternion.identity);
-        mTiles[j++] = Instantiate(mWall_Left_Down, new Vector3(-horizontalHalfPos, -verticalPos), Quaternion.identity);
-        mTiles[j++] = Instantiate(mWall_Right_Up_Deco, new Vector3(horizontalHalfPos, verticalHalfPos + 1), Quaternion.identity);
-        mTiles[j++] = Instantiate(mWall_Right_Up, new Vector3(horizontalHalfPos, verticalHalfPos), Quaternion.identity);
-        mTiles[j++] = Instantiate(mWall_Right_Down, new Vector3(horizontalHalfPos, -verticalPos), Quaternion.identity);
+        yield return new WaitForSeconds(0.1f);
+        tilesize = TileSize * 2;
+        horizontalHalfPos = Mathf.CeilToInt(tilesize / 2f * 0.5625f);
+        verticalHalfPos = Mathf.CeilToInt(tilesize / 2);
 
-        for (int i = verticalHalfPos; i >= -verticalPos; i--)
+        int j = 0;
+
+        if (Physics2D.OverlapCircle(new Vector2(horizontalHalfPos, 0), 0.1f, m_PlatformLayer)) horizontalHalfPos -= 1;
+        if (Physics2D.OverlapCircle(new Vector2(0, verticalHalfPos), 0.1f, m_PlatformLayer)) verticalHalfPos -= 1;
+
+        mTiles[j++] = Instantiate(mWall_Left_Up_Deco, new Vector3(-horizontalHalfPos, verticalHalfPos + 2), Quaternion.identity);
+        mTiles[j++] = Instantiate(mWall_Left_Up, new Vector3(-horizontalHalfPos, verticalHalfPos+1), Quaternion.identity);
+        mTiles[j++] = Instantiate(mWall_Left_Down, new Vector3(-horizontalHalfPos, -verticalHalfPos), Quaternion.identity);
+        mTiles[j++] = Instantiate(mWall_Right_Up_Deco, new Vector3(horizontalHalfPos, verticalHalfPos + 2), Quaternion.identity);
+        mTiles[j++] = Instantiate(mWall_Right_Up, new Vector3(horizontalHalfPos, verticalHalfPos+1), Quaternion.identity);
+        mTiles[j++] = Instantiate(mWall_Right_Down, new Vector3(horizontalHalfPos, -verticalHalfPos), Quaternion.identity);
+
+        for (int i = verticalHalfPos+1; i >= -verticalHalfPos; i--)
         {
             mTiles[j++] = Instantiate(mWall_Left, new Vector3(-horizontalHalfPos, i), Quaternion.identity);
             mTiles[j++] = Instantiate(mWall_Right, new Vector3(horizontalHalfPos, i), Quaternion.identity);
@@ -190,27 +207,28 @@ public class GameManager : MonoBehaviour
 
         for (int i = -horizontalHalfPos; i <= horizontalHalfPos; i++)
         {
-            mTiles[j++] = Instantiate(mWall_Up, new Vector3(i, verticalHalfPos), Quaternion.identity);
-            mTiles[j++] = Instantiate(mWall_Up_Deco, new Vector3(i, verticalHalfPos + 1), Quaternion.identity);
-            mTiles[j++] = Instantiate(mWall_Down, new Vector3(i, -verticalPos), Quaternion.identity);
-        }
-
-        for (int i = -horizontalHalfPos; i <= horizontalHalfPos; i++)
-        {
-            mTiles[j++] = Instantiate(mWall_DownDown, new Vector3(i, -verticalPos - 1), Quaternion.identity);
+            mTiles[j++] = Instantiate(mWall_Up, new Vector3(i, verticalHalfPos+1), Quaternion.identity);
+            mTiles[j++] = Instantiate(mWall_Up_Deco, new Vector3(i, verticalHalfPos + 2), Quaternion.identity);
+            mTiles[j++] = Instantiate(mWall_Down, new Vector3(i, -verticalHalfPos), Quaternion.identity);
+            mTiles[j++] = Instantiate(mWall_DownDown, new Vector3(i, -verticalHalfPos - 1), Quaternion.identity);
         }
 
         for (int i = 0; i < j; i++)
         {
             mTiles[i].transform.SetParent(mTile);
         }
+        yield return null;
     }
 
-    private void SummonEnemy(bool isTile)
+    private IEnumerator SummonEnemy(bool isTile)
     {
-        for (int i = 0; i < TileSize; i++)
+        yield return new WaitForSeconds(0.15f);
+        horizontalPos = horizontalHalfPos * 2 + 1;
+        verticalPos = verticalHalfPos * 2;
+
+        for (int i = 0; i < horizontalPos; i++)
         {
-            for (int j = 0; j < TileSize + 2; j++)
+            for (int j = 0; j < verticalPos; j++)
             {
                 summonPos[i, j] = 0;
             }
@@ -218,7 +236,7 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < (int)m_EnemySummonCount; i++)
         {
-            int m = Random.Range(0, TileSize), n = Random.Range(0, TileSize + 2);
+            int m = Random.Range(0, horizontalPos), n = Random.Range(0, verticalPos);
             while (true)
             {
                 if (summonPos[m, n] == 0)
@@ -228,11 +246,13 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    m = Random.Range(0, TileSize);
-                    n = Random.Range(0, TileSize + 2);
+                    m = Random.Range(0, horizontalPos);
+                    n = Random.Range(0, verticalPos);
                 }
             }
-            Instantiate(SummonRandom(persent[paze].arr[0], persent[paze].arr[1], persent[paze].arr[2], persent[paze].arr[3], persent[paze].arr[4]), new Vector3(m - (TileSize - 1) / 2, n - (TileSize - 1) / 2 - 2), Quaternion.identity);
+            GameObject enemy = Instantiate(SummonRandom(persent[paze].arr[0], persent[paze].arr[1], persent[paze].arr[2], persent[paze].arr[3], persent[paze].arr[4]), new Vector3(m - horizontalHalfPos, n - verticalHalfPos + 1), Quaternion.identity);
+            m_EnemyArray[m_EnemyCount-1] = enemy;
+            enemy.GetComponent<Enemy>().m_Count = m_EnemyCount-1;
             m_EnemyCount++;
         }
         m_EnemyCount--;
@@ -241,7 +261,7 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < m_BlockCount[paze]; i++)
             {
-                int k = Random.Range(0, TileSize), l = Random.Range(0, TileSize + 2);
+                int k = Random.Range(0, horizontalPos), l = Random.Range(0, verticalPos);
                 while (true)
                 {
 
@@ -252,15 +272,15 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
-                        k = Random.Range(0, TileSize);
-                        l = Random.Range(0, TileSize + 2);
+                        k = Random.Range(0, horizontalPos);
+                        l = Random.Range(0, verticalPos);
                     }
                 }
-                Instantiate(m_BlockTile, new Vector3(k - (TileSize - 1) / 2, l - (TileSize - 1) / 2 - 2), Quaternion.identity);
+                Instantiate(m_BlockTile, new Vector3(k - horizontalHalfPos, l - verticalHalfPos + 1), Quaternion.identity);
             }
             for (int i = 0; i < m_DamageCount[paze]; i++)
             {
-                int k = Random.Range(0, TileSize), l = Random.Range(0, TileSize + 2);
+                int k = Random.Range(0, horizontalPos), l = Random.Range(0, verticalPos);
                 while (true)
                 {
 
@@ -271,15 +291,15 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
-                        k = Random.Range(0, TileSize);
-                        l = Random.Range(0, TileSize + 2);
+                        k = Random.Range(0, horizontalPos);
+                        l = Random.Range(0, verticalPos);
                     }
                 }
-                Instantiate(m_DamageTile, new Vector3(k - (TileSize - 1) / 2, l - (TileSize - 1) / 2 - 2), Quaternion.identity);
+                Instantiate(m_DamageTile, new Vector3(k - horizontalHalfPos, l - verticalHalfPos + 1), Quaternion.identity);
             }
             for (int i = 0; i < m_ItemCount[paze]; i++)
             {
-                int k = Random.Range(0, TileSize), l = Random.Range(0, TileSize + 2);
+                int k = Random.Range(0, horizontalPos), l = Random.Range(0, verticalPos);
                 while (true)
                 {
 
@@ -290,11 +310,11 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
-                        k = Random.Range(0, TileSize);
-                        l = Random.Range(0, TileSize + 2);
+                        k = Random.Range(0, horizontalPos);
+                        l = Random.Range(0, verticalPos);
                     }
                 }
-                Instantiate(m_Item[Random.Range(0, 4)], new Vector3(k - (TileSize - 1) / 2, l - (TileSize - 1) / 2 - 2), Quaternion.identity);
+                Instantiate(m_Item[Random.Range(0, 4)], new Vector3(k - horizontalHalfPos, l - verticalHalfPos + 1), Quaternion.identity);
             }
         }
     }
@@ -311,5 +331,11 @@ public class GameManager : MonoBehaviour
         else if (ran > sloth + goblin + bom + mirror && ran < sloth + goblin + bom + mirror + ork) summon = m_Ork;
 
         return summon;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(new Vector2(horizontalHalfPos, 0), 0.1f);
+        Gizmos.DrawWireSphere(new Vector2(0, verticalHalfPos), 0.1f);
     }
 }

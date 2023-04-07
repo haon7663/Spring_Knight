@@ -13,6 +13,6 @@ public class OuterPlatform : MonoBehaviour
     {
         m_MainCamera = Camera.main;
 
-        transform.localPosition = m_Pos * m_Ratio * m_MainCamera.orthographicSize + m_Pos * 2.5f;
+        transform.localPosition = m_Pos * m_Ratio * GameManager.Gm.TileSize + m_Pos * 2.5f;
     }
 }
