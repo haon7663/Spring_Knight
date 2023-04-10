@@ -13,10 +13,10 @@ public class NestedScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandle
     public RectTransform[] BtnRect, BtnImageRect;
 
     const int SIZE = 3;
-    float[] pos = new float[SIZE];
-    float distance, curPos, targetPos;
+    public float[] pos = new float[SIZE];
+    public float distance, curPos, targetPos = 0.5f;
     bool isDrag;
-    int targetIndex;
+    public int targetIndex = 1;
 
 
     void Start()

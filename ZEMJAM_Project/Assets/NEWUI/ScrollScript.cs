@@ -33,8 +33,7 @@ public class ScrollScript : ScrollRect
 
     public override void OnDrag(PointerEventData eventData)
     {
-        if (forParent)
-        {
+        if (forParent)        {
             NM.OnDrag(eventData);
             parentScrollRect.OnDrag(eventData);
         }
