@@ -26,7 +26,7 @@ public class Defence : MonoBehaviour
         canvas = GameObject.FindGameObjectWithTag("Canvas");
         hpBar = Instantiate(PrfHpBar, canvas.transform).GetComponent<RectTransform>();
         hpBar.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 0.9f, 0));
-        for(int i = 0; i < m_Defence; i++)
+        for(int i = 0; i < 8; i++)
         {
             Defences[i] = hpBar.GetChild(i).gameObject;
         }
@@ -44,6 +44,11 @@ public class Defence : MonoBehaviour
 
     public void DefencePos()
     {
+        for (int i = 0; i < m_Defence; i++)
+        {
+            if(!Defences[i].activeSelf) Defences[i].SetActive(true);
+        }
+
         if (m_Defence == 1)
         {
             Defences[0].GetComponent<RectTransform>().localPosition = new Vector3(0, -9, 0);

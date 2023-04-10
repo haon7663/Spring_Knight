@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class DefenceKnight : EnemyDashSign
 {
+    public int m_MaxPower;
     public int m_MaxStack;
     private int curStack;
     private Enemy mEnemy;
@@ -15,13 +17,18 @@ public class DefenceKnight : EnemyDashSign
     }
     public override void AfterDash()
     {
-        curStack++;
-        if(curStack >= m_MaxStack)
+        if(mEnemy.m_Power < m_MaxPower)
         {
-            curStack = 0;
-            mEnemy.m_Power++;
-            mDefence.DefencePos();
-        } 
-            
+            curStack++;
+            if(curStack >= m_MaxStack)
+            {
+                curStack = 0;
+                mEnemy.m_Power++;
+                mDefence.m_Defence++;
+                mDefence.DefencePos();
+                mDefence.DefPos *= 1.1f;
+                transform.DOScale(transform.localScale*1.1f, 0.4f).SetEase(Ease.OutCubic);
+            } 
+        }
     }
 }

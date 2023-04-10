@@ -2,14 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthPotion : MonoBehaviour
+public class HealthPotion : Item
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    public override void UseItem()
     {
-        if (collision.CompareTag("Player"))
-        {
-            collision.GetComponent<Hp>().OnHealth();
-            Destroy(gameObject);
-        }
+        Movement.instance.GetComponent<Hp>().OnHealth();
+        Destroy(gameObject);
     }
 }

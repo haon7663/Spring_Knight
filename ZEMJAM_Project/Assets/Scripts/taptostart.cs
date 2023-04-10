@@ -13,7 +13,7 @@ public class taptostart : MonoBehaviour
     {
         GameManager.Gm.m_EnemySummonCount = 3;
         GameManager.Gm.m_Score = 0;
-        GameManager.Gm.TileSize = 7;
+        GameManager.Gm.TileSize = 6;
         GameManager.Gm.MaxPower = 3;
         GameManager.Gm.paze = 0;
     }

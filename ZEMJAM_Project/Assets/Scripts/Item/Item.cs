@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item
+public abstract class Item : MonoBehaviour
 {
-    //public abstract void ();
+    public abstract void UseItem();
 }

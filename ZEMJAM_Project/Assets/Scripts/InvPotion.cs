@@ -2,14 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InvPotion : MonoBehaviour
+public class InvPotion : Item
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    public override void UseItem()
     {
-        if (collision.CompareTag("Player"))
-        {
-            StartCoroutine(collision.GetComponent<Movement>().InvItem());
-            Destroy(gameObject);
-        }
+        Movement.instance.InvItem();
+        Destroy(gameObject);
     }
 }

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Fade : MonoBehaviour
 {
     public static Fade instance;
     private Animator mAnimator;
+    private Image mImage;
 
     private void Awake()
     {
@@ -14,6 +16,7 @@ public class Fade : MonoBehaviour
     private void Start()
     {
         mAnimator = GetComponent<Animator>();
+        mImage = GetComponent<Image>();
         Fadeout();
     }
 

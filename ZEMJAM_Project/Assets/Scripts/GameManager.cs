@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Gm;
 
+    public bool DoSetting = false;
+
     [Serializable]
     public class _2dArray
     {
@@ -32,12 +34,7 @@ public class GameManager : MonoBehaviour
     public Camera m_MainCamera;
 
     public GameObject[] m_EnemyArray = new GameObject[15];
-    public GameObject m_Enemy;
-    public GameObject m_Goblin;
-    public GameObject m_BoomGoblin;
-    public GameObject m_Mirror;
-    public GameObject m_Ork;
-    public GameObject m_ForestSpirit;
+    public GameObject[] m_Enemy;
 
     public float m_EnemySummonCount;
     public int m_EnemyCount = 1;
@@ -115,7 +112,8 @@ public class GameManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Gm = this;
-        mTile = GameObject.FindGameObjectWithTag("Wall").transform;
+        if (SceneManager.GetActiveScene().name != "Faze") return;
+        mTile = GameObject.Find("Find").transform.parent;
         mPlayer = GameObject.FindGameObjectWithTag("Player").transform;
         mPlayer.GetComponent<Movement>().m_MaxPower = MaxPower;
         m_ScoreText = GameObject.Find("Score").GetComponent<Text>();
@@ -126,10 +124,10 @@ public class GameManager : MonoBehaviour
         mPlayer.GetComponent<Hp>().curhp = Managerhp;
         mPlayer.GetComponent<Hp>().OnHealth();
         StartCoroutine(DrawMap());
-        int[,] summonPos = new int[TileSize, TileSize + 2];
         StartCoroutine(SummonEnemy(true));
         isLoadScene = false;
         CinemacineSize = TileSize;
+        DoSetting = false;
     }
 
     void OnDisable()
@@ -139,6 +137,8 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (SceneManager.GetActiveScene().name != "Faze") return;
+
         CinemacineSize = isJoom ? (1.5f + TileSize / 1.25f) / 1.9f : TileSize;
 
         if (CinemacineSize < 6) CinemacineSize = 6;
@@ -162,7 +162,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        m_ScoreText.text = m_Score.ToString();
+        if(m_ScoreText) m_ScoreText.text = m_Score.ToString();
     }
     IEnumerator MoveScene()
     {
@@ -170,13 +170,13 @@ public class GameManager : MonoBehaviour
         Fade.instance.Fadein();
         yield return new WaitForSeconds(0.4f);
         m_EnemyCount = 1;
-        if (TileSize < 15)
+        if (TileSize < 12)
         {
             Managerhp = mPlayer.GetComponent<Hp>().curhp;
             MaxPower += 1;
             TileSize += 2;
             paze++;
-            m_EnemySummonCount += 0.5f;
+            m_EnemySummonCount += 0.75f;
         }
         SceneManager.LoadScene(1);
     }
@@ -250,7 +250,7 @@ public class GameManager : MonoBehaviour
                     n = Random.Range(0, verticalPos);
                 }
             }
-            GameObject enemy = Instantiate(SummonRandom(persent[paze].arr[0], persent[paze].arr[1], persent[paze].arr[2], persent[paze].arr[3], persent[paze].arr[4]), new Vector3(m - horizontalHalfPos, n - verticalHalfPos + 1), Quaternion.identity);
+            GameObject enemy = Instantiate(SummonRandom(persent[paze].arr), new Vector3(m - horizontalHalfPos, n - verticalHalfPos + 1), Quaternion.identity);
             m_EnemyArray[m_EnemyCount-1] = enemy;
             enemy.GetComponent<Enemy>().m_Count = m_EnemyCount-1;
             m_EnemyCount++;
@@ -319,16 +319,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private GameObject SummonRandom(int sloth, int goblin, int bom, int mirror, int ork)
+    private GameObject SummonRandom(int[] enemy)
     {
-        GameObject summon = m_Enemy;
+        GameObject summon = m_Enemy[0];
         int ran = Random.Range(1, 101);
+        int temp = 0;
 
-        if (ran <= sloth) summon = m_Enemy;
-        else if (ran > sloth && ran < sloth + goblin) summon = m_Goblin;
-        else if (ran > sloth + goblin && ran < sloth + goblin + bom) summon = m_BoomGoblin;
-        else if (ran > sloth + goblin + bom && ran < sloth + goblin + bom + mirror) summon = m_Mirror;
-        else if (ran > sloth + goblin + bom + mirror && ran < sloth + goblin + bom + mirror + ork) summon = m_Ork;
+        for(int i = 0; i < enemy.Length; i++)
+        {
+            if(temp + enemy[i] > ran)
+            {
+                summon = m_Enemy[i];
+                break;
+            }
+            else
+            {
+                temp += enemy[i];
+            }
+        }
 
         return summon;
     }

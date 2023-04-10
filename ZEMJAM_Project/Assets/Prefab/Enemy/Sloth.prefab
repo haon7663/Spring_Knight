@@ -125,6 +125,8 @@ MonoBehaviour:
   m_Power: 1
   m_PlusDefence: 1
   m_MinerDefence: 0
+  donotFlip: 0
+  m_Count: 0
 --- !u!114 &4991542697548284133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +187,7 @@ AudioSource:
   m_GameObject: {fileID: 1498345847384431939}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 7254800682099514183, guid: 2f0c093a1be66784db1902a353197cc7, type: 2}
   m_audioClip: {fileID: 8300000, guid: 6d22e2245afd75c44a7630d6199e8a44, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
