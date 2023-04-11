@@ -11,10 +11,10 @@ public class taptostart : MonoBehaviour
     }
     private void Start()
     {
-        GameManager.Gm.m_EnemySummonCount = 3;
+        GameManager.Gm.m_EnemySummonCount = 4;
         GameManager.Gm.m_Score = 0;
         GameManager.Gm.TileSize = 6;
-        GameManager.Gm.MaxPower = 3;
+        GameManager.Gm.MaxPower = 2;
         GameManager.Gm.paze = 0;
     }
     private bool isOne = false;
@@ -29,6 +29,6 @@ public class taptostart : MonoBehaviour
     }
     private void GameStart()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("Stage");
     }
 }

@@ -13,10 +13,6 @@ public class Hp : MonoBehaviour
     public Sprite mBHeart;
     public Sprite mHeart;
 
-    private void Start()
-    {
-        curhp = maxhp;
-    }
     public void OnDamage()
     {
         curhp--;

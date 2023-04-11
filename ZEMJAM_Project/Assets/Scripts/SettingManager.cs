@@ -47,7 +47,12 @@ public class SettingManager : MonoBehaviour
         GameManager.Gm.TileSize = 6;
         GameManager.Gm.MaxPower = 3;
         GameManager.Gm.paze = 0;
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("Faze");
+    }
+    public void OnMain()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Stage");
     }
     public void OnSoundSetting()
     {

@@ -111,6 +111,7 @@ public class GameManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Time.timeScale = 1;
         Gm = this;
         if (SceneManager.GetActiveScene().name != "Faze") return;
         mTile = GameObject.Find("Find").transform.parent;
@@ -178,7 +179,7 @@ public class GameManager : MonoBehaviour
             paze++;
             m_EnemySummonCount += 0.75f;
         }
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("Faze");
     }
     private IEnumerator DrawMap()
     {
@@ -314,7 +315,7 @@ public class GameManager : MonoBehaviour
                         l = Random.Range(0, verticalPos);
                     }
                 }
-                Instantiate(m_Item[Random.Range(0, 4)], new Vector3(k - horizontalHalfPos, l - verticalHalfPos + 1), Quaternion.identity);
+                Instantiate(m_Item[Random.Range(0, 5)], new Vector3(k - horizontalHalfPos, l - verticalHalfPos + 1), Quaternion.identity);
             }
         }
     }

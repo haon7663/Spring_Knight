@@ -28,6 +28,7 @@ public class Movement : MonoBehaviour
     public Material WhiteMateral;
 
     public GameObject m_Ray;
+    public GameObject m_PowerBar;
     public GameObject m_After;
     public GameObject m_Spin;
     public GameObject m_Combo;
@@ -39,6 +40,9 @@ public class Movement : MonoBehaviour
     public RectTransform JoyPanel;
     public RectTransform JoyStick;
     public RectTransform[] JoyLiner;
+
+    public Image m_PowerFilled;
+    public Text m_PowerText;
 
     public LayerMask m_EnemyLayer;
 
@@ -66,6 +70,7 @@ public class Movement : MonoBehaviour
     public float m_AfterImageCount;
 
     private float m_InvTime;
+    private float filled = 0;
 
     public bool m_isInv;
     public bool m_Swing;
@@ -73,6 +78,7 @@ public class Movement : MonoBehaviour
 
     private bool isHit = false;
     private bool isSpin = false;
+    private bool onCol;
 
     private float mTimer;
 
@@ -126,7 +132,7 @@ public class Movement : MonoBehaviour
         Time.timeScale = Mathf.Lerp(Time.timeScale, 1, Time.deltaTime * 5);
         for (int i = 0; i < 5; i++)
         {
-            if(Physics2D.Raycast(transform.position + offset[i], (Vector3)mRigidbody2D.velocity, m_BoostPower * 2, m_EnemyLayer)) Time.timeScale = 0.35f;
+            if(Physics2D.Raycast(transform.position + offset[i], (Vector3)mRigidbody2D.velocity, m_BoostPower * 2, m_EnemyLayer) && !isHit) Time.timeScale = 0.35f;
         }
 
         m_isAtk = atkTime > 0;
@@ -135,6 +141,7 @@ public class Movement : MonoBehaviour
 
         GameManager.Gm.isJoom = m_Count >= 0 && !isSpin;
         m_Ray.SetActive(Input.GetMouseButton(0) && m_Count < 0 && power >= 0.25f);
+        m_PowerBar.SetActive(Input.GetMouseButton(0) && m_Count < 0 && power >= 0.25f);
 
 
         if(m_Count >= 0)
@@ -142,14 +149,23 @@ public class Movement : MonoBehaviour
             mTimer += Time.deltaTime;
             if(mTimer > m_AfterImageCount)
             {
-                mTimer = 0;
-                GameObject afterImage = Instantiate(m_After, transform.position, Quaternion.identity);
-                afterImage.GetComponent<SpriteRenderer>().flipX = mSpriteRenderer.flipX;
-                afterImage.GetComponent<SpriteRenderer>().sprite = mSpriteRenderer.sprite;
+                if (m_BounceCount >= 3)
+                {
+                    GameObject afterImage = Instantiate(m_After, transform.position, Quaternion.identity);
+                    afterImage.GetComponent<SpriteRenderer>().flipX = mSpriteRenderer.flipX;
+                    afterImage.GetComponent<SpriteRenderer>().sprite = mSpriteRenderer.sprite;
+                    mTimer = 0;
+                }
                 if (m_BounceCount >= 10)
                 {
                     GameObject afterSpinImage = Instantiate(m_After, transform.position, Quaternion.identity);
                     afterSpinImage.GetComponent<SpriteRenderer>().sprite = m_SpinSpriteRenderer.sprite;
+                }
+                else if(m_BounceCount >= 7)
+                {
+                    GameObject afterSwordImage = Instantiate(m_After, transform.position, Quaternion.identity);
+                    afterSwordImage.GetComponent<SpriteRenderer>().sprite = m_SwordSpriteRenderer.sprite;
+                    afterSwordImage.GetComponent<SpriteRenderer>().flipX = m_SwordSpriteRenderer.flipX;
                 }
             }                
         }
@@ -226,6 +242,11 @@ public class Movement : MonoBehaviour
 
                 SetDistance();
                 m_Ray.transform.rotation = Quaternion.Euler(0, 0, m_Angle + 90);
+                m_PowerBar.transform.position = m_MainCamera.WorldToScreenPoint(transform.position + new Vector3(transform.position.x > 0 ? -0.7f : 0.7f, transform.position.y > 0 ? -0.4f : 0.4f));
+
+                filled = Mathf.Lerp(filled, m_Power / m_MaxPower, Time.deltaTime * 12);
+                m_PowerFilled.fillAmount = filled;
+                m_PowerText.text = m_Power.ToString();
 
                 JoyPanel.position = m_MainCamera.WorldToScreenPoint(startTouchPos);
                 JoyStick.position = m_MainCamera.WorldToScreenPoint(endTouchPos);
@@ -234,7 +255,7 @@ public class Movement : MonoBehaviour
                 var inputMag = inputDir.magnitude;
                 var clampedDir = inputMag <= 3.01f ?
                     inputDir : inputDir.normalized * 3.01f;
-                m_Ray.transform.localScale = new Vector3(1, inputMag <= 3.01f ? inputMag : 3);
+                m_Ray.transform.localScale = new Vector3(1, inputMag <= 2.01f ? inputMag : 2);
 
                 for (int i = 0; i < 5; i++)
                 {
@@ -336,6 +357,7 @@ public class Movement : MonoBehaviour
         }
         else if (collision.transform.CompareTag("Wall") && m_Count > 0)
         {
+            onCol = true;
             mAudioSource.Play();
             var speed = LastVelocity.magnitude;
             var dir = Vector2.Reflect(LastVelocity.normalized, collision.contacts[0].normal);
@@ -353,6 +375,7 @@ public class Movement : MonoBehaviour
                 if (enemy && enemy.GetComponent<EnemyDashSign>())
                     enemy.GetComponent<EnemyDashSign>().AfterDash();
             }
+            onCol = true;
             mRigidbody2D.velocity = Vector2.zero;
             saveVelocity = Vector2.zero;
             m_SlopeAngel = Vector2.Angle(collision.contacts[0].normal, Vector2.up);
@@ -371,6 +394,13 @@ public class Movement : MonoBehaviour
         if (collision.transform.CompareTag("Wall") && mRigidbody2D.velocity == Vector2.zero)
         {
             m_Count = -1;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Wall"))
+        {
+            onCol = false;
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -442,8 +472,6 @@ public class Movement : MonoBehaviour
         Debug.Log("mirror");
         m_BoostPower = 1.75f;
         m_Count = m_BounceCount;
-        Vector3 dir = target.position - transform.position;
-        mRigidbody2D.velocity = -dir * 20;
     }
     private IEnumerator InvTime()
     {
@@ -493,7 +521,7 @@ public class Movement : MonoBehaviour
         }
         else
         {
-            while (!m_Collison.onCollision)
+            while (!m_Collison.onCollision || !onCol)
             {
                 yield return YieldInstructionCache.WaitForFixedUpdate;
             }
@@ -519,7 +547,7 @@ public class Movement : MonoBehaviour
     }
     private void death()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene("Death");
     }
     private void OnDrawGizmos()
     {

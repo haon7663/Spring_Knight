@@ -23,7 +23,7 @@ public class Defence : MonoBehaviour
     {
         m_Enemy = GetComponent<Enemy>();
         m_Defence = m_Enemy.m_Power;
-        canvas = GameObject.FindGameObjectWithTag("Canvas");
+        canvas = GameObject.Find("Defence_Canvas");
         hpBar = Instantiate(PrfHpBar, canvas.transform).GetComponent<RectTransform>();
         hpBar.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 0.9f, 0));
         for(int i = 0; i < 8; i++)
