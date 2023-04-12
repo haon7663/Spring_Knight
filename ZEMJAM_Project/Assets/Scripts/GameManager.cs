@@ -139,6 +139,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
         if (SceneManager.GetActiveScene().name != "Faze") return;
 
         CinemacineSize = isJoom ? (1.5f + TileSize / 1.25f) / 1.9f : TileSize;
@@ -346,6 +351,7 @@ public class GameManager : MonoBehaviour
 
         return summon;
     }
+
 
     private void OnDrawGizmos()
     {

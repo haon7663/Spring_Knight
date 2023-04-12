@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2019144507057012981}
   - component: {fileID: 484087886451577967}
   - component: {fileID: -6459637709986950109}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: InvPotion
   m_TagString: Item
   m_Icon: {fileID: 0}

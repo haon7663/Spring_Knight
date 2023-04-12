@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6825951182408623576}
   - component: {fileID: 1929844077899733984}
   - component: {fileID: 6327006412652159505}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: DecadeYuri
   m_TagString: Item
   m_Icon: {fileID: 0}

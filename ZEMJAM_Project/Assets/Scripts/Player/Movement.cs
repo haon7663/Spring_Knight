@@ -31,18 +31,19 @@ public class Movement : MonoBehaviour
     public GameObject m_PowerBar;
     public GameObject m_After;
     public GameObject m_Spin;
-    public GameObject m_Combo;
     public GameObject m_Barrior;
     public Sprite[] m_ComboSprite;
     private SpriteRenderer m_SpinSpriteRenderer;
 
     public Transform m_CameraCanvas;
+    public Transform m_DefenceCanvas;
     public RectTransform JoyPanel;
     public RectTransform JoyStick;
     public RectTransform[] JoyLiner;
 
     public Image m_PowerFilled;
     public Text m_PowerText;
+    public GameObject m_Combo;
 
     public LayerMask m_EnemyLayer;
 
@@ -102,6 +103,8 @@ public class Movement : MonoBehaviour
         m_Collison = GetComponent<Collison>();
         m_Hp = GetComponent<Hp>();
         m_MainCamera = Camera.main;
+
+        isTouchDown = false;
     }
 
     internal static class YieldInstructionCache
@@ -242,21 +245,24 @@ public class Movement : MonoBehaviour
                     isTouchDown = true;
                     JoyPanel.gameObject.SetActive(true);
                     JoyStick.gameObject.SetActive(true);
-                    //startTouchPos = m_MainCamera.ScreenToWorldPoint(Input.GetTouch(0).position);
+#if (UNITY_EDITOR)
                     startTouchPos = m_MainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+#elif (UNITY_ANDROID)
+                    startTouchPos = m_MainCamera.ScreenToWorldPoint(Input.GetTouch(0).position);
+#endif
                 }
 
 
                 SetDistance();
                 m_Ray.transform.rotation = Quaternion.Euler(0, 0, m_Angle + 90);
-                m_PowerBar.transform.position = m_MainCamera.WorldToScreenPoint(transform.position + new Vector3(transform.position.x > 0 ? -0.7f : 0.7f, transform.position.y > 0 ? -0.4f : 0.4f));
+                m_PowerBar.transform.position = transform.position + new Vector3(transform.position.x > 0 ? -0.7f : 0.7f, transform.position.y > 0 ? -0.4f : 0.4f);
 
                 filled = Mathf.Lerp(filled, m_Power / m_MaxPower, Time.deltaTime * 12);
                 m_PowerFilled.fillAmount = filled;
                 m_PowerText.text = m_Power.ToString();
 
-                JoyPanel.position = m_MainCamera.WorldToScreenPoint(startTouchPos);
-                JoyStick.position = m_MainCamera.WorldToScreenPoint(endTouchPos);
+                JoyPanel.position = startTouchPos;
+                JoyStick.position = endTouchPos;
 
                 var inputDir = endTouchPos - startTouchPos;
                 var inputMag = inputDir.magnitude;
@@ -266,10 +272,10 @@ public class Movement : MonoBehaviour
 
                 for (int i = 0; i < 5; i++)
                 {
-                    JoyLiner[i].position = m_MainCamera.WorldToScreenPoint((clampedDir * (i + 1)) / 5 + startTouchPos);
+                    JoyLiner[i].position = clampedDir * (i + 1) / 5 + startTouchPos;
                 }
 
-                JoyStick.position = m_MainCamera.WorldToScreenPoint(clampedDir + startTouchPos);
+                JoyStick.position = clampedDir + startTouchPos;
             }
             if (Input.GetMouseButtonUp(0) || touch.phase == TouchPhase.Ended)
             {
@@ -297,8 +303,11 @@ public class Movement : MonoBehaviour
     }
     private void SetDistance()
     {
-        //endTouchPos = m_MainCamera.ScreenToWorldPoint(Input.GetTouch(0).position);
+        #if (UNITY_EDITOR)
         endTouchPos = m_MainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+        #elif (UNITY_ANDROID)
+        endTouchPos = m_MainCamera.ScreenToWorldPoint(Input.GetTouch(0).position);
+        #endif
         Vector3 offset = startTouchPos - endTouchPos;
         float sqrlen = offset.sqrMagnitude;
         power = Mathf.Sqrt(sqrlen);
@@ -420,12 +429,11 @@ public class Movement : MonoBehaviour
     }
     private void ComboPlus()
     {
-        GameObject combo = Instantiate(m_Combo, new Vector3(transform.position.x / 1.5f, transform.position.y), Quaternion.identity);
+        SpriteRenderer combo = Instantiate(m_Combo, transform.position, Quaternion.identity).GetComponent<SpriteRenderer>();
 
-        int com = m_BounceCount;
-        if (com < 0) com = 0; else if (com > 8) com = 8;
-        combo.GetComponent<SpriteRenderer>().sprite = m_ComboSprite[com];
-        combo.transform.localScale = new Vector3(1 + com / 10, 1 + com / 10);
+        combo.sprite = m_ComboSprite[m_BounceCount > 14 ? 14 : m_BounceCount];
+        combo.transform.position += new Vector3(transform.position.x > 0 ? -0.75f : 0.75f, transform.position.y > 0 ? -0.7f : 1f);
+        combo.transform.localScale = new Vector3(1f + (float)m_BounceCount / 25f, 1f + (float)m_BounceCount / 25f, 1);
 
         m_BounceCount++;
     }

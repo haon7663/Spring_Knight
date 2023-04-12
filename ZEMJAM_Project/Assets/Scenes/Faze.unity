@@ -1208,7 +1208,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 159249585}
-  - {fileID: 1989889335}
   - {fileID: 493506946}
   m_Father: {fileID: 0}
   m_RootOrder: 9
@@ -1429,7 +1428,7 @@ MonoBehaviour:
   mWall_DownDown: {fileID: 218639066891116904, guid: e0ba041671e980a43909ba613c7e188e, type: 3}
   isJoom: 0
   paze: 0
-  m_Score: 11
+  m_Score: 0
   m_ScoreText: {fileID: 862451076}
   horizontalHalfPos: 0
   verticalHalfPos: 0
@@ -1579,7 +1578,7 @@ RectTransform:
   m_Children:
   - {fileID: 126653121}
   m_Father: {fileID: 1164376642}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1826,7 +1825,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 310283941}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -3830,6 +3829,7 @@ RectTransform:
   - {fileID: 2131140382}
   - {fileID: 862451075}
   - {fileID: 1466573017}
+  - {fileID: 1989889335}
   - {fileID: 353526662}
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -4343,19 +4343,25 @@ MonoBehaviour:
   m_PowerBar: {fileID: 1285179354}
   m_After: {fileID: 6845692884496698445, guid: 8b7c8a0de8421b049a821350e6e203d0, type: 3}
   m_Spin: {fileID: 1138651569}
-  m_Combo: {fileID: 8327068751716232052, guid: e62849a8385f97246adf1a584e5aa659, type: 3}
   m_Barrior: {fileID: 609197626}
   m_ComboSprite:
-  - {fileID: 21300000, guid: 2988ecc1a24c7fb40a088e1d7a9eed1d, type: 3}
-  - {fileID: 21300000, guid: efbabd20014a5b445b0e99ca2b5d9ee4, type: 3}
-  - {fileID: 21300000, guid: b45fe922a6f16ba44ac0bbe837b60739, type: 3}
-  - {fileID: 21300000, guid: 1d51b69ae5682e24092e8d7f42c3c83d, type: 3}
-  - {fileID: 21300000, guid: dbdcd635416710a41b8cef2cadfc5bc7, type: 3}
-  - {fileID: 21300000, guid: 4390e40cc9ed506448c509639d6fadfd, type: 3}
-  - {fileID: 21300000, guid: fa3f5e97a9227d548b62d6546db7cb24, type: 3}
-  - {fileID: 21300000, guid: 84edb04c4cd58ee419bc52e33f344a93, type: 3}
-  - {fileID: 21300000, guid: 3d158551d97648a4fadce8de4ccdc5cb, type: 3}
+  - {fileID: 21300000, guid: 72949ab139b8a2f468dcc6d692354cd9, type: 3}
+  - {fileID: 21300000, guid: 127510788ce7ff848ac24d61fefecd24, type: 3}
+  - {fileID: 21300000, guid: 8a1b60a1a3d60cc4c8162465ee509671, type: 3}
+  - {fileID: 21300000, guid: af29f73345c8cb84cacd2dbffaa11404, type: 3}
+  - {fileID: 21300000, guid: dc860fcc69c848845bb16ee4ebcee0a0, type: 3}
+  - {fileID: 21300000, guid: d825073fe443a48419b4785ce520b3a2, type: 3}
+  - {fileID: 21300000, guid: e4de42596c8a29740b2997e7fc33b495, type: 3}
+  - {fileID: 21300000, guid: 07644668c6f08d045bc06cbfa3af8b62, type: 3}
+  - {fileID: 21300000, guid: 248114c160c7d114d8db0932fff5ee89, type: 3}
+  - {fileID: 21300000, guid: 344608fc6e1148448b2328388eb1064c, type: 3}
+  - {fileID: 21300000, guid: 3fe0ec8413a0eb94697f3c823654aba9, type: 3}
+  - {fileID: 21300000, guid: 90908bda5dc9b704fbe552e44c08e159, type: 3}
+  - {fileID: 21300000, guid: 6dca94f7def493f45a9f553d038ac357, type: 3}
+  - {fileID: 21300000, guid: 06a76a2d87f638d42b4de8dce6edae56, type: 3}
+  - {fileID: 21300000, guid: c3215c13958b89647b9fa93803ba2bcf, type: 3}
   m_CameraCanvas: {fileID: 1164376642}
+  m_DefenceCanvas: {fileID: 0}
   JoyPanel: {fileID: 2131140382}
   JoyStick: {fileID: 1349161898}
   JoyLiner:
@@ -4366,6 +4372,7 @@ MonoBehaviour:
   - {fileID: 2077340631}
   m_PowerFilled: {fileID: 1381256193}
   m_PowerText: {fileID: 505081946}
+  m_Combo: {fileID: 8327068751716232052, guid: e62849a8385f97246adf1a584e5aa659, type: 3}
   m_EnemyLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -4377,7 +4384,7 @@ MonoBehaviour:
   - {x: -0.175, y: 0, z: 0}
   m_Dir: {x: 0, y: 0, z: 0}
   m_BounceCount: 0
-  m_MaxPower: 6
+  m_MaxPower: 25
   m_Power: 0
   m_Count: -1
   m_Angle: 0
@@ -6983,8 +6990,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 310283941}
-  m_RootOrder: 1
+  m_Father: {fileID: 1164376642}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}

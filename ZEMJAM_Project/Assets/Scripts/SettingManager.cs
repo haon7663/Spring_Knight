@@ -40,6 +40,10 @@ public class SettingManager : MonoBehaviour
         }
         GameManager.Gm.DoSetting = Setting.activeSelf;
     }
+    void OnApplicationPause(bool pauseStatus)
+    {
+        Setting.SetActive(pauseStatus);
+    }
     public void OnReGame()
     {
         GameManager.Gm.m_EnemySummonCount = 3;
