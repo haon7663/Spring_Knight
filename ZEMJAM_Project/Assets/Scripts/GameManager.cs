@@ -166,6 +166,10 @@ public class GameManager : MonoBehaviour
 
         if(m_ScoreText) m_ScoreText.text = m_Score.ToString();
     }
+    /*private void LateUpdate()
+    {
+        Time.timeScale = 0.2f;
+    }*/
     IEnumerator MoveScene()
     {
         yield return new WaitForSeconds(1);
@@ -238,7 +242,7 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < (int)m_EnemySummonCount; i++)
         {
-            int m = Random.Range(0, horizontalPos), n = Random.Range(0, verticalPos);
+            int m = Random.Range(1, horizontalPos-1), n = Random.Range(1, verticalPos-1);
             while (true)
             {
                 if (summonPos[m, n] == 0)
@@ -248,8 +252,8 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    m = Random.Range(0, horizontalPos);
-                    n = Random.Range(0, verticalPos);
+                    m = Random.Range(1, horizontalPos-1);
+                    n = Random.Range(1, verticalPos-1);
                 }
             }
             GameObject enemy = Instantiate(SummonRandom(persent[paze].arr), new Vector3(m - horizontalHalfPos, n - verticalHalfPos + 1), Quaternion.identity);

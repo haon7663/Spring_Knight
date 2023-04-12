@@ -81,6 +81,7 @@ public class Movement : MonoBehaviour
     private bool onCol;
 
     private float mTimer;
+    private float resetJoy = 0.1f;
 
     private bool isTouchDown = false;
 
@@ -139,9 +140,11 @@ public class Movement : MonoBehaviour
         if (atkTime > 0)
             atkTime -= Time.deltaTime;
 
+        mSwordAnimator.SetBool("isAttack", atkTime > 0);
+
         GameManager.Gm.isJoom = m_Count >= 0 && !isSpin;
-        m_Ray.SetActive((Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)) && m_Count < 0 && power >= 0.25f);
-        m_PowerBar.SetActive((Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)) && m_Count < 0 && power >= 0.25f);
+        m_Ray.SetActive((Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)) && m_Count < 0 && power >= resetJoy);
+        m_PowerBar.SetActive((Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)) && m_Count < 0 && power >= resetJoy);
 
 
         if(m_Count >= 0)
@@ -203,8 +206,11 @@ public class Movement : MonoBehaviour
         if (m_Count < 0 || m_Collison.onCollision)
         {
             mRigidbody2D.velocity = Vector2.zero;
-            if(m_Collison.onRight) mSpriteRenderer.flipX = true;
-            else if (m_Collison.onLeft) mSpriteRenderer.flipX = false;
+            if(!m_isAtk)
+            {
+                if (m_Collison.onRight) mSpriteRenderer.flipX = true;
+                else if (m_Collison.onLeft) mSpriteRenderer.flipX = false;
+            }
         }
         else
         {
@@ -254,9 +260,9 @@ public class Movement : MonoBehaviour
 
                 var inputDir = endTouchPos - startTouchPos;
                 var inputMag = inputDir.magnitude;
-                var clampedDir = inputMag <= 3.01f ?
-                    inputDir : inputDir.normalized * 3.01f;
-                m_Ray.transform.localScale = new Vector3(1, inputMag <= 2.01f ? inputMag : 2);
+                var clampedDir = inputMag <= 1.5f ?
+                    inputDir : inputDir.normalized * 1.51f;
+                m_Ray.transform.localScale = new Vector3(1, (inputMag <= 1.51f ? inputMag : 1.5f) * 2);
 
                 for (int i = 0; i < 5; i++)
                 {
@@ -267,7 +273,7 @@ public class Movement : MonoBehaviour
             }
             if (Input.GetMouseButtonUp(0) || touch.phase == TouchPhase.Ended)
             {
-                if (power >= 0.25f)
+                if (power >= resetJoy)
                 {
                     SetDistance();
                     m_Count = m_Power;
@@ -296,7 +302,7 @@ public class Movement : MonoBehaviour
         Vector3 offset = startTouchPos - endTouchPos;
         float sqrlen = offset.sqrMagnitude;
         power = Mathf.Sqrt(sqrlen);
-        m_Power = (int)((power + 0.5f) * m_MaxPower / 3);
+        m_Power = (int)((power + 0.5f - resetJoy) * m_MaxPower / 1.5f);
         if (m_Power > m_MaxPower) 
             m_Power = m_MaxPower;
 

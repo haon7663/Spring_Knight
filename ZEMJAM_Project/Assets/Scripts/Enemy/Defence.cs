@@ -39,7 +39,7 @@ public class Defence : MonoBehaviour
     }
     private void Update()
     {
-        hpBar.position = Camera.main.WorldToScreenPoint(transform.position + DefPos);
+        hpBar.position = transform.position + DefPos;
     }
 
     public void DefencePos()
