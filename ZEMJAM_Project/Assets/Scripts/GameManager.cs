@@ -92,7 +92,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Screen.SetResolution(1080, 1920, true);
+        Application.targetFrameRate = 60;
+
         var obj = FindObjectsOfType<GameManager>();
         if (obj.Length == 1)
         {

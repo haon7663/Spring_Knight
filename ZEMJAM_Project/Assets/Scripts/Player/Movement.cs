@@ -84,7 +84,7 @@ public class Movement : MonoBehaviour
 
     private bool isTouchDown = false;
 
-
+    Touch touch;
     private void Start()
     {
         instance = this;
@@ -140,8 +140,8 @@ public class Movement : MonoBehaviour
             atkTime -= Time.deltaTime;
 
         GameManager.Gm.isJoom = m_Count >= 0 && !isSpin;
-        m_Ray.SetActive(Input.GetMouseButton(0) && m_Count < 0 && power >= 0.25f);
-        m_PowerBar.SetActive(Input.GetMouseButton(0) && m_Count < 0 && power >= 0.25f);
+        m_Ray.SetActive((Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)) && m_Count < 0 && power >= 0.25f);
+        m_PowerBar.SetActive((Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)) && m_Count < 0 && power >= 0.25f);
 
 
         if(m_Count >= 0)
@@ -229,13 +229,14 @@ public class Movement : MonoBehaviour
     {
         if (m_Count < 0)
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary))
             {
                 if(!isTouchDown)
                 {
                     isTouchDown = true;
                     JoyPanel.gameObject.SetActive(true);
                     JoyStick.gameObject.SetActive(true);
+                    //startTouchPos = m_MainCamera.ScreenToWorldPoint(Input.GetTouch(0).position);
                     startTouchPos = m_MainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
                 }
 
@@ -264,7 +265,7 @@ public class Movement : MonoBehaviour
 
                 JoyStick.position = m_MainCamera.WorldToScreenPoint(clampedDir + startTouchPos);
             }
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0) || touch.phase == TouchPhase.Ended)
             {
                 if (power >= 0.25f)
                 {
@@ -290,6 +291,7 @@ public class Movement : MonoBehaviour
     }
     private void SetDistance()
     {
+        //endTouchPos = m_MainCamera.ScreenToWorldPoint(Input.GetTouch(0).position);
         endTouchPos = m_MainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
         Vector3 offset = startTouchPos - endTouchPos;
         float sqrlen = offset.sqrMagnitude;
