@@ -125,7 +125,7 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Inst.DoSetting) return;
+        if (GameManager.Inst.doSetting) return;
 
         mSpriteRenderer.material = m_InvTime > 0 ? WhiteMateral : DefaultMateral;
         if (m_InvTime > 0) m_InvTime -= Time.deltaTime;
@@ -191,7 +191,7 @@ public class Movement : MonoBehaviour
             {
                 CinemachineShake.Instance.ShakeCamera(7, 0.3f);
                 enemy.transform.GetComponent<Enemy>().OnDamage();
-                enemy.transform.GetComponent<Defence>().DefenceBreak(enemy.transform.GetComponent<Defence>().m_Defence);
+                enemy.transform.GetComponent<Defence>().DefenceBreak(enemy.transform.GetComponent<Defence>().defence);
                 m_BoostPower = 1.75f;
                 DOTween.To(() => m_BoostPower, x => m_BoostPower = x, 1f, 0.15f + m_Count * 0.1f).SetEase(Ease.OutQuint);
             }
@@ -205,7 +205,7 @@ public class Movement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (isHit || GameManager.Inst.DoSetting) return;
+        if (isHit || GameManager.Inst.doSetting) return;
         if (m_Count < 0 || m_Collison.onCollision)
         {
             mRigidbody2D.velocity = Vector2.zero;
@@ -387,7 +387,7 @@ public class Movement : MonoBehaviour
         }
         else if (collision.transform.CompareTag("Wall"))
         {
-            foreach (GameObject enemy in GameManager.Inst.m_EnemyArray)
+            foreach (GameObject enemy in SummonManager.Inst.enemyList)
             {
                 if (enemy && enemy.GetComponent<EnemyDashSign>())
                     enemy.GetComponent<EnemyDashSign>().AfterDash();
@@ -465,7 +465,7 @@ public class Movement : MonoBehaviour
                 mSwordAnimator.SetTrigger("swing");
                 CinemachineShake.Instance.ShakeCamera(5, 0.3f);
                 saveCollision.transform.GetComponent<Enemy>().OnDamage();
-                saveCollision.transform.GetComponent<Defence>().DefenceBreak(collision.transform.GetComponent<Defence>().m_Defence);
+                saveCollision.transform.GetComponent<Defence>().DefenceBreak(collision.transform.GetComponent<Defence>().defence);
                 ComboPlus();
             }
 
