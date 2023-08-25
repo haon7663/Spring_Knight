@@ -6,11 +6,18 @@ using Random = UnityEngine.Random;
 
 public class TileManager : MonoBehaviour
 {
-    public static TileManager Inst { get; set; }
+    public static TileManager Inst { get; private set; }
 
     [Serializable]
-    public struct Tiles { public GameObject[] tileMaps; }
-    public Tiles[] stageTiles;
+    public struct TileMaps { public GameObject[] tileMaps; }
+    public TileMaps[] stageTileMaps;
+
+    public struct Tile
+    { 
+        public bool onTile;
+        public Vector2 position;
+    }
+    public Tile[] tiles;
 
     public int tileSize;
 
@@ -18,7 +25,22 @@ public class TileManager : MonoBehaviour
 
     void Start()
     {
-        var tilemap = stageTiles[GameManager.Inst.paze].tileMaps;
+        var sizeX = tileSize - 1;
+        var sizeY = sizeX*2;
+        tiles = new Tile[sizeX * sizeY];
+
+        for (int i = 0; i < tiles.Length; i++)
+        {
+            int quotient = Mathf.FloorToInt((float)i / sizeX);
+            int remain = i % sizeX;
+            float posX = -sizeX / 2 + remain + 0.5f;
+            float posY = sizeY / 2 - quotient - 0.5f;
+
+            tiles[i].position = new Vector2(posX, posY);
+        }
+        
+
+        var tilemap = stageTileMaps[GameManager.Inst.paze].tileMaps;
         Instantiate(tilemap[Random.Range(0, tilemap.Length)]);
     }
 }
