@@ -38,7 +38,7 @@ public class SettingManager : MonoBehaviour
             savePos = m_MainCamera.transform.position;
             saveTimeScale = Time.timeScale;
         }
-        GameManager.Inst.DoSetting = Setting.activeSelf;
+        GameManager.Inst.doSetting = Setting.activeSelf;
     }
     void OnApplicationPause(bool pauseStatus)
     {
@@ -46,10 +46,10 @@ public class SettingManager : MonoBehaviour
     }
     public void OnReGame()
     {
-        GameManager.Inst.m_EnemySummonCount = 3;
+        GameManager.Inst.enemySummonCount = 3;
         GameManager.Inst.m_Score = 0;
-        TileManager.Inst.tileSize = 6;
-        GameManager.Inst.MaxPower = 3;
+        TileManager.Inst.tileSize = 7;
+        GameManager.Inst.maxPower = 3;
         GameManager.Inst.paze = 0;
         SceneManager.LoadScene("Faze");
     }
