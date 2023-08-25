@@ -66,13 +66,13 @@ public class Enemy : MonoBehaviour
 
     public void OnDamage()
     {
-        GameManager.Gm.m_EnemyCount--;
-        GameManager.Gm.m_Score++;
+        GameManager.Inst.m_EnemyCount--;
+        GameManager.Inst.m_Score++;
         if (GetComponent<EnemyDestroy>()) GetComponent<EnemyDestroy>().AfterDestroy();
         mAudioSource.Play();
         gameObject.layer = 9;
         mSpriteRenderer.enabled = false;
-        GameManager.Gm.m_EnemyArray[m_Count] = null;
+        GameManager.Inst.m_EnemyArray[m_Count] = null;
         Destroy(gameObject, 0.5f);
     }
 }
