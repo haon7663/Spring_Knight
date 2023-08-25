@@ -6,6 +6,6 @@ public class ItemGoblin : EnemyDestroy
 {
     public override void AfterDestroy()
     {
-        Instantiate(GameManager.Gm.m_Item[Random.Range(0, GameManager.Gm.m_Item.Length)], transform.position, Quaternion.identity);
+        Instantiate(GameManager.Inst.m_Item[Random.Range(0, GameManager.Inst.m_Item.Length)], transform.position, Quaternion.identity);
     }
 }
