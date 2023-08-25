@@ -125,7 +125,7 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Gm.DoSetting) return;
+        if (GameManager.Inst.DoSetting) return;
 
         mSpriteRenderer.material = m_InvTime > 0 ? WhiteMateral : DefaultMateral;
         if (m_InvTime > 0) m_InvTime -= Time.deltaTime;
@@ -145,7 +145,7 @@ public class Movement : MonoBehaviour
 
         mSwordAnimator.SetBool("isAttack", atkTime > 0);
 
-        GameManager.Gm.isJoom = m_Count >= 0 && !isSpin;
+        CinemachineManager.Inst.isJoom = m_Count >= 0 && !isSpin;
         m_Ray.SetActive((Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)) && m_Count < 0 && power >= resetJoy);
         m_PowerBar.SetActive((Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)) && m_Count < 0 && power >= resetJoy);
 
@@ -205,7 +205,7 @@ public class Movement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (isHit || GameManager.Gm.DoSetting) return;
+        if (isHit || GameManager.Inst.DoSetting) return;
         if (m_Count < 0 || m_Collison.onCollision)
         {
             mRigidbody2D.velocity = Vector2.zero;
@@ -387,7 +387,7 @@ public class Movement : MonoBehaviour
         }
         else if (collision.transform.CompareTag("Wall"))
         {
-            foreach (GameObject enemy in GameManager.Gm.m_EnemyArray)
+            foreach (GameObject enemy in GameManager.Inst.m_EnemyArray)
             {
                 if (enemy && enemy.GetComponent<EnemyDashSign>())
                     enemy.GetComponent<EnemyDashSign>().AfterDash();
@@ -447,7 +447,7 @@ public class Movement : MonoBehaviour
         isCoroutine = true;
         if (N >= 0)
         {
-            if (N >= 3) GameManager.Gm.m_Score++;
+            if (N >= 3) GameManager.Inst.m_Score++;
             m_Swing = true;
             atkTime = 0.4f;
             mSpriteRenderer.flipX = saveCollision.transform.position.x > transform.position.x ? true : false;
