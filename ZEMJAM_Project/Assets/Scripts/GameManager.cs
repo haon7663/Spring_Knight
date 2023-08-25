@@ -4,14 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Cinemachine;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Gm;
-
-    public bool DoSetting = false;
+    public static GameManager Inst { get; set; }
 
     [Serializable]
     public class _2dArray
@@ -19,15 +16,14 @@ public class GameManager : MonoBehaviour
         public int[] arr = new int[5];
     }
 
+    public bool DoSetting;
+
     public _2dArray[] persent = new _2dArray[5];
 
     public int[,] array = new int[5, 5];    
     
     public LayerMask m_PlatformLayer;
 
-    public CinemachineVirtualCamera cinevirtual;
-
-    public int TileSize;
     public int MaxPower;
     private Transform mPlayer;
 
@@ -70,8 +66,6 @@ public class GameManager : MonoBehaviour
 
     public GameObject mWall_DownDown;
 
-    private float real_CineSize;
-    private float CinemacineSize;
     public bool isJoom;
 
     private bool isLoadScene;
@@ -103,7 +97,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        CinemacineSize = TileSize;
     }
     void OnEnable()
     {
@@ -113,13 +106,12 @@ public class GameManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Time.timeScale = 1;
-        Gm = this;
+        Inst = this;
         if (SceneManager.GetActiveScene().name != "Faze") return;
         mTile = GameObject.Find("Find").transform.parent;
         mPlayer = GameObject.FindGameObjectWithTag("Player").transform;
         mPlayer.GetComponent<Movement>().m_MaxPower = MaxPower;
         m_ScoreText = GameObject.Find("Score").GetComponent<Text>();
-        cinevirtual = Camera.main.transform.GetComponentInChildren<CinemachineVirtualCamera>();
         m_MainCamera = Camera.main;
         SummonCount = 2;
         m_EnemyCount = 1;
@@ -128,7 +120,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(DrawMap());
         StartCoroutine(SummonEnemy(true));
         isLoadScene = false;
-        CinemacineSize = TileSize;
         DoSetting = false;
     }
 
@@ -145,14 +136,6 @@ public class GameManager : MonoBehaviour
         }
 
         if (SceneManager.GetActiveScene().name != "Faze") return;
-
-        CinemacineSize = isJoom ? (1.5f + TileSize / 1.25f) / 1.9f : TileSize;
-
-        if (CinemacineSize < 6) CinemacineSize = 6;
-        real_CineSize = Mathf.Lerp(real_CineSize, CinemacineSize, Time.deltaTime * 4);
-        cinevirtual.m_Lens.OrthographicSize = real_CineSize;
-
-        cinevirtual.Follow = isJoom ? mPlayer : mTile;
 
         if (m_EnemyCount <= 0)
         {
@@ -181,11 +164,11 @@ public class GameManager : MonoBehaviour
         Fade.instance.Fadein();
         yield return new WaitForSeconds(0.4f);
         m_EnemyCount = 1;
-        if (TileSize < 12)
+        if (TileManager.Inst.tileSize < 12)
         {
             Managerhp = mPlayer.GetComponent<Hp>().curhp;
             MaxPower += 1;
-            TileSize += 2;
+            TileManager.Inst.tileSize += 2;
             paze++;
             m_EnemySummonCount += 0.75f;
         }
@@ -194,7 +177,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator DrawMap()
     {
         yield return new WaitForSeconds(0.1f);
-        tilesize = TileSize * 2;
+        tilesize = TileManager.Inst.tileSize * 2;
         horizontalHalfPos = Mathf.CeilToInt(tilesize / 2f * 0.5625f);
         verticalHalfPos = Mathf.CeilToInt(tilesize / 2);
 
