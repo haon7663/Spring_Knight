@@ -4,23 +4,22 @@ using UnityEngine;
 
 public class Animation : MonoBehaviour
 {
-    private Animator mAnimator;
-
-    private Collison mCollison;
-    private Movement mMovement;
+    private Animator m_Animator;
+    private Collison m_Collison;
+    private Movement m_Movement;
 
     private void Start()
     {
-        mAnimator = GetComponent<Animator>();
-        mCollison = GetComponent<Collison>();
-        mMovement = GetComponent<Movement>();
+        m_Animator = GetComponent<Animator>();
+        m_Collison = GetComponent<Collison>();
+        m_Movement = GetComponent<Movement>();
     }
     private void Update()
     {
-        mAnimator.SetBool("onWall", mCollison.onRight || mCollison.onLeft);
-        mAnimator.SetBool("onTopWall", mCollison.onUp);
-        mAnimator.SetBool("onBottomWall", mCollison.onDown);
-        mAnimator.SetBool("onMove", mMovement.m_Count >= 0);
-        mAnimator.SetBool("isAttack", mMovement.m_isAtk);
+        m_Animator.SetBool("onWall", m_Collison.onRight || m_Collison.onLeft);
+        m_Animator.SetBool("onTopWall", m_Collison.onUp);
+        m_Animator.SetBool("onBottomWall", m_Collison.onDown);
+        m_Animator.SetBool("onMove", m_Movement.m_Count >= 0);
+        m_Animator.SetBool("isAttack", m_Movement.m_isAtk);
     }
 }
