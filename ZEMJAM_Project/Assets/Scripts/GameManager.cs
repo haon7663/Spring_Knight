@@ -10,79 +10,21 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Inst { get; set; }
 
-    [Serializable]
-    public class _2dArray
-    {
-        public int[] arr = new int[5];
-    }
+    public Hp m_Health;
+    public Movement m_Movement;
 
-    public bool DoSetting;
+    public bool doSetting;
+    public int maxPower;
 
-    public _2dArray[] persent = new _2dArray[5];
-
-    public int[,] array = new int[5, 5];    
-    
-    public LayerMask m_PlatformLayer;
-
-    public int MaxPower;
-    private Transform mPlayer;
-
-    public Camera m_MainCamera;
-
-    public GameObject[] m_EnemyArray = new GameObject[15];
-    public GameObject[] m_Enemy;
-
-    public float m_EnemySummonCount;
-    public int m_EnemyCount = 1;
+    public float enemySummonCount;
     public int Managerhp;
-
-    public GameObject m_BlockTile;
-    public int[] m_BlockCount = new int[6];
-    public GameObject m_DamageTile;
-    public int[] m_DamageCount = new int[6];
-    public GameObject[] m_Item;
-    public int[] m_ItemCount = new int[6];
-
-
-    public Transform mTile;
-
-    private GameObject[] mTiles = new GameObject[150];
-
-
-    public GameObject mWall_Left_Up;
-    public GameObject mWall_Up;
-    public GameObject mWall_Right_Up;
-
-    public GameObject mWall_Up_Deco;
-    public GameObject mWall_Left_Up_Deco;
-    public GameObject mWall_Right_Up_Deco;
-
-    public GameObject mWall_Right;
-    public GameObject mWall_Left;
-
-    public GameObject mWall_Down;
-    public GameObject mWall_Left_Down;
-    public GameObject mWall_Right_Down;
-
-    public GameObject mWall_DownDown;
-
-    public bool isJoom;
-
-    private bool isLoadScene;
-
-    private int SummonCount = 2;
 
     public int paze;
     public int m_Score = 0;
     public Text m_ScoreText;
 
-    int[,] summonPos = new int[30, 30];
-
-    float tilesize;
-    public int horizontalHalfPos;
-    public int verticalHalfPos;
-    public int horizontalPos;
-    public int verticalPos;
+    bool isLoadScene;
+    int SummonCount = 3;
 
     private void Awake()
     {
@@ -97,6 +39,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        Inst = this;
     }
     void OnEnable()
     {
@@ -106,21 +50,13 @@ public class GameManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Time.timeScale = 1;
-        Inst = this;
-        if (SceneManager.GetActiveScene().name != "Faze") return;
-        mTile = GameObject.Find("Find").transform.parent;
-        mPlayer = GameObject.FindGameObjectWithTag("Player").transform;
-        mPlayer.GetComponent<Movement>().m_MaxPower = MaxPower;
-        m_ScoreText = GameObject.Find("Score").GetComponent<Text>();
-        m_MainCamera = Camera.main;
-        SummonCount = 2;
-        m_EnemyCount = 1;
-        mPlayer.GetComponent<Hp>().curhp = Managerhp;
-        mPlayer.GetComponent<Hp>().OnHealth();
-        StartCoroutine(DrawMap());
-        StartCoroutine(SummonEnemy(true));
+
+        m_Movement.m_MaxPower = maxPower;
+        m_Health.curhp = Managerhp;
+        m_Health.OnHealth();
+
         isLoadScene = false;
-        DoSetting = false;
+        doSetting = false;
     }
 
     void OnDisable()
@@ -135,9 +71,7 @@ public class GameManager : MonoBehaviour
             Application.Quit();
         }
 
-        if (SceneManager.GetActiveScene().name != "Faze") return;
-
-        if (m_EnemyCount <= 0)
+        if (SummonManager.Inst.enemyList.Count <= 0)
         {
             if (SummonCount <= 0 && !isLoadScene)
             {
@@ -147,34 +81,32 @@ public class GameManager : MonoBehaviour
             else if (SummonCount > 0)
             {
                 SummonCount--;
-                StartCoroutine(SummonEnemy(false));
-                m_EnemyCount++;
+                for (int i = 0; i < (int)enemySummonCount; i++)
+                {
+                    SummonManager.Inst.SummonEnemy();
+                }
+                SummonManager.Inst.SummonItem();
             }
         }
 
         if(m_ScoreText) m_ScoreText.text = m_Score.ToString();
     }
-    /*private void LateUpdate()
-    {
-        Time.timeScale = 0.2f;
-    }*/
     IEnumerator MoveScene()
     {
         yield return new WaitForSeconds(1);
         Fade.instance.Fadein();
         yield return new WaitForSeconds(0.4f);
-        m_EnemyCount = 1;
-        if (TileManager.Inst.tileSize < 12)
+        if (TileManager.Inst.tileSize < 13)
         {
-            Managerhp = mPlayer.GetComponent<Hp>().curhp;
-            MaxPower += 1;
+            Managerhp = m_Health.curhp;
             TileManager.Inst.tileSize += 2;
+            enemySummonCount += 0.75f;
+            maxPower += 1;
             paze++;
-            m_EnemySummonCount += 0.75f;
         }
         SceneManager.LoadScene("Faze");
     }
-    private IEnumerator DrawMap()
+    /*private IEnumerator DrawMap()
     {
         yield return new WaitForSeconds(0.1f);
         tilesize = TileManager.Inst.tileSize * 2;
@@ -212,9 +144,9 @@ public class GameManager : MonoBehaviour
             mTiles[i].transform.SetParent(mTile);
         }
         yield return null;
-    }
+    }*/
 
-    private IEnumerator SummonEnemy(bool isTile)
+    /*private IEnumerator SummonEnemy(bool isTile)
     {
         yield return new WaitForSeconds(0.15f);
         horizontalPos = horizontalHalfPos * 2 + 1;
@@ -244,7 +176,7 @@ public class GameManager : MonoBehaviour
                     n = Random.Range(1, verticalPos-1);
                 }
             }
-            GameObject enemy = Instantiate(SummonRandom(persent[paze].arr), new Vector3(m - horizontalHalfPos, n - verticalHalfPos + 1), Quaternion.identity);
+            GameObject enemy = Instantiate(SummonRandom(stagePersent[paze].persent), new Vector3(m - horizontalHalfPos, n - verticalHalfPos + 1), Quaternion.identity);
             m_EnemyArray[m_EnemyCount-1] = enemy;
             enemy.GetComponent<Enemy>().m_Count = m_EnemyCount-1;
             m_EnemyCount++;
@@ -333,12 +265,11 @@ public class GameManager : MonoBehaviour
         }
 
         return summon;
-    }
+    }*/
 
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(new Vector2(horizontalHalfPos, 0), 0.1f);
-        Gizmos.DrawWireSphere(new Vector2(0, verticalHalfPos), 0.1f);
+        //Gizmos.DrawWireCube(Vector2.zero, new Vector2(TileManager.Inst.tileSize - 1, (TileManager.Inst.tileSize - 1)*2));
     }
 }
