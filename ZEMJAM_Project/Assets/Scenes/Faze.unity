@@ -427,6 +427,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126653120}
   m_CullTransparentMesh: 1
+--- !u!1 &139237917
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 139237918}
+  - component: {fileID: 139237919}
+  m_Layer: 0
+  m_Name: TileManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &139237918
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139237917}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &139237919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139237917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06c71d92e3c63af4788abfdda36d9269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageTiles:
+  - tileMaps:
+    - {fileID: 3215183310324347482, guid: d5b5cfd8fe6808b46a947f7c94fc1400, type: 3}
+    - {fileID: 3215183310324347482, guid: d5b5cfd8fe6808b46a947f7c94fc1400, type: 3}
+  - tileMaps:
+    - {fileID: 0}
+    - {fileID: 0}
+  - tileMaps:
+    - {fileID: 0}
+    - {fileID: 0}
+  tileSize: 0
 --- !u!1 &159249584
 GameObject:
   m_ObjectHideFlags: 0
@@ -1370,8 +1425,6 @@ MonoBehaviour:
   m_PlatformLayer:
     serializedVersion: 2
     m_Bits: 2048
-  cinevirtual: {fileID: 877245976}
-  TileSize: 6
   MaxPower: 2
   m_MainCamera: {fileID: 0}
   m_EnemyArray:
@@ -4337,7 +4390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SwordSpriteRenderer: {fileID: 2020558764}
-  DefaultMateral: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  DefaultMateral: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 3}
   WhiteMateral: {fileID: 2100000, guid: b85327a6ec4a4da4ab1898277ed7180c, type: 2}
   m_Ray: {fileID: 1113609535}
   m_PowerBar: {fileID: 1285179354}
@@ -6541,6 +6594,54 @@ MonoBehaviour:
   audioMixer: {fileID: 24100000, guid: 2f0c093a1be66784db1902a353197cc7, type: 2}
   BgmSlider: {fileID: 710659633}
   SfxSlider: {fileID: 682059772}
+--- !u!1 &1865645114
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1865645116}
+  - component: {fileID: 1865645115}
+  m_Layer: 0
+  m_Name: CinemachineManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1865645115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865645114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2deb107b1d852aa4a93f4c8892c72598, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cinevirtual: {fileID: 877245976}
+  player: {fileID: 1315343737}
+  tile: {fileID: 676388529}
+  isJoom: 0
+--- !u!4 &1865645116
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865645114}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1871488284
 GameObject:
   m_ObjectHideFlags: 0
