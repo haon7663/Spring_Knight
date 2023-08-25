@@ -11,7 +11,7 @@ public class SummonMonster : EnemyDestroy
         for (int i = 0; i < Count; i++)
         {
             Instantiate(m_Sloth, transform.position, Quaternion.identity);
-            GameManager.Gm.m_EnemyCount++;
+            GameManager.Inst.m_EnemyCount++;
         }
     }
 }
