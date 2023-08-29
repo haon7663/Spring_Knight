@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class SetTimeScale : MonoBehaviour
 {
-    [SerializeField] Movement m_Movement;
-    [SerializeField] Rigidbody2D m_Rigidbody2D;
+    Movement m_Movement;
+    Rigidbody2D m_Rigidbody2D;
 
     [SerializeField] Vector3[] offset;
     [SerializeField] LayerMask enemyLayer;
+
+    void Start()
+    {
+        m_Movement = GetComponent<Movement>();
+        m_Rigidbody2D = GetComponent<Rigidbody2D>();
+    }
 
     void LateUpdate()
     {
