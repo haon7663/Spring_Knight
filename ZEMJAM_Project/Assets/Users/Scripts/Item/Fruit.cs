@@ -8,7 +8,7 @@ public class Fruit : Item
 
     public override void UseItem()
     {
-        Movement.instance.m_Count += m_Count;
+        Movement.Inst.count += m_Count;
         Destroy(gameObject);
     }
 }

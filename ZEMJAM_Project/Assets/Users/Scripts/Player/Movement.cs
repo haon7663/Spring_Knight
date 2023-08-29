@@ -8,23 +8,19 @@ using Cinemachine;
 
 public class Movement : MonoBehaviour
 {
-    public static Movement instance;
+    public static Movement Inst { get; set; }
+    void Awake() => Inst = this;
 
     public SpriteRenderer m_SwordSpriteRenderer;
 
-    private Rigidbody2D mRigidbody2D;
-    private SpriteRenderer mSpriteRenderer;
-    private Animator mAnimator;
-    private Animator mSwordAnimator;
-    private AudioSource mAudioSource;
-    private AudioSource mSwordAudioSource;
+    private Rigidbody2D m_Rigidbody2D;
+
+    private Animator m_Animator;
+    private Animator m_SwordAnimator;
 
     private Collison m_Collison;
 
-    private Camera m_MainCamera;
-
-    public Material DefaultMateral;
-    public Material WhiteMateral;
+    private Camera mainCamera;
 
     public GameObject m_Ray;
     public GameObject m_PowerBar;
@@ -37,80 +33,61 @@ public class Movement : MonoBehaviour
     public GameObject m_Combo;
 
     public LayerMask m_EnemyLayer;
-    private Vector3 saveVelocity;
-    private Vector2 LastVelocity;
+    private Vector2 lastVelocity;
 
     public Vector3 m_Dir;
 
-    public int m_BounceCount;
     private float power;
     private float ableAngle;
-    private float atkTime;
     private float m_TimeScale;
 
-    public float m_Count = -1;
-    public float m_BoostPower = 1;
+    public int bouncedCount;
+    public float count;
+    public float boostPower;
     public float m_SlopeAngel;
     public float m_AfterImageCount;
 
-    private float m_InvTime;
-    private float filled = 0;
-
     public bool m_isInv;
-    public bool m_Swing;
-    public bool m_isAtk;
 
-    private bool isHit = false;
+    public bool isAttacking;
+    float attackTimer;
+
     private bool isSpin = false;
-    private bool onCol;
 
     private float mTimer;
 
     private void Start()
     {
-        instance = this;
         Time.timeScale = 1f;
-        mAudioSource = GetComponent<AudioSource>();
-        mSwordAudioSource = m_SwordSpriteRenderer.GetComponent<AudioSource>();
-        mSwordAnimator = m_SwordSpriteRenderer.GetComponent<Animator>();
+        m_SwordAnimator = m_SwordSpriteRenderer.GetComponent<Animator>();
 
-        mRigidbody2D = GetComponent<Rigidbody2D>();
-        mSpriteRenderer = GetComponent<SpriteRenderer>();
+        m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_SpinSpriteRenderer = m_Spin.GetComponent<SpriteRenderer>();
-        mSwordAnimator = m_SwordSpriteRenderer.GetComponent<Animator>();
-        mAnimator = GetComponent<Animator>();
+        m_SwordAnimator = m_SwordSpriteRenderer.GetComponent<Animator>();
+        m_Animator = GetComponent<Animator>();
         m_Collison = GetComponent<Collison>();
-        m_MainCamera = Camera.main;
+
+        mainCamera = Camera.main;
     }
 
 
     private void Update()
     {
-        if (GameManager.Inst.isSetting) return;
+        if (GameManager.Inst.isSetting || HealthManager.Inst.curhp <= 0) return;
 
-        mSpriteRenderer.material = m_InvTime > 0 ? WhiteMateral : DefaultMateral;
-        if (m_InvTime > 0) m_InvTime -= Time.deltaTime;
-        if (HealthManager.Inst.curhp <= 0) return;
-
-        m_isAtk = atkTime > 0;
-        if (atkTime > 0)
-            atkTime -= Time.deltaTime;
-
-        mSwordAnimator.SetBool("isAttack", atkTime > 0);
-
-        CinemachineManager.Inst.isJoom = m_Count >= 0 && !isSpin;
+        CinemachineManager.Inst.isJoom = count > 0 && !isSpin;
 
 
-        if(m_Count >= 0)
+        /*if (m_Count > 0)
         {
             mTimer += Time.deltaTime;
-            if(mTimer > m_AfterImageCount)
+            if (mTimer > m_AfterImageCount)
             {
                 if (m_BounceCount >= 3)
                 {
                     GameObject afterImage = Instantiate(m_After, transform.position, Quaternion.identity);
-                    afterImage.GetComponent<SpriteRenderer>().flipX = mSpriteRenderer.flipX;
-                    afterImage.GetComponent<SpriteRenderer>().sprite = mSpriteRenderer.sprite;
+                    afterImage.GetComponent<SpriteRenderer>().flipX = m_SpriteRenderer.flipX;
+                    afterImage.GetComponent<SpriteRenderer>().sprite = m_SpriteRenderer.sprite;
                     mTimer = 0;
                 }
                 if (m_BounceCount >= 10)
@@ -118,21 +95,21 @@ public class Movement : MonoBehaviour
                     GameObject afterSpinImage = Instantiate(m_After, transform.position, Quaternion.identity);
                     afterSpinImage.GetComponent<SpriteRenderer>().sprite = m_SpinSpriteRenderer.sprite;
                 }
-                else if(m_BounceCount >= 7)
+                else if (m_BounceCount >= 7)
                 {
                     GameObject afterSwordImage = Instantiate(m_After, transform.position, Quaternion.identity);
                     afterSwordImage.GetComponent<SpriteRenderer>().sprite = m_SwordSpriteRenderer.sprite;
                     afterSwordImage.GetComponent<SpriteRenderer>().flipX = m_SwordSpriteRenderer.flipX;
                 }
-            }                
-        }
+            }
+        }*/
 
-        if (m_BounceCount >= 10 && m_Count >= 0)
+        if (bouncedCount >= 10 && count > 0)
         {
             if (!m_Spin.activeSelf)
             {
-                mAnimator.SetBool("isSpin", true);
-                mAnimator.SetTrigger("spin");
+                m_Animator.SetBool("isSpin", true);
+                m_Animator.SetTrigger("spin");
                 m_Spin.SetActive(true);
             }
             m_Spin.transform.Rotate(0, 0, 2000 * Time.deltaTime);
@@ -141,122 +118,63 @@ public class Movement : MonoBehaviour
             if (enemy)
             {
                 CinemachineShake.Instance.ShakeCamera(7, 0.5f);
-                enemy.transform.GetComponent<Enemy>().OnDamage();
-                enemy.transform.GetComponent<Defence>().DefenceBreak(enemy.transform.GetComponent<Defence>().defence);
-                m_BoostPower = 1.75f;
-                DOTween.To(() => m_BoostPower, x => m_BoostPower = x, 1f, 0.15f + m_Count * 0.1f).SetEase(Ease.OutQuint);
+                enemy.transform.GetComponent<EnemyDefence>().AttemptAttack(enemy.transform.GetComponent<EnemyDefence>().defence);
+                boostPower = 1.75f;
+                DOTween.To(() => boostPower, x => boostPower = x, 1f, 0.15f + count * 0.1f).SetEase(Ease.OutQuint);
             }
         }
-        else if(m_Spin.activeSelf)
+        else if (m_Spin.activeSelf)
         {
             m_Spin.SetActive(false);
-            mAnimator.SetBool("isSpin", false);
+            m_Animator.SetBool("isSpin", false);
         }
 
-    }
-    private void FixedUpdate()
-    {
-        if (isHit || GameManager.Inst.isSetting) return;
-        if (m_Count < 0 || m_Collison.onCollision)
-        {
-            mRigidbody2D.velocity = Vector2.zero;
-            if(!m_isAtk)
-            {
-                if (m_Collison.onRight) mSpriteRenderer.flipX = true;
-                else if (m_Collison.onLeft) mSpriteRenderer.flipX = false;
-            }
-        }
-        else
-        {
-            if (!m_isAtk)
-            {
-                if (mRigidbody2D.velocity.x > 0)
-                    mSpriteRenderer.flipX = true;
-                else if (mRigidbody2D.velocity.x < 0)
-                    mSpriteRenderer.flipX = false;
-            }
-        }
-        m_SwordSpriteRenderer.flipX = mSpriteRenderer.flipX;
+        lastVelocity = m_Rigidbody2D.velocity;
 
-        if (!isCoroutine && gameObject.layer == 3)
-        {
-            mRigidbody2D.velocity = saveVelocity * m_BoostPower;
-            LastVelocity = saveVelocity;
-        }
+        isAttacking = attackTimer > 0;
+        attackTimer -= Time.deltaTime;
     }
 
     public void Dash(float power, float angle)
     {
-        m_Count = power;
-        m_BounceCount = 0;
+        count = power;
+        bouncedCount = 0;
 
-        mAudioSource.Play();
         transform.rotation = Quaternion.Euler(0, 0, angle);
-        transform.position += -transform.right * 0.5f;
-        mRigidbody2D.velocity = -transform.right * 17;
-        saveVelocity = -transform.right * 17;
+        m_Rigidbody2D.velocity = -transform.right * 17;
         transform.rotation = Quaternion.Euler(0, 0, 0);
-
-        m_BoostPower = 2.25f;
-        DOTween.To(() => m_BoostPower, x => m_BoostPower = x, 1f, 0.4f + power * 0.25f).SetEase(Ease.OutQuint);
     }
 
-    private bool isCoroutine = false;
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void CrashEnemy(Collision2D collision)
     {
-        if (collision.transform.CompareTag("Enemy") && m_Count >= 0)
+        int totalDamage = collision.transform.GetComponent<EnemyDefence>().AttemptAttack(bouncedCount + 1);
+        if (totalDamage < 0)
+            FailedAttack(collision);
+        else
+            StartCoroutine(SucceedAttack(collision, totalDamage));
+    }
+    public void CrashWall(Collision2D collision)
+    {
+        if(count > 1)
         {
-            //Time.timeScale = 0.15f;
-            if (!isCoroutine) StartCoroutine(Attack(collision));
-        }
-        else if (collision.transform.CompareTag("Wall") && m_Count > 0)
-        {
-            onCol = true;
-            mAudioSource.Play();
-            var speed = LastVelocity.magnitude;
-            var dir = Vector2.Reflect(LastVelocity.normalized, collision.contacts[0].normal);
-
-            mRigidbody2D.velocity = dir * Mathf.Max(speed, 0f);
-            saveVelocity = dir * Mathf.Max(speed, 0f);
-
+            m_Rigidbody2D.velocity = MoveReflect(collision);
             ComboPlus();
-            m_Count--;
+            count--;
         }
-        else if (collision.transform.CompareTag("Wall"))
+        else
         {
             foreach (GameObject enemy in SummonManager.Inst.enemyList)
             {
                 if (enemy && enemy.GetComponent<EnemyDashSign>())
                     enemy.GetComponent<EnemyDashSign>().AfterDash();
             }
-            onCol = true;
-            mRigidbody2D.velocity = Vector2.zero;
-            saveVelocity = Vector2.zero;
+            m_Rigidbody2D.velocity = Vector2.zero;
             m_SlopeAngel = Vector2.Angle(collision.contacts[0].normal, Vector2.up);
-            m_Count--;
-        }
-        else if (collision.transform.CompareTag("Damage") && m_Count >= 0)
-        {
-            //Time.timeScale = 0.5f;
-            if (!m_isInv) HealthManager.Inst.OnDamage();
-            StartCoroutine(InvTime());
-            StartCoroutine(Hit(collision.transform));
+
+            count = 0;
         }
     }
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.transform.CompareTag("Wall") && mRigidbody2D.velocity == Vector2.zero)
-        {
-            m_Count = -1;
-        }
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.transform.CompareTag("Wall"))
-        {
-            onCol = false;
-        }
-    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.CompareTag("Item"))
@@ -264,141 +182,96 @@ public class Movement : MonoBehaviour
             collision.GetComponent<Item>().UseItem();
         }
     }
+
+    Vector2 MoveReflect(Collision2D collision)
+    {
+        var speed = lastVelocity.magnitude;
+        var dir = Vector2.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+
+        Debug.Log("moveRe" + dir * Mathf.Max(speed, 0f));
+        return dir * Mathf.Max(speed, 0f);
+    }
+
     private void ComboPlus()
     {
         SpriteRenderer combo = Instantiate(m_Combo, transform.position, Quaternion.identity).GetComponent<SpriteRenderer>();
 
-        combo.sprite = m_ComboSprite[m_BounceCount > 14 ? 14 : m_BounceCount];
+        combo.sprite = m_ComboSprite[bouncedCount > 14 ? 14 : bouncedCount];
         combo.transform.position += new Vector3(transform.position.x > 0 ? -0.75f : 0.75f, transform.position.y > 0 ? -0.7f : 1f);
-        combo.transform.localScale = new Vector3(1f + (float)m_BounceCount / 25f, 1f + (float)m_BounceCount / 25f, 1);
+        combo.transform.localScale = new Vector3(1f + (float)bouncedCount / 25f, 1f + (float)bouncedCount / 25f, 1);
 
-        m_BounceCount++;
+        bouncedCount++;
     }
-    private IEnumerator Attack(Collision2D collision)
+
+    public IEnumerator SucceedAttack(Collision2D collision, int totalDamage)
     {
-        Collision2D saveCollision = collision;
-        int N = m_BounceCount - collision.transform.GetComponent<Enemy>().defence + 1;
-        var speed = LastVelocity.magnitude;
-        var dir = Vector2.Reflect(LastVelocity.normalized, collision.contacts[0].normal);
+        var saveVelocity = MoveReflect(collision);
 
-        isCoroutine = true;
-        if (N >= 0)
+        for (float i = 0; i < 0.22f; i += Time.deltaTime)
         {
-            if (N >= 3) ScoreManager.Inst.KillScore();
-            m_Swing = true;
-            atkTime = 0.4f;
-            mSpriteRenderer.flipX = saveCollision.transform.position.x > transform.position.x ? true : false;
-
-            for (float i = 0; i < 0.22f; i += Time.deltaTime)
-            {
-                if (!saveCollision.transform.CompareTag("Enemy")) break;
-                mRigidbody2D.velocity = Vector2.zero;
-                yield return YieldInstructionCache.WaitForFixedUpdate;
-            }            
-            if(saveCollision.transform.CompareTag("Enemy"))
-            {
-                mAnimator.SetTrigger("attack");
-                mSwordAudioSource.Play();
-                mSwordAnimator.SetTrigger("swing");
-                CinemachineShake.Instance.ShakeCamera(5, 0.5f);
-                saveCollision.transform.GetComponent<Enemy>().OnDamage();
-                saveCollision.transform.GetComponent<Defence>().DefenceBreak(collision.transform.GetComponent<Defence>().defence);
-                ComboPlus();
-            }
-
+            m_Rigidbody2D.velocity = Vector2.zero;
+            yield return YieldInstructionCache.WaitForFixedUpdate;
         }
-        else
-        {
-            if (!m_isInv) HealthManager.Inst.OnDamage();
-            StartCoroutine(InvTime());
-            StartCoroutine(Hit(saveCollision.transform));
-        }
-        mRigidbody2D.velocity = dir * Mathf.Max(speed, 0f);
-        saveVelocity = dir * Mathf.Max(speed, 0f);
+        collision.transform.GetComponent<EnemyDefence>().OnDamage();
 
-        m_BoostPower = 1.75f;
-        DOTween.To(() => m_BoostPower, x => m_BoostPower = x, 1f, 0.15f + m_Count * 0.1f).SetEase(Ease.OutQuint);
-        isCoroutine = false;
+        m_Animator.SetTrigger("attack");
+        m_SwordAnimator.SetTrigger("swing");
+        attackTimer = 0.4f;
+
+        CinemachineShake.Instance.ShakeCamera(5, 0.5f);
+        ComboPlus();
+
+        m_Rigidbody2D.velocity = saveVelocity;
     }
+
+    public void FailedAttack(Collision2D collision)
+    {
+        StartCoroutine(Hit(collision.transform));
+    }
+
     public void takeMirror(Transform target)
     {
-        Debug.Log("mirror");
-        m_BoostPower = 1.75f;
-        m_Count = m_BounceCount;
-    }
-    private IEnumerator InvTime()
-    {
-        m_Barrior.SetActive(false);
-        m_isInv = true;
-        m_InvTime = 0.1f;
-        CinemachineShake.Instance.ShakeCamera(2, 0.5f);
-        for (int i = 0; i < 2; i++)
-        {
-            mSpriteRenderer.color = new Color(1, 1, 1, 0.4f);
-            yield return YieldInstructionCache.WaitForSeconds(0.2f);
-            mSpriteRenderer.color = new Color(1, 1, 1, 0.8f);
-            yield return YieldInstructionCache.WaitForSeconds(0.2f);
-        }
-        mSpriteRenderer.color = new Color(1, 1, 1, 0.4f);
-        yield return YieldInstructionCache.WaitForSeconds(0.2f);
-        mSpriteRenderer.color = new Color(1, 1, 1, 1f);
-        m_isInv = false;
-
-        yield return null;
+        count = bouncedCount;
     }
     public void InvItem()
     {
         m_isInv = true;
-        mSpriteRenderer.color = new Color(1, 1, 1, 0.5f);
         m_Barrior.SetActive(true);
     }
-    bool Onemore = false;
     public IEnumerator Hit(Transform target)
     {
-        isHit = true;
-        m_Count = -1;
-        
-        gameObject.layer = 8;
+        count = 0;
+        HealthManager.Inst.OnDamage();
+        m_Animator.SetBool("isHit", true);
+        //m_SpriteRenderer.flipX = target.position.x > transform.position.x;
+        m_Rigidbody2D.velocity = Vector2.zero;
+        m_Rigidbody2D.AddForce(new Vector2(target.position.x - transform.position.x > 0 ? -0.5f : 0.5f, 1), ForceMode2D.Impulse);
+        m_Rigidbody2D.gravityScale = 5;
 
-        mAnimator.SetBool("isHit", true);
-        mSpriteRenderer.flipX = target.position.x - transform.position.x > 0;
-        mRigidbody2D.velocity = Vector2.zero;
-        mRigidbody2D.AddForce(new Vector2(target.position.x - transform.position.x > 0 ? -0.5f : 0.5f, 1), ForceMode2D.Impulse);
-        mRigidbody2D.gravityScale = 5;
         if(HealthManager.Inst.curhp <= 0)
-        {
             while (!m_Collison.onDown)
-            {
                 yield return YieldInstructionCache.WaitForFixedUpdate;
-            }
-        }
         else
-        {
-            while (!m_Collison.onCollision || !onCol)
-            {
+            while (!m_Collison.onCollision)
                 yield return YieldInstructionCache.WaitForFixedUpdate;
-            }
-        }
-        mRigidbody2D.gravityScale = 0;
-        mAnimator.SetBool("isHit", false);
-        isHit = false;
 
-        LastVelocity = Vector2.zero;
-        saveVelocity = Vector2.zero;
+        m_Rigidbody2D.gravityScale = 0;
+        m_Animator.SetBool("isHit", false);
+
+        lastVelocity = Vector2.zero;
 
         gameObject.layer = 3;
         if (HealthManager.Inst.curhp <= 0)
         {
-            mAnimator.SetBool("isDeath", true);
-            if(m_Collison.onDown && !Onemore)
+            m_Animator.SetBool("isDeath", true);
+            if(m_Collison.onDown && m_Animator.GetBool("isDeath"))
             {
-                Onemore = true;
                 Fade.instance.Fadein();
-                Invoke(nameof(death), 0.5f);
+                Invoke(nameof(Death), 0.5f);
             }
         }
     }
-    private void death()
+    private void Death()
     {
         SceneManager.LoadScene("Death");
     }

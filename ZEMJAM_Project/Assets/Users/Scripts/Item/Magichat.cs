@@ -6,7 +6,7 @@ public class Magichat : Item
 {
     public override void UseItem()
     {
-        Movement.instance.m_BounceCount *= 2;
+        Movement.Inst.bouncedCount *= 2;
         Destroy(gameObject);
     }
 }

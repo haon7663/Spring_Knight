@@ -384,7 +384,7 @@ RectTransform:
   m_Children:
   - {fileID: 301951303}
   m_Father: {fileID: 310283941}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -857,7 +857,6 @@ RectTransform:
   - {fileID: 2131140382}
   - {fileID: 1466573017}
   - {fileID: 1989889335}
-  - {fileID: 862451075}
   - {fileID: 159249585}
   - {fileID: 493506946}
   m_Father: {fileID: 0}
@@ -912,7 +911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55bd769bd33088d4d88f130796b2ff82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Joystick: {fileID: 1315343746}
+  m_PlayerController: {fileID: 1315343750}
   isLoadScene: 0
   isSetting: 0
   paze: 0
@@ -2054,7 +2053,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 310283941}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2917,7 +2916,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 862451075}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3028,16 +3028,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 862451074}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 310283941}
-  m_RootOrder: 4
+  m_Father: {fileID: 839596408}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -100}
+  m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &862451076
@@ -4041,11 +4041,13 @@ GameObject:
   - component: {fileID: 1315343736}
   - component: {fileID: 1315343739}
   - component: {fileID: 1315343738}
+  - component: {fileID: 1315343750}
   - component: {fileID: 1315343740}
+  - component: {fileID: 1315343749}
   - component: {fileID: 1315343741}
-  - component: {fileID: 1315343744}
-  - component: {fileID: 1315343746}
+  - component: {fileID: 1315343748}
   - component: {fileID: 1315343747}
+  - component: {fileID: 1315343744}
   - component: {fileID: 1315343743}
   - component: {fileID: 1315343745}
   m_Layer: 3
@@ -4176,8 +4178,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SwordSpriteRenderer: {fileID: 2020558764}
-  DefaultMateral: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  WhiteMateral: {fileID: 2100000, guid: b85327a6ec4a4da4ab1898277ed7180c, type: 2}
   m_Ray: {fileID: 1113609535}
   m_PowerBar: {fileID: 1285179354}
   m_After: {fileID: 6845692884496698445, guid: 8b7c8a0de8421b049a821350e6e203d0, type: 3}
@@ -4204,14 +4204,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   m_Dir: {x: 0, y: 0, z: 0}
-  m_BounceCount: 0
-  m_Count: -1
-  m_BoostPower: 1
+  bouncedCount: 0
+  count: 0
+  boostPower: 0
   m_SlopeAngel: 0
   m_AfterImageCount: 0.05
   m_isInv: 0
-  m_Swing: 0
-  m_isAtk: 0
+  isAttacking: 0
 --- !u!114 &1315343741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4232,11 +4231,11 @@ MonoBehaviour:
   onDown: 0
   onRight: 0
   onLeft: 0
-  collisionRadius: 0.15
-  bottomOffset: {x: 0, y: -0.6}
-  rightOffset: {x: 0.275, y: 0}
-  leftOffset: {x: -0.275, y: 0}
-  topOffset: {x: 0, y: 0.6}
+  collisionRadius: 0.1
+  bottomOffset: {x: 0, y: -0.5}
+  rightOffset: {x: 0.175, y: 0}
+  leftOffset: {x: -0.175, y: 0}
+  topOffset: {x: 0, y: 0.5}
 --- !u!95 &1315343743
 Animator:
   serializedVersion: 5
@@ -4270,6 +4269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b37210eb7cd2754f9bfdf1464447392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SwordAnimator: {fileID: 2020558763}
 --- !u!82 &1315343745
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4366,25 +4366,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1315343746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1315343735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c20040d94977b34ead0fe54a452a69a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  joyPanel: {fileID: 2131140382}
-  joyStick: {fileID: 1349161898}
-  powerBar: {fileID: 1285179355}
-  powerFill: {fileID: 1381256193}
-  powerText: {fileID: 505081946}
-  directionArrow: {fileID: 1113609536}
-  maxPower: 0
 --- !u!114 &1315343747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4401,13 +4382,63 @@ MonoBehaviour:
   m_Rigidbody2D: {fileID: 1315343739}
   offset:
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: -0.6, z: 0}
-  - {x: 0.275, y: 0, z: 0}
-  - {x: -0.275, y: 0, z: 0}
-  - {x: 0, y: 0.6, z: 0}
+  - {x: 0, y: -0.5, z: 0}
+  - {x: 0.175, y: 0, z: 0}
+  - {x: -0.175, y: 0, z: 0}
+  - {x: 0, y: 0.5, z: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
+--- !u!114 &1315343748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315343735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12138b964ea5b044f9c06340129e442f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SpriteRenderer: {fileID: 1315343736}
+  m_SwordSpriteRenderer: {fileID: 2020558764}
+  m_AfterSpriteRenderer: {fileID: 1901386241033013651, guid: 8b7c8a0de8421b049a821350e6e203d0, type: 3}
+  m_Movement: {fileID: 1315343740}
+  m_Collison: {fileID: 1315343741}
+  defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  whiteMaterial: {fileID: 2100000, guid: b85327a6ec4a4da4ab1898277ed7180c, type: 2}
+--- !u!114 &1315343749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315343735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c687fb70daca53499bad2016e459445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1315343750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315343735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9dfff4bcb9c004bb8d0c384a418bed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joyPanel: {fileID: 2131140382}
+  joyStick: {fileID: 1349161898}
+  powerBar: {fileID: 1285179355}
+  powerFill: {fileID: 1381256193}
+  powerText: {fileID: 505081946}
+  directionArrow: {fileID: 1113609536}
+  maxPower: 3
 --- !u!1 &1334676375
 GameObject:
   m_ObjectHideFlags: 0

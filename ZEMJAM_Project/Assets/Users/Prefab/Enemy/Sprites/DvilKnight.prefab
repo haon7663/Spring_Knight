@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3448194452022370212}
   - component: {fileID: 3448194452022370214}
   - component: {fileID: 3448194452022370209}
-  - component: {fileID: 3448194452022370213}
+  - component: {fileID: 4475674766834183320}
   - component: {fileID: 9103119183453635077}
   - component: {fileID: 9103119183453635078}
   - component: {fileID: 2209669500081751293}
@@ -111,7 +111,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &3448194452022370213
+--- !u!114 &4475674766834183320
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,13 +120,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3448194452022370211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ace7c27ba3e13f644abf7b49bf5df051, type: 3}
+  m_Script: {fileID: 11500000, guid: 9549ad0a586128e49b3138fe0c57de53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defence: 0
-  minDefence: 2
-  maxDefence: 0
-  doFlip: 0
+  doFlip: 1
 --- !u!114 &9103119183453635077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,6 +137,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defence: 0
+  minDefence: 2
+  maxDefence: 0
   defences:
   - {fileID: 0}
   - {fileID: 0}
@@ -149,7 +148,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  hpBarPrf: {fileID: 1383085560851913388, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
+  defenceParent: {fileID: 1383085560851913388, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
   hitParticle: {fileID: 8307181888699059583, guid: ba0f61d23748a7f49b2d153da5a812b9, type: 3}
 --- !u!114 &9103119183453635078
 MonoBehaviour:

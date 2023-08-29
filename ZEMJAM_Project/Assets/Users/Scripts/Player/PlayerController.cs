@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Joystick : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     Movement m_Movement;
     Collison m_Collison;
@@ -35,44 +35,36 @@ public class Joystick : MonoBehaviour
     }
     void Update()
     {
+        Dragment();
+    }
+
+    #region Drag
+    void Dragment()
+    {
         var isTouch = (Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary));
 
-        if (m_Movement.m_Count < 0)
+        if (m_Movement.count <= 0)
         {
             if (Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary))
             {
+                var camZ = -Camera.main.transform.position.z;
+
 #if (UNITY_EDITOR)
-                inputTouchPos = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z));
+                inputTouchPos = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, camZ));
 #elif (UNITY_ANDROID)
-                inputTouchPos = mainCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, -Camera.main.transform.position.z));
+                inputTouchPos = mainCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, camZ));
 #endif
 
                 if (!isTouchDown)
                 {
                     SetUIActive(true);
-                    isTouchDown = true;
                     startTouchPos = inputTouchPos;
+                    isTouchDown = true;
                 }
 
-
                 SetDistance();
-                angle = Mathf.Atan2(endTouchPos.y - startTouchPos.y, endTouchPos.x - startTouchPos.x) * Mathf.Rad2Deg;
-                directionArrow.transform.rotation = Quaternion.Euler(0, 0, angle + 90);
-
-                powerBar.transform.position = transform.position + new Vector3(transform.position.x > 0 ? -0.7f : 0.7f, transform.position.y > 0 ? -0.4f : 0.4f);
-                fill = Mathf.Lerp(fill, power / maxPower, Time.deltaTime * 12);
-                powerFill.fillAmount = fill;
-                powerText.text = power.ToString();
-
-                joyPanel.position = startTouchPos;
-                joyStick.position = endTouchPos;
-
-                var inputDir = endTouchPos - startTouchPos;
-                var inputMag = inputDir.magnitude;
-                var clampedDir = inputMag <= 1.5f ? inputDir : inputDir.normalized * 1.51f;
-                directionArrow.transform.localScale = new Vector3(1, (inputMag <= 1.51f ? inputMag : 1.5f) * 2);
-
-                joyStick.position = clampedDir + startTouchPos;
+                SetPowerBar();
+                SetJoyArrow();
             }
             if (Input.GetMouseButtonUp(0) || touch.phase == TouchPhase.Ended)
             {
@@ -95,7 +87,7 @@ public class Joystick : MonoBehaviour
 
         SetAngle();
     }
-    private void SetAngle()
+    void SetAngle()
     {
         angle = Mathf.Atan2(endTouchPos.y - startTouchPos.y, endTouchPos.x - startTouchPos.x) * Mathf.Rad2Deg;
 
@@ -140,10 +132,29 @@ public class Joystick : MonoBehaviour
             angle = angle <= -87 && angle > -180 ? -87 : angle;
         }
     }
+    void SetPowerBar()
+    {
+        powerBar.transform.position = transform.position + new Vector3(transform.position.x > 0 ? -0.7f : 0.7f, transform.position.y > 0 ? -0.4f : 0.4f);
+        fill = Mathf.Lerp(fill, power / maxPower, Time.deltaTime * 12);
+        powerFill.fillAmount = fill;
+        powerText.text = power.ToString();
+    }
+    void SetJoyArrow()
+    {
+        var inputDir = endTouchPos - startTouchPos;
+        var inputMag = inputDir.magnitude;
+        directionArrow.transform.rotation = Quaternion.Euler(0, 0, angle + 90);
+        directionArrow.transform.localScale = new Vector3(1, (inputMag <= 1.51f ? inputMag : 1.5f) * 2);
+
+        var clampedDir = inputMag <= 1.5f ? inputDir : inputDir.normalized * 1.51f;
+        joyPanel.position = startTouchPos;
+        joyStick.position = clampedDir + startTouchPos;
+    }
     void SetUIActive(bool value)
     {
         joyPanel.gameObject.SetActive(value);
         powerBar.gameObject.SetActive(value);
         directionArrow.gameObject.SetActive(value);
     }
+    #endregion
 }

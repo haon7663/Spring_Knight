@@ -6,7 +6,7 @@ public class InvPotion : Item
 {
     public override void UseItem()
     {
-        Movement.instance.InvItem();
+        Movement.Inst.InvItem();
         Destroy(gameObject);
     }
 }

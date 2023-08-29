@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Inst { get; set; }
 
-    public Joystick m_Joystick;
+    public PlayerController m_PlayerController;
 
     public bool isLoadScene;
     public bool isSetting;
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
 
-        m_Joystick.maxPower = managerPower;
+        m_PlayerController.maxPower = managerPower;
         HealthManager.Inst.curhp = managerHealth;
         HealthManager.Inst.OnHealth(1);
 

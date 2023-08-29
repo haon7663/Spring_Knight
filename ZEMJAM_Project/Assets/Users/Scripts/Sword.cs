@@ -23,13 +23,6 @@ public class Sword : MonoBehaviour
     }
     private void Update()
     {
-        if (mMovement.m_Count >= 0)
-        {
-            mSpriteRenderer.enabled = true;
-        }
-        else
-        {
-            mSpriteRenderer.enabled = false;
-        }
+        mSpriteRenderer.enabled = mMovement.count > 0;
     }
 }

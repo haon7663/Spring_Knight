@@ -79,7 +79,7 @@ public class SummonManager : MonoBehaviour
 
     public GameObject GetRandomItem()
     {
-        GameObject summon = itemPrfs[Random.Range(0, 5)];
+        GameObject summon = itemPrfs[Random.Range(0, itemPrfs.Length)];
 
         return summon;
     }

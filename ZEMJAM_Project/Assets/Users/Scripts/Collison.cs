@@ -8,6 +8,7 @@ public class Collison : MonoBehaviour
     public LayerMask groundLayer;
 
     [Space]
+    [Header("Collisions")]
     public bool onCollision;
     public bool onUp;
     public bool onDown;
@@ -15,8 +16,7 @@ public class Collison : MonoBehaviour
     public bool onLeft;
 
     [Space]
-    [Header("Collision")]
-
+    [Header("Values")]
     public float collisionRadius = 0.25f;
     public Vector2 bottomOffset, rightOffset, leftOffset, topOffset;
 
@@ -28,6 +28,18 @@ public class Collison : MonoBehaviour
         onLeft = Physics2D.OverlapCircle((Vector2)transform.position + leftOffset, collisionRadius, groundLayer);
 
         onCollision = onUp || onDown || onRight || onLeft;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Enemy"))
+            Movement.Inst.CrashEnemy(collision);
+
+        else if (collision.transform.CompareTag("Wall"))
+            Movement.Inst.CrashWall(collision);
+
+        else if (collision.transform.CompareTag("Damage"))
+            StartCoroutine(Movement.Inst.Hit(collision.transform));
     }
 
     void OnDrawGizmos()

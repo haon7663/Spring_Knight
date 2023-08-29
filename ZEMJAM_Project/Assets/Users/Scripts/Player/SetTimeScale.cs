@@ -12,11 +12,12 @@ public class SetTimeScale : MonoBehaviour
 
     void LateUpdate()
     {
-        Time.timeScale = Mathf.Lerp(Time.timeScale, 1, Time.deltaTime * 5);
+        var setTime = 1f;
         for (int i = 0; i < offset.Length; i++)
-        {
-            if (Physics2D.Raycast(transform.position + offset[i], m_Rigidbody2D.velocity, 1, enemyLayer)) Time.timeScale = 0.35f;
-        }
+            if (Physics2D.Raycast(transform.position + offset[i], m_Rigidbody2D.velocity, 10000, enemyLayer))
+                setTime = 0.3f;
+
+        Time.timeScale = Mathf.Lerp(Time.timeScale, setTime, Time.deltaTime * 5);
     }
     private void OnDrawGizmos()
     {

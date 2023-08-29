@@ -37,7 +37,7 @@ public class HealthManager : MonoBehaviour
     {
         curhp--;
         if (curhp < 0) curhp = 0;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < maxhp; i++)
         {
             healths[i].sprite = disabledHeart;
         }
@@ -50,7 +50,7 @@ public class HealthManager : MonoBehaviour
     {
         curhp += health;
         if (curhp > maxhp) curhp = maxhp;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < maxhp; i++)
         {
             healths[i].sprite = disabledHeart;
         }
