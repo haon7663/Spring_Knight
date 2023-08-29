@@ -7,6 +7,6 @@ public class MirrorPrince : EnemyDestroy
     public override void AfterDestroy()
     {
         Movement player = GameObject.FindGameObjectWithTag("Player").GetComponent<Movement>();
-        player.takeMirror(transform);
+        player.TakeMirror();
     }
 }
