@@ -6,7 +6,7 @@ public class HealthPotion : Item
 {
     public override void UseItem()
     {
-        HealthManager.Inst.OnHealth();
+        HealthManager.Inst.OnHealth(1);
         Destroy(gameObject);
     }
 }
