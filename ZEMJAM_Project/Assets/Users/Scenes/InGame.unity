@@ -3605,7 +3605,7 @@ GameObject:
   - component: {fileID: 1138651570}
   - component: {fileID: 1138651571}
   m_Layer: 0
-  m_Name: Spin_Effect
+  m_Name: SpinSword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4043,9 +4043,8 @@ GameObject:
   - component: {fileID: 1315343738}
   - component: {fileID: 1315343750}
   - component: {fileID: 1315343740}
-  - component: {fileID: 1315343749}
-  - component: {fileID: 1315343741}
   - component: {fileID: 1315343748}
+  - component: {fileID: 1315343741}
   - component: {fileID: 1315343747}
   - component: {fileID: 1315343744}
   - component: {fileID: 1315343743}
@@ -4177,12 +4176,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b21501d30ee729b4bb71b6c6877df764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SwordSpriteRenderer: {fileID: 2020558764}
-  m_Ray: {fileID: 1113609535}
-  m_PowerBar: {fileID: 1285179354}
-  m_After: {fileID: 6845692884496698445, guid: 8b7c8a0de8421b049a821350e6e203d0, type: 3}
-  m_Spin: {fileID: 1138651569}
-  m_Barrior: {fileID: 609197626}
   m_ComboSprite:
   - {fileID: 21300000, guid: 72949ab139b8a2f468dcc6d692354cd9, type: 3}
   - {fileID: 21300000, guid: 127510788ce7ff848ac24d61fefecd24, type: 3}
@@ -4200,16 +4193,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 06a76a2d87f638d42b4de8dce6edae56, type: 3}
   - {fileID: 21300000, guid: c3215c13958b89647b9fa93803ba2bcf, type: 3}
   m_Combo: {fileID: 8327068751716232052, guid: e62849a8385f97246adf1a584e5aa659, type: 3}
-  m_EnemyLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  m_Dir: {x: 0, y: 0, z: 0}
   bouncedCount: 0
   count: 0
   boostPower: 0
-  m_SlopeAngel: 0
-  m_AfterImageCount: 0.05
-  m_isInv: 0
   isAttacking: 0
 --- !u!114 &1315343741
 MonoBehaviour:
@@ -4269,7 +4255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b37210eb7cd2754f9bfdf1464447392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SwordAnimator: {fileID: 2020558763}
 --- !u!82 &1315343745
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4378,8 +4363,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cd01ff35d7e0d54b91f3b1bcd690288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Movement: {fileID: 1315343740}
-  m_Rigidbody2D: {fileID: 1315343739}
   offset:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: -0.5, z: 0}
@@ -4403,23 +4386,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SpriteRenderer: {fileID: 1315343736}
   m_SwordSpriteRenderer: {fileID: 2020558764}
-  m_AfterSpriteRenderer: {fileID: 1901386241033013651, guid: 8b7c8a0de8421b049a821350e6e203d0, type: 3}
+  m_SpinSpriteRenderer: {fileID: 1138651571}
   m_Movement: {fileID: 1315343740}
   m_Collison: {fileID: 1315343741}
   defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   whiteMaterial: {fileID: 2100000, guid: b85327a6ec4a4da4ab1898277ed7180c, type: 2}
---- !u!114 &1315343749
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1315343735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c687fb70daca53499bad2016e459445, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  afterImagePrf: {fileID: 6845692884496698445, guid: 8b7c8a0de8421b049a821350e6e203d0, type: 3}
 --- !u!114 &1315343750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4438,7 +4410,7 @@ MonoBehaviour:
   powerFill: {fileID: 1381256193}
   powerText: {fileID: 505081946}
   directionArrow: {fileID: 1113609536}
-  maxPower: 3
+  maxPower: 0
 --- !u!1 &1334676375
 GameObject:
   m_ObjectHideFlags: 0
@@ -6831,6 +6803,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52a6c49364ba1964281e54caabea8181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spinSword: {fileID: 1138651569}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!82 &2020558766
 AudioSource:
   m_ObjectHideFlags: 0
