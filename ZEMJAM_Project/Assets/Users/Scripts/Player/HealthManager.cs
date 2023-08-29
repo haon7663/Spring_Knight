@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
-    public static HealthManager Inst { get; set; }
+    public static HealthManager Inst { get; private set; }
     void Awake() => Inst = this;
 
     [Header("Stats")]
@@ -13,12 +13,12 @@ public class HealthManager : MonoBehaviour
     public int curhp;
 
     [Header("Health UI")]
-    public GameObject healthPrefab;
-    public Transform helathParent;
-    public Image[] healths;
+    [SerializeField] GameObject healthPrefab;
+    [SerializeField] Transform helathParent;
+    [SerializeField] Image[] healths;
 
-    public Sprite disabledHeart;
-    public Sprite abledHeart;
+    [SerializeField] Sprite disabledHeart;
+    [SerializeField] Sprite abledHeart;
 
     public void SetHealth(int maxhp)
     {
