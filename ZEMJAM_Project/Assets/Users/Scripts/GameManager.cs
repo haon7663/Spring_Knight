@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public int paze;
     float enemySummonCount;
     int managerHealth = 3;
-    int managerPower = 3;
+    int managerPower = 15;
     int summonCount = 3;
 
     void Awake()
@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
 
         m_PlayerController.maxPower = managerPower;
+        HealthManager.Inst.SetHealth(3);
         HealthManager.Inst.curhp = managerHealth;
         HealthManager.Inst.OnHealth(1);
 
@@ -92,7 +93,6 @@ public class GameManager : MonoBehaviour
         managerHealth = 3;
         enemySummonCount = 3;
         TileManager.Inst.tileSize = 7;
-        HealthManager.Inst.SetHealth(3);
     }
     
     IEnumerator MoveScene()
