@@ -46,6 +46,7 @@ public class SettingManager : MonoBehaviour
     }
     public void OnReGame()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("Faze");
     }
     public void OnMain()
