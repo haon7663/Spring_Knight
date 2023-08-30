@@ -52,6 +52,7 @@ public class EnemyDefence : MonoBehaviour
         if (GetComponent<EnemyDestroy>()) GetComponent<EnemyDestroy>().AfterDestroy();
 
         SummonManager.Inst.RemoveEnemy(gameObject);
+        Destroy(defenceBar.gameObject);
         Destroy(gameObject);
     }
 }
