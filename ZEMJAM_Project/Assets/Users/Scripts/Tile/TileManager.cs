@@ -12,6 +12,7 @@ public class TileManager : MonoBehaviour
     public struct TileMaps { public GameObject[] tileMaps; }
     public TileMaps[] stageTileMaps;
 
+    [Serializable]
     public struct Tile
     { 
         public bool onTile;
@@ -41,5 +42,10 @@ public class TileManager : MonoBehaviour
 
         var tilemap = stageTileMaps[GameManager.Inst.paze].tileMaps;
         Instantiate(tilemap[Random.Range(0, tilemap.Length)]);
+    }
+
+    public void TakeTile(int value, bool onTile)
+    {
+        tiles[value].onTile = onTile;
     }
 }
