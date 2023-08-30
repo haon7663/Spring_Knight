@@ -59,6 +59,12 @@ public class Movement : MonoBehaviour
 
     public void CrashEnemy(Collision2D collision)
     {
+        if (count == 0)
+        {
+            StartCoroutine(Bounced(collision.transform));
+            return;
+        }
+
         int totalDamage = collision.transform.GetComponent<EnemyDefence>().AttemptAttack(bouncedCount + 1);
         if (totalDamage < 0)
             FailedAttack(collision);
@@ -99,7 +105,6 @@ public class Movement : MonoBehaviour
         var speed = lastVelocity.magnitude;
         var dir = Vector2.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
 
-        Debug.Log("moveRe" + dir * Mathf.Max(speed, 0f));
         return dir * Mathf.Max(speed, 0f);
     }
 
@@ -147,27 +152,10 @@ public class Movement : MonoBehaviour
     }
     public IEnumerator Hit(Transform target)
     {
-        count = 0;
-        gameObject.layer = 8;
-
         HealthManager.Inst.OnDamage();
 
-        m_Rigidbody2D.velocity = Vector2.zero;
-        m_Rigidbody2D.AddForce(new Vector2(target.position.x - transform.position.x > 0 ? -0.5f : 0.5f, 1), ForceMode2D.Impulse);
-        m_Rigidbody2D.gravityScale = 5;
+        yield return StartCoroutine(Bounced(target));
 
-        if(HealthManager.Inst.curhp <= 0)
-            while (!m_Collison.onDown)
-                yield return YieldInstructionCache.WaitForFixedUpdate;
-        else
-            while (!m_Collison.onCollision)
-                yield return YieldInstructionCache.WaitForFixedUpdate;
-
-        m_Rigidbody2D.gravityScale = 0;
-
-        lastVelocity = Vector2.zero;
-
-        gameObject.layer = 3;
         /*if (HealthManager.Inst.curhp <= 0)
         {
             m_Animator.SetBool("isDeath", true);
@@ -177,6 +165,27 @@ public class Movement : MonoBehaviour
                 Invoke(nameof(Death), 0.5f);
             }
         }*/
+    }
+    public IEnumerator Bounced(Transform target)
+    {
+        count = 0;
+        gameObject.layer = 8;
+
+        m_Rigidbody2D.velocity = Vector2.zero;
+        m_Rigidbody2D.AddForce(new Vector2(target.position.x - transform.position.x > 0 ? -0.5f : 0.5f, 1), ForceMode2D.Impulse);
+        m_Rigidbody2D.gravityScale = 5;
+
+        if (HealthManager.Inst.curhp <= 0)
+            while (!m_Collison.onDown)
+                yield return YieldInstructionCache.WaitForFixedUpdate;
+        else
+            while (!m_Collison.onCollision)
+                yield return YieldInstructionCache.WaitForFixedUpdate;
+
+        m_Rigidbody2D.gravityScale = 0;
+        lastVelocity = Vector2.zero;
+
+        gameObject.layer = 3;
     }
     private void Death()
     {
