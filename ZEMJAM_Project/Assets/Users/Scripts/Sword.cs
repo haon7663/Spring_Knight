@@ -17,11 +17,10 @@ public class Sword : MonoBehaviour
     }
     private void Update()
     {
-        var movement = Movement.Inst;
-        m_SpriteRenderer.enabled = movement.count > 0;
-
         if (GameManager.Inst.isSetting || HealthManager.Inst.curhp <= 0) return;
 
+        var movement = Movement.Inst;
+        m_SpriteRenderer.enabled = movement.count > 0;
         if (movement.bouncedCount >= 10 && movement.count > 0)
         {
             if (!spinSword.activeSelf)
