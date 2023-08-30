@@ -351,6 +351,7 @@ MonoBehaviour:
     - {fileID: 3215183310324347482, guid: d5b5cfd8fe6808b46a947f7c94fc1400, type: 3}
     - {fileID: 3215183310324347482, guid: d5b5cfd8fe6808b46a947f7c94fc1400, type: 3}
     - {fileID: 3215183310324347482, guid: d5b5cfd8fe6808b46a947f7c94fc1400, type: 3}
+  tiles: []
   tileSize: 7
 --- !u!1 &159249584
 GameObject:
@@ -5919,8 +5920,8 @@ MonoBehaviour:
   - {fileID: 7554941849752871339, guid: 74c1d38fcaca61a48accf31cdd890e7c, type: 3}
   - {fileID: 484087886451577963, guid: 7a1d04070c3b30241a991dbce776110a, type: 3}
   - {fileID: 6940715814813598558, guid: 69c79b6e44d24604ca4e5d30d7c4fd96, type: 3}
-  EnemyBundle: {fileID: 73332960}
-  ItemBundle: {fileID: 1151322199}
+  enemyBundle: {fileID: 73332960}
+  itemBundle: {fileID: 1151322199}
 --- !u!4 &1843124027
 Transform:
   m_ObjectHideFlags: 0
