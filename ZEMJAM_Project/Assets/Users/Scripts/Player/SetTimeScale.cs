@@ -20,7 +20,7 @@ public class SetTimeScale : MonoBehaviour
     {
         var setTime = 1f;
         for (int i = 0; i < offset.Length; i++)
-            if (Physics2D.Raycast(transform.position + offset[i], m_Rigidbody2D.velocity, 10000, enemyLayer))
+            if (Physics2D.Raycast(transform.position + offset[i], m_Rigidbody2D.velocity, 10000, enemyLayer) && m_Movement.count > 0)
                 setTime = 0.3f;
 
         Time.timeScale = Mathf.Lerp(Time.timeScale, setTime, Time.deltaTime * 5);
