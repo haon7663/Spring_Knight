@@ -12,6 +12,7 @@ public class PlayerSpriteRenderer : MonoBehaviour
     [Header("Components")]
     [SerializeField] Movement m_Movement;
     [SerializeField] Collison m_Collison;
+    [SerializeField] Rigidbody2D m_Rigidbody2D;
 
     [Header("Materials")]
     [SerializeField] Material defaultMaterial;
@@ -30,9 +31,16 @@ public class PlayerSpriteRenderer : MonoBehaviour
 
         if (m_Movement.count <= 0 && m_Collison.onCollision)
         {
-            if (m_Collison.onRight) 
+            if (m_Collison.onRight)
                 m_SpriteRenderer.flipX = true;
-            else if (m_Collison.onLeft) 
+            else if (m_Collison.onLeft)
+                m_SpriteRenderer.flipX = false;
+        }
+        else if(!m_Movement.isAttacking)
+        {
+            if (m_Rigidbody2D.velocity.x > 0)
+                m_SpriteRenderer.flipX = true;
+            else if (m_Rigidbody2D.velocity.x < 0)
                 m_SpriteRenderer.flipX = false;
         }
         m_SwordSpriteRenderer.flipX = m_SpriteRenderer.flipX;
@@ -67,11 +75,6 @@ public class PlayerSpriteRenderer : MonoBehaviour
     {
         m_SpriteRenderer.material = hitTimer > 0 ? whiteMaterial : defaultMaterial;
         if (hitTimer > 0) hitTimer -= Time.deltaTime;
-    }
-
-    void CompareFlip(Transform target)
-    {
-        m_SpriteRenderer.flipX = target.position.x > transform.position.x;
     }
 
     public IEnumerator GracePerioding()
