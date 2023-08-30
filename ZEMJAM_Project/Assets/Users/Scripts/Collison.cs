@@ -35,10 +35,10 @@ public class Collison : MonoBehaviour
         if (collision.transform.CompareTag("Enemy"))
             Movement.Inst.CrashEnemy(collision);
 
-        else if (collision.transform.CompareTag("Wall"))
+        if (collision.transform.CompareTag("Wall"))
             Movement.Inst.CrashWall(collision);
 
-        else if (collision.transform.CompareTag("Damage"))
+        if (collision.transform.CompareTag("Damage"))
             StartCoroutine(Movement.Inst.Hit(collision.transform));
     }
 
