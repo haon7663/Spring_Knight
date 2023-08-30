@@ -26,30 +26,32 @@ public class SummonManager : MonoBehaviour
     public List<GameObject> enemyList;
     public GameObject[] itemPrfs;
 
-    public Transform EnemyBundle;
-    public Transform ItemBundle;
+    public Transform enemyBundle;
+    public Transform itemBundle;
 
     public void SummonEnemy()
     {
         GameObject enemy = Instantiate(GetRandomEnemy(), TileManager.Inst.tiles[FindTileIndex()].position, Quaternion.identity);
-        enemy.transform.SetParent(EnemyBundle);
+        enemy.transform.SetParent(enemyBundle);
+
         enemyList.Add(enemy);
     }
 
     public void SummonItem()
     {
         GameObject item = Instantiate(GetRandomItem(), TileManager.Inst.tiles[FindTileIndex()].position, Quaternion.identity);
-        item.transform.SetParent(ItemBundle);
+        item.transform.SetParent(itemBundle);
     }
 
     int FindTileIndex()
     {
-        var preIndex = 0;
+        int preIndex;
         do
         {
             preIndex = Random.Range(0, TileManager.Inst.tiles.Length);
         } while (TileManager.Inst.tiles[preIndex].onTile);
 
+        TileManager.Inst.TakeTile(preIndex, true);
         return preIndex;
     }
 
