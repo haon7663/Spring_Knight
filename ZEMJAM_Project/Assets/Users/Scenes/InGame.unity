@@ -4390,6 +4390,7 @@ MonoBehaviour:
   m_SpinSpriteRenderer: {fileID: 1138651571}
   m_Movement: {fileID: 1315343740}
   m_Collison: {fileID: 1315343741}
+  m_Rigidbody2D: {fileID: 1315343739}
   defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   whiteMaterial: {fileID: 2100000, guid: b85327a6ec4a4da4ab1898277ed7180c, type: 2}
   afterImagePrf: {fileID: 6845692884496698445, guid: 8b7c8a0de8421b049a821350e6e203d0, type: 3}
