@@ -29,7 +29,7 @@ public class Movement : MonoBehaviour
 
     private void Start()
     {
-        Time.timeScale = 1f;
+        Time.timeScale = 1;
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_SetAnimation = GetComponent<SetAnimation>();
         m_Collison = GetComponent<Collison>();
@@ -76,6 +76,7 @@ public class Movement : MonoBehaviour
         if(count > 1)
         {
             m_Rigidbody2D.velocity = MoveReflect(collision);
+            StartCoroutine(m_Collison.CapsuleAble());
             ComboPlus();
             count--;
         }
@@ -129,6 +130,7 @@ public class Movement : MonoBehaviour
             yield return YieldInstructionCache.WaitForFixedUpdate;
         }
         collision.transform.GetComponent<EnemyDefence>().OnDamage();
+        StartCoroutine(m_Collison.CapsuleAble());
         m_SetAnimation.AttackTrigger();
         attackTimer = 0.4f;
 
@@ -141,6 +143,7 @@ public class Movement : MonoBehaviour
     public void FailedAttack(Collision2D collision)
     {
         StartCoroutine(Hit(collision.transform));
+        StartCoroutine(m_Collison.CapsuleAble());
     }
 
     public void TakeMirror()
