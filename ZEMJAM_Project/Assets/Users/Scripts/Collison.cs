@@ -9,6 +9,7 @@ public class Collison : MonoBehaviour
 
     [Space]
     [Header("Collisions")]
+    [SerializeField] CapsuleCollider2D m_CapsuleCollider2D;
     public bool onCollision;
     public bool onUp;
     public bool onDown;
@@ -35,10 +36,10 @@ public class Collison : MonoBehaviour
         if (collision.transform.CompareTag("Enemy"))
             Movement.Inst.CrashEnemy(collision);
 
-        if (collision.transform.CompareTag("Wall"))
+        else if (collision.transform.CompareTag("Wall"))
             Movement.Inst.CrashWall(collision);
 
-        if (collision.transform.CompareTag("Damage"))
+        else if (collision.transform.CompareTag("Damage"))
             StartCoroutine(Movement.Inst.Hit(collision.transform));
     }
 
@@ -50,5 +51,13 @@ public class Collison : MonoBehaviour
         Gizmos.DrawWireSphere((Vector2)transform.position + bottomOffset, collisionRadius);
         Gizmos.DrawWireSphere((Vector2)transform.position + rightOffset, collisionRadius);
         Gizmos.DrawWireSphere((Vector2)transform.position + leftOffset, collisionRadius);
+    }
+
+    public IEnumerator CapsuleAble()
+    {
+        m_CapsuleCollider2D.enabled = false;
+        yield return YieldInstructionCache.WaitForFixedUpdate;
+        yield return YieldInstructionCache.WaitForFixedUpdate;
+        m_CapsuleCollider2D.enabled = true;
     }
 }
