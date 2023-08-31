@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public int paze;
     float enemySummonCount;
     int managerHealth = 3;
-    int managerPower = 3;
+    int managerPower = 5;
     int summonCount = 3;
 
     void Awake()
@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
     {
         paze = 0;
         managerHealth = 3;
-        enemySummonCount = 12;
+        enemySummonCount = 15;
         TileManager.Inst.tileSize = 7;
     }
     
