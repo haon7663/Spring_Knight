@@ -13,6 +13,7 @@ public class Movement : MonoBehaviour
 
     Rigidbody2D m_Rigidbody2D;
     SetAnimation m_SetAnimation;
+    PlayerSpriteRenderer m_PlayerSpriteRenderer;
     Collison m_Collison;
 
     public Sprite[] m_ComboSprite;
@@ -25,6 +26,8 @@ public class Movement : MonoBehaviour
     public bool isAttacking;
     float attackTimer;
 
+    [SerializeField] GameObject fireSlash;
+
     Vector2 lastVelocity;
 
     private void Start()
@@ -32,6 +35,7 @@ public class Movement : MonoBehaviour
         Time.timeScale = 1;
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_SetAnimation = GetComponent<SetAnimation>();
+        m_PlayerSpriteRenderer = GetComponent<PlayerSpriteRenderer>();
         m_Collison = GetComponent<Collison>();
     }
 
@@ -53,7 +57,7 @@ public class Movement : MonoBehaviour
         bouncedCount = 0;
 
         transform.rotation = Quaternion.Euler(0, 0, angle);
-        m_Rigidbody2D.velocity = -transform.right * 17;
+        m_Rigidbody2D.velocity = -transform.right * 17.5f;
         transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
@@ -123,20 +127,25 @@ public class Movement : MonoBehaviour
     public IEnumerator SucceedAttack(Collision2D collision, int totalDamage)
     {
         var saveVelocity = MoveReflect(collision);
+        m_PlayerSpriteRenderer.SetTransformFlip(collision.transform);
 
-        for (float i = 0; i < 0.22f; i += Time.deltaTime)
+        for (float i = 0; i < 0.2f; i += Time.deltaTime)
         {
             m_Rigidbody2D.velocity = Vector2.zero;
             yield return YieldInstructionCache.WaitForFixedUpdate;
         }
-        collision.transform.GetComponent<EnemyDefence>().OnDamage();
-        StartCoroutine(m_Collison.CapsuleAble());
+
+        var slash = Instantiate(fireSlash, transform.position, Quaternion.identity).transform;
+        slash.localScale = new Vector2(collision.transform.position.x > transform.position.x ? 1 : -1, 1);
+
         m_SetAnimation.AttackTrigger();
-        attackTimer = 0.4f;
-
-        CinemachineShake.Instance.ShakeCamera(5, 0.5f);
+        attackTimer = 0.5f;
+        CinemachineShake.Instance.ShakeCamera(6, 0.6f);
+        collision.transform.GetComponent<EnemyDefence>().OnDamage();
         ComboPlus();
+        Time.timeScale = 0.005f;
 
+        StartCoroutine(m_Collison.CapsuleAble());
         m_Rigidbody2D.velocity = saveVelocity;
     }
 
