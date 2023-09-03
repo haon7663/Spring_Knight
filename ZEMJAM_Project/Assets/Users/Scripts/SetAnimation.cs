@@ -30,7 +30,6 @@ public class SetAnimation : MonoBehaviour
     public void AttackTrigger()
     {
         m_Animator.SetTrigger("attack");
-        m_SwordAnimator.SetTrigger("swing");
     }
 
     public void Spin(bool value)
