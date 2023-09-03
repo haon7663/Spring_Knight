@@ -10,6 +10,8 @@ public class SetTimeScale : MonoBehaviour
     [SerializeField] Vector3[] offset;
     [SerializeField] LayerMask enemyLayer;
 
+    [SerializeField] float defaultTimeScale;
+
     void Start()
     {
         m_Movement = GetComponent<Movement>();
@@ -18,12 +20,12 @@ public class SetTimeScale : MonoBehaviour
 
     void LateUpdate()
     {
-        var setTime = 1f;
+        var setTime = defaultTimeScale;
         for (int i = 0; i < offset.Length; i++)
             if (Physics2D.Raycast(transform.position + offset[i], m_Rigidbody2D.velocity, 10000, enemyLayer) && m_Movement.count > 0)
-                setTime = 0.3f;
+                setTime = 0.4f;
 
-        Time.timeScale = Mathf.Lerp(Time.timeScale, setTime, Time.deltaTime * 5);
+        Time.timeScale = Mathf.Lerp(Time.timeScale, setTime, Time.deltaTime * 9);
     }
     private void OnDrawGizmos()
     {
