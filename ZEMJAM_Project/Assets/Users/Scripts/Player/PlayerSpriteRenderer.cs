@@ -6,7 +6,6 @@ public class PlayerSpriteRenderer : MonoBehaviour
 {
     [Header("SpriteRenderers")]
     [SerializeField] SpriteRenderer m_SpriteRenderer;
-    [SerializeField] SpriteRenderer m_SwordSpriteRenderer;
     [SerializeField] SpriteRenderer m_SpinSpriteRenderer;
 
     [Header("Components")]
@@ -32,20 +31,19 @@ public class PlayerSpriteRenderer : MonoBehaviour
         if (m_Movement.count <= 0 && m_Collison.onCollision)
         {
             if (m_Collison.onRight)
-                m_SpriteRenderer.flipX = true;
-            else if (m_Collison.onLeft)
                 m_SpriteRenderer.flipX = false;
+            else if (m_Collison.onLeft)
+                m_SpriteRenderer.flipX = true;
         }
         else if(!m_Movement.isAttacking)
         {
             if (m_Rigidbody2D.velocity.x > 0)
-                m_SpriteRenderer.flipX = true;
-            else if (m_Rigidbody2D.velocity.x < 0)
                 m_SpriteRenderer.flipX = false;
+            else if (m_Rigidbody2D.velocity.x < 0)
+                m_SpriteRenderer.flipX = true;
         }
-        m_SwordSpriteRenderer.flipX = m_SpriteRenderer.flipX;
 
-        if (m_Movement.count > 0)
+        /*if (m_Movement.count > 0)
         {
             var bounceCount = m_Movement.bouncedCount;
             afterTimer += Time.deltaTime;
@@ -56,15 +54,17 @@ public class PlayerSpriteRenderer : MonoBehaviour
                     SummonAfterImage(m_SpriteRenderer);
                     if (bounceCount >= 10)
                         SummonAfterImage(m_SpinSpriteRenderer);
-                    else if (bounceCount >= 7)
-                        SummonAfterImage(m_SwordSpriteRenderer);
 
                     afterTimer = 0;
                 }
             }
-        }
+        }*/
     }
 
+    public void SetTransformFlip(Transform target)
+    {
+        m_SpriteRenderer.flipX = transform.position.x > target.position.x;
+    }
     void SummonAfterImage(SpriteRenderer spriteRenderer)
     {
         SpriteRenderer afterImage = Instantiate(afterImagePrf, transform.position, Quaternion.identity).GetComponent<SpriteRenderer>();
