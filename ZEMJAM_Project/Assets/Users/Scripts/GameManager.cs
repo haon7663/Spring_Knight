@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
     {
         paze = 0;
         managerHealth = 3;
-        enemySummonCount = 15;
+        enemySummonCount = 3;
         TileManager.Inst.tileSize = 7;
     }
     
