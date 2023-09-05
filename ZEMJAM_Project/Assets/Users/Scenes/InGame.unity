@@ -4444,6 +4444,7 @@ MonoBehaviour:
   bouncedCount: 0
   count: 0
   boostPower: 0
+  multiSpeed: 1
   isAttacking: 0
   fireSlash: {fileID: 239291652346064134, guid: 013ebb7f084225b4ca21cfbf460a89cb, type: 3}
 --- !u!114 &1315343741
@@ -5709,9 +5710,9 @@ MonoBehaviour:
   m_ComponentVersion: 1
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.859
-  m_Color: {r: 0.8820755, g: 0.9560463, b: 1, a: 1}
-  m_Intensity: 1
+  m_FalloffIntensity: 0.764
+  m_Color: {r: 0.60938054, g: 0.71337664, b: 0.7735849, a: 1}
+  m_Intensity: 0.4
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: a1dd246200000000df30617db506dcf95dcc3c82879d7a39a30072b2
@@ -5762,7 +5763,7 @@ MonoBehaviour:
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
-  m_PointLightOuterRadius: 25
+  m_PointLightOuterRadius: 10
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
