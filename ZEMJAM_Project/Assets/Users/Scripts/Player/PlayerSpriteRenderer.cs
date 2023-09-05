@@ -31,9 +31,9 @@ public class PlayerSpriteRenderer : MonoBehaviour
         if (m_Movement.count <= 0 && m_Collison.onCollision)
         {
             if (m_Collison.onRight)
-                m_SpriteRenderer.flipX = false;
-            else if (m_Collison.onLeft)
                 m_SpriteRenderer.flipX = true;
+            else if (m_Collison.onLeft)
+                m_SpriteRenderer.flipX = false;
         }
         else if(!m_Movement.isAttacking)
         {
