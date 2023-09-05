@@ -22,13 +22,14 @@ public class Movement : MonoBehaviour
     public int bouncedCount;
     public float count;
     public float boostPower;
+    public float multiSpeed = 1;
 
     public bool isAttacking;
     float attackTimer;
 
     [SerializeField] GameObject fireSlash;
 
-    Vector2 lastVelocity;
+    Vector2 normalVelocity, lastVelocity;
 
     private void Start()
     {
@@ -45,10 +46,18 @@ public class Movement : MonoBehaviour
 
         CinemachineManager.Inst.isJoom = count > 0;
 
-        lastVelocity = m_Rigidbody2D.velocity;
+        multiSpeed = Mathf.Lerp(multiSpeed, 1, Time.deltaTime * 3);
+
+        lastVelocity = normalVelocity * multiSpeed;
 
         isAttacking = attackTimer > 0;
         attackTimer -= Time.deltaTime;
+    }
+
+    void LateUpdate()
+    {
+        if(gameObject.layer == 3)
+            m_Rigidbody2D.velocity = lastVelocity;
     }
 
     public void Dash(float power, float angle)
@@ -57,8 +66,9 @@ public class Movement : MonoBehaviour
         bouncedCount = 0;
 
         transform.rotation = Quaternion.Euler(0, 0, angle);
-        m_Rigidbody2D.velocity = -transform.right * 17.5f;
+        SetNormalVelocity(-transform.right * 17.5f);
         transform.rotation = Quaternion.Euler(0, 0, 0);
+        SetMultiSpeed(1.5f);
     }
 
     public void CrashEnemy(Collision2D collision)
@@ -79,7 +89,7 @@ public class Movement : MonoBehaviour
     {
         if(count > 1)
         {
-            m_Rigidbody2D.velocity = MoveReflect(collision);
+            SetNormalVelocity(MoveReflect(collision));
             StartCoroutine(m_Collison.CapsuleAble());
             ComboPlus();
             count--;
@@ -91,7 +101,7 @@ public class Movement : MonoBehaviour
                 if (enemy && enemy.GetComponent<EnemyDashSign>())
                     enemy.GetComponent<EnemyDashSign>().AfterDash();
             }
-            m_Rigidbody2D.velocity = Vector2.zero;
+            SetNormalVelocity(Vector2.zero);
 
             count = 0;
         }
@@ -107,8 +117,8 @@ public class Movement : MonoBehaviour
 
     Vector2 MoveReflect(Collision2D collision)
     {
-        var speed = lastVelocity.magnitude;
-        var dir = Vector2.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+        var speed = normalVelocity.magnitude;
+        var dir = Vector2.Reflect(normalVelocity.normalized, collision.contacts[0].normal);
 
         return dir * Mathf.Max(speed, 0f);
     }
@@ -132,8 +142,11 @@ public class Movement : MonoBehaviour
         for (float i = 0; i < 0.2f; i += Time.deltaTime)
         {
             m_Rigidbody2D.velocity = Vector2.zero;
+            if (collision == null) break;  
             yield return YieldInstructionCache.WaitForFixedUpdate;
         }
+        if (collision == null)
+            yield return null;
 
         var slash = Instantiate(fireSlash, transform.position, Quaternion.identity).transform;
         slash.localScale = new Vector2(collision.transform.position.x > transform.position.x ? 1 : -1, 1);
@@ -144,9 +157,10 @@ public class Movement : MonoBehaviour
         collision.transform.GetComponent<EnemyDefence>().OnDamage();
         ComboPlus();
         Time.timeScale = 0.005f;
+        SetMultiSpeed(1.5f);
 
         StartCoroutine(m_Collison.CapsuleAble());
-        m_Rigidbody2D.velocity = saveVelocity;
+        SetNormalVelocity(saveVelocity);
     }
 
     public void FailedAttack(Collision2D collision)
@@ -185,6 +199,7 @@ public class Movement : MonoBehaviour
 
         m_Rigidbody2D.velocity = Vector2.zero;
         m_Rigidbody2D.AddForce(new Vector2(target.position.x - transform.position.x > 0 ? -0.5f : 0.5f, 1), ForceMode2D.Impulse);
+        normalVelocity = m_Rigidbody2D.velocity;
         m_Rigidbody2D.gravityScale = 5;
 
         if (HealthManager.Inst.curhp <= 0)
@@ -196,10 +211,23 @@ public class Movement : MonoBehaviour
 
         m_Rigidbody2D.gravityScale = 0;
         lastVelocity = Vector2.zero;
+        SetNormalVelocity(Vector2.zero);
 
         gameObject.layer = 3;
     }
-    private void Death()
+
+    void SetNormalVelocity(Vector3 velocity)
+    {
+        normalVelocity = velocity;
+        m_Rigidbody2D.velocity = normalVelocity;
+    }
+
+    public void SetMultiSpeed(float value)
+    {
+        multiSpeed = value;
+    }
+
+    void Death()
     {
         SceneManager.LoadScene("Death");
     }
