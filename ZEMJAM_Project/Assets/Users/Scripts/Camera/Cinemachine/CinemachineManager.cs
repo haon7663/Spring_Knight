@@ -18,10 +18,20 @@ public class CinemachineManager : MonoBehaviour
     float realCineSize;
     float cinemacineSize;
 
+    float tileSize, joomSize;
+
+    void Start()
+    {
+        tileSize = TileManager.Inst.tileSize;
+        realCineSize = tileSize;
+        cinevirtual.m_Lens.OrthographicSize = realCineSize;
+        cinevirtual.Follow = tile;
+    }
+
     void LateUpdate()
     {
-        var tileSize = TileManager.Inst.tileSize;
-        var joomSize = tileSize * 0.85f;
+        tileSize = TileManager.Inst.tileSize;
+        joomSize = tileSize * 0.95f;
         cinemacineSize = isJoom ? joomSize : tileSize;
 
         realCineSize = Mathf.Lerp(realCineSize, cinemacineSize, Time.deltaTime * 4);
