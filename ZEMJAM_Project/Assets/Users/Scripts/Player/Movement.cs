@@ -24,14 +24,16 @@ public class Movement : MonoBehaviour
     public float boostPower;
     public float multiSpeed = 1;
 
+    public bool isIgnoreCollison;
     public bool isAttacking;
     float attackTimer;
 
     [SerializeField] GameObject fireSlash;
+    [SerializeField] GameObject fireHitEffect;
 
     Vector2 normalVelocity, lastVelocity;
 
-    private void Start()
+    void Start()
     {
         Time.timeScale = 1;
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -40,7 +42,7 @@ public class Movement : MonoBehaviour
         m_Collison = GetComponent<Collison>();
     }
 
-    private void Update()
+    void Update()
     {
         if (GameManager.Inst.isSetting || HealthManager.Inst.curhp <= 0) return;
 
@@ -66,13 +68,14 @@ public class Movement : MonoBehaviour
         bouncedCount = 0;
 
         transform.rotation = Quaternion.Euler(0, 0, angle);
-        SetNormalVelocity(-transform.right * 17.5f);
+        SetNormalVelocity(-transform.right * 15);
         transform.rotation = Quaternion.Euler(0, 0, 0);
         SetMultiSpeed(1.5f);
     }
 
     public void CrashEnemy(Collision2D collision)
     {
+        attackTimer = 0;
         if (count == 0)
         {
             StartCoroutine(Bounced(collision.transform));
@@ -107,7 +110,7 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.CompareTag("Item"))
         {
@@ -123,7 +126,7 @@ public class Movement : MonoBehaviour
         return dir * Mathf.Max(speed, 0f);
     }
 
-    private void ComboPlus()
+    void ComboPlus()
     {
         SpriteRenderer combo = Instantiate(m_Combo, transform.position, Quaternion.identity).GetComponent<SpriteRenderer>();
 
@@ -136,31 +139,33 @@ public class Movement : MonoBehaviour
 
     public IEnumerator SucceedAttack(Collision2D collision, int totalDamage)
     {
-        var saveVelocity = MoveReflect(collision);
+        var saveVelocity = normalVelocity;
+        var reflectVelocity = MoveReflect(collision);
         m_PlayerSpriteRenderer.SetTransformFlip(collision.transform);
-
+        isIgnoreCollison = true;
         for (float i = 0; i < 0.2f; i += Time.deltaTime)
         {
-            m_Rigidbody2D.velocity = Vector2.zero;
+            SetNormalVelocity(Vector2.zero);
+            Time.timeScale = 0.4f;
             if (collision == null) break;  
             yield return YieldInstructionCache.WaitForFixedUpdate;
         }
-        if (collision == null)
-            yield return null;
+        isIgnoreCollison = false;
 
         var slash = Instantiate(fireSlash, transform.position, Quaternion.identity).transform;
         slash.localScale = new Vector2(collision.transform.position.x > transform.position.x ? 1 : -1, 1);
+        Instantiate(fireHitEffect, collision.transform.position, Quaternion.Euler(0, 0, Random.Range(0, 359)));
 
         m_SetAnimation.AttackTrigger();
-        attackTimer = 0.5f;
+        attackTimer = 0.35f;
         CinemachineShake.Instance.ShakeCamera(6, 0.6f);
-        collision.transform.GetComponent<EnemyDefence>().OnDamage();
+        collision.transform.GetComponent<EnemyDefence>().OnDamage(saveVelocity);
         ComboPlus();
-        Time.timeScale = 0.005f;
-        SetMultiSpeed(1.5f);
+
+        SetMultiSpeed(1.25f);
 
         StartCoroutine(m_Collison.CapsuleAble());
-        SetNormalVelocity(saveVelocity);
+        SetNormalVelocity(reflectVelocity);
     }
 
     public void FailedAttack(Collision2D collision)
