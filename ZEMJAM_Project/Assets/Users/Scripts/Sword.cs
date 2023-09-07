@@ -21,7 +21,7 @@ public class Sword : MonoBehaviour
 
         var movement = Movement.Inst;
         m_SpriteRenderer.enabled = movement.count > 0;
-        if (movement.bouncedCount >= 10 && movement.count > 0)
+        /*if (movement.bouncedCount >= 10 && movement.count > 0)
         {
             if (!spinSword.activeSelf)
             {
@@ -34,13 +34,13 @@ public class Sword : MonoBehaviour
             if (enemy)
             {
                 CinemachineShake.Instance.ShakeCamera(7, 0.5f);
-                enemy.transform.GetComponent<EnemyDefence>().OnDamage();
+                enemy.transform.GetComponent<EnemyDefence>().OnDamage(Vector3.zero);
             }
         }
         else if (spinSword.activeSelf)
         {
             spinSword.SetActive(false);
             m_SetAnimation.Spin(false);
-        }
+        }*/
     }
 }
