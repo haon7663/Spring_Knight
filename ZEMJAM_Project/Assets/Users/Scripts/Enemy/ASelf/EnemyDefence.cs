@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class EnemyDefence : MonoBehaviour
 {
+    EnemyBundle m_EnemyBundle;
+
     public int defence;
     [SerializeField] int minDefence;
     [SerializeField] int maxDefence;
-
-    public GameObject[] defences = new GameObject[8];
-
     [SerializeField] GameObject defenceParent;
     [SerializeField] GameObject hitParticle;
 
     RectTransform defenceBar;
+    GameObject[] defences = new GameObject[8];
+
+    void Awake()
+    {
+        if (TryGetComponent(out EnemyBundle bundle))
+            m_EnemyBundle = bundle;
+    }
 
     void Start()
     {
@@ -38,7 +44,8 @@ public class EnemyDefence : MonoBehaviour
     }
     void LateUpdate()
     {
-        defenceBar.position = transform.position + new Vector3(0, 1);
+        if(defenceBar != null)
+            defenceBar.position = transform.position + new Vector3(0, 1);
     }
 
     public int AttemptAttack(int damage)
@@ -46,13 +53,13 @@ public class EnemyDefence : MonoBehaviour
         return damage - defence;
     }
 
-    public void OnDamage()
+    public void OnDamage(Vector3 velocity)
     {
-        ScoreManager.Inst.KillScore();
         if (GetComponent<EnemyDestroy>()) GetComponent<EnemyDestroy>().AfterDestroy();
 
         SummonManager.Inst.RemoveEnemy(gameObject);
         Destroy(defenceBar.gameObject);
-        Destroy(gameObject);
+
+        StartCoroutine(m_EnemyBundle.rigid.BouncedOff(velocity));
     }
 }
