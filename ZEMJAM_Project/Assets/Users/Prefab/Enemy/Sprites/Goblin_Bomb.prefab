@@ -10,11 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1096869984674747135}
   - component: {fileID: 1096869984674747133}
-  - component: {fileID: 1096869984674747130}
+  - component: {fileID: 8865786244417405376}
   - component: {fileID: 8917104490236142220}
   - component: {fileID: 6824758075528564574}
+  - component: {fileID: 2792018219024196534}
   - component: {fileID: 1096869984674747129}
   - component: {fileID: 6135692410442754914}
+  - component: {fileID: 1096869984674747130}
   - component: {fileID: -2926060319527803436}
   m_Layer: 7
   m_Name: Goblin_Bomb
@@ -90,27 +92,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &1096869984674747130
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &8865786244417405376
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1096869984674747128}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 50
-  m_LinearDrag: 50
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f51c6b939cf044c9d687a2c8946d21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigid: {fileID: 2792018219024196534}
+  defence: {fileID: 6824758075528564574}
+  sprite: {fileID: 8917104490236142220}
 --- !u!114 &8917104490236142220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd71c11da0af654bba64b340fc61fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_EnemyBundle: {fileID: 0}
   defence: 0
   minDefence: 2
   maxDefence: 0
@@ -150,6 +147,19 @@ MonoBehaviour:
   - {fileID: 0}
   defenceParent: {fileID: 1383085560851913388, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
   hitParticle: {fileID: 8307181888699059583, guid: ba0f61d23748a7f49b2d153da5a812b9, type: 3}
+--- !u!114 &2792018219024196534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096869984674747128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a42dc6ebca7d52d40a73f82a8b857dc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Rigidbody2D: {fileID: 0}
 --- !u!114 &1096869984674747129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,7 +182,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1096869984674747128}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f2bce878787cf254e852887358d9aee5, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -189,6 +199,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.1, y: 1.45}
   m_EdgeRadius: 0
+--- !u!50 &1096869984674747130
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096869984674747128}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 50
+  m_LinearDrag: 50
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!82 &-2926060319527803436
 AudioSource:
   m_ObjectHideFlags: 0
