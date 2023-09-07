@@ -9,7 +9,7 @@ public class Collison : MonoBehaviour
 
     [Space]
     [Header("Collisions")]
-    [SerializeField] CapsuleCollider2D m_CapsuleCollider2D;
+    [SerializeField] BoxCollider2D m_BoxCollider2D;
     public bool onCollision;
     public bool onUp;
     public bool onDown;
@@ -33,6 +33,8 @@ public class Collison : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (Movement.Inst.isIgnoreCollison) return;
+
         if (collision.transform.CompareTag("Enemy"))
             Movement.Inst.CrashEnemy(collision);
 
@@ -55,9 +57,9 @@ public class Collison : MonoBehaviour
 
     public IEnumerator CapsuleAble()
     {
-        m_CapsuleCollider2D.enabled = false;
+        m_BoxCollider2D.enabled = false;
         yield return YieldInstructionCache.WaitForFixedUpdate;
         yield return YieldInstructionCache.WaitForFixedUpdate;
-        m_CapsuleCollider2D.enabled = true;
+        m_BoxCollider2D.enabled = true;
     }
 }
