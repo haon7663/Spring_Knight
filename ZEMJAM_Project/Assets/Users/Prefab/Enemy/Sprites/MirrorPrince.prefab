@@ -10,11 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 770838304836623373}
   - component: {fileID: 770838304836623375}
-  - component: {fileID: 770838304836623368}
+  - component: {fileID: 323858480955127569}
   - component: {fileID: 9025786150749837051}
   - component: {fileID: 6574170674519425452}
-  - component: {fileID: 4306199343765538644}
+  - component: {fileID: -7210051244104112819}
   - component: {fileID: 8394217797931167601}
+  - component: {fileID: 4306199343765538644}
+  - component: {fileID: 770838304836623368}
   - component: {fileID: -7783905281161303911}
   m_Layer: 7
   m_Name: MirrorPrince
@@ -90,27 +92,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &770838304836623368
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &323858480955127569
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770838304836623370}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 50
-  m_LinearDrag: 50
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f51c6b939cf044c9d687a2c8946d21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigid: {fileID: -7210051244104112819}
+  defence: {fileID: 6574170674519425452}
+  sprite: {fileID: 9025786150749837051}
 --- !u!114 &9025786150749837051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd71c11da0af654bba64b340fc61fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_EnemyBundle: {fileID: 0}
   defence: 0
   minDefence: 3
   maxDefence: 5
@@ -150,6 +147,31 @@ MonoBehaviour:
   - {fileID: 0}
   defenceParent: {fileID: 1383085560851913388, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
   hitParticle: {fileID: 8307181888699059583, guid: ba0f61d23748a7f49b2d153da5a812b9, type: 3}
+--- !u!114 &-7210051244104112819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770838304836623370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a42dc6ebca7d52d40a73f82a8b857dc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Rigidbody2D: {fileID: 0}
+--- !u!114 &8394217797931167601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770838304836623370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb896a182ecd2124abd5a95eae84e65c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!61 &4306199343765538644
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -159,7 +181,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 770838304836623370}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f2bce878787cf254e852887358d9aee5, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -176,18 +198,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8, y: 1.4}
   m_EdgeRadius: 0
---- !u!114 &8394217797931167601
-MonoBehaviour:
+--- !u!50 &770838304836623368
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770838304836623370}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb896a182ecd2124abd5a95eae84e65c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 50
+  m_LinearDrag: 50
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!82 &-7783905281161303911
 AudioSource:
   m_ObjectHideFlags: 0
