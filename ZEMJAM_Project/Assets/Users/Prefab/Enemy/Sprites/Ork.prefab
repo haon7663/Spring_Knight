@@ -10,10 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4877853659518890850}
   - component: {fileID: 4877853659518890848}
-  - component: {fileID: 4877853659518890855}
+  - component: {fileID: 3814017611589475812}
   - component: {fileID: 102973161931824318}
   - component: {fileID: 1314816002826841795}
+  - component: {fileID: 7088028378360557985}
   - component: {fileID: 8269099476074965051}
+  - component: {fileID: 4877853659518890855}
   - component: {fileID: 6010137867817953695}
   m_Layer: 7
   m_Name: Ork
@@ -89,27 +91,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &4877853659518890855
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &3814017611589475812
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4877853659518890853}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 50
-  m_LinearDrag: 50
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f51c6b939cf044c9d687a2c8946d21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigid: {fileID: 7088028378360557985}
+  defence: {fileID: 1314816002826841795}
+  sprite: {fileID: 102973161931824318}
 --- !u!114 &102973161931824318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,6 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd71c11da0af654bba64b340fc61fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_EnemyBundle: {fileID: 0}
   defence: 0
   minDefence: 6
   maxDefence: 8
@@ -149,6 +146,19 @@ MonoBehaviour:
   - {fileID: 0}
   defenceParent: {fileID: 1383085560851913388, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
   hitParticle: {fileID: 8307181888699059583, guid: ba0f61d23748a7f49b2d153da5a812b9, type: 3}
+--- !u!114 &7088028378360557985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4877853659518890853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a42dc6ebca7d52d40a73f82a8b857dc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Rigidbody2D: {fileID: 0}
 --- !u!61 &8269099476074965051
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -158,7 +168,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 4877853659518890853}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: f2bce878787cf254e852887358d9aee5, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -175,6 +185,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.65, y: 2.15}
   m_EdgeRadius: 0
+--- !u!50 &4877853659518890855
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4877853659518890853}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 50
+  m_LinearDrag: 50
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!82 &6010137867817953695
 AudioSource:
   m_ObjectHideFlags: 0
