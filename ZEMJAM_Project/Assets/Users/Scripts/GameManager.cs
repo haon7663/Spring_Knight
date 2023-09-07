@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public int paze;
     float enemySummonCount;
     int managerHealth = 3;
-    int managerPower = 5;
+    int managerPower = 3;
     int summonCount = 3;
 
     void Awake()
@@ -47,10 +47,13 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
 
+        m_PlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         m_PlayerController.maxPower = managerPower;
+
         HealthManager.Inst.SetHealth(3);
         HealthManager.Inst.curhp = managerHealth;
         HealthManager.Inst.OnHealth(1);
+        UIManager.Inst.SetPazeText(paze + 1);
 
         isSetting = false;
     }
@@ -90,6 +93,7 @@ public class GameManager : MonoBehaviour
     public void SetGame()
     {
         paze = 0;
+        managerPower = 3;
         managerHealth = 3;
         enemySummonCount = 3;
         TileManager.Inst.tileSize = 7;
@@ -100,14 +104,14 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         Fade.instance.Fadein();
         yield return new WaitForSeconds(0.4f);
-        if (TileManager.Inst.tileSize < 13)
-        {
-            managerHealth = HealthManager.Inst.curhp;
-            TileManager.Inst.tileSize += 2;
-            enemySummonCount += 0.75f;
-            managerPower += 1;
-            paze++;
-        }
+
+        managerHealth = HealthManager.Inst.curhp;
+        TileManager.Inst.tileSize += 2;
+        enemySummonCount += 0.75f;
+        managerPower += 1;
+        summonCount = 3;
+        paze++;
+
         SceneManager.LoadScene("InGame");
     }
 }
