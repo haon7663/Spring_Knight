@@ -131,19 +131,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd71c11da0af654bba64b340fc61fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EnemyBundle: {fileID: 0}
   defence: 0
   minDefence: 1
   maxDefence: 2
-  defences:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   defenceParent: {fileID: 1383085560851913388, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
   hitParticle: {fileID: 8307181888699059583, guid: ba0f61d23748a7f49b2d153da5a812b9, type: 3}
 --- !u!114 &-4703811355382980128
@@ -158,7 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a42dc6ebca7d52d40a73f82a8b857dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Rigidbody2D: {fileID: 0}
 --- !u!61 &2472055747547592351
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -168,7 +157,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1498345847384431939}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: f2bce878787cf254e852887358d9aee5, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

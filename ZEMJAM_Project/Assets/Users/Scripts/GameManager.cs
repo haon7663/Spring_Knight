@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
     public bool isLoadScene;
     public bool isSetting;
 
-    public int paze;
+    public int curPaze;
+    public int maxPaze;
     float enemySummonCount;
     int managerHealth = 3;
     int managerPower = 3;
@@ -50,10 +51,10 @@ public class GameManager : MonoBehaviour
         m_PlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         m_PlayerController.maxPower = managerPower;
 
-        HealthManager.Inst.SetHealth(3);
+        HealthManager.Inst.SetHealth(2);
         HealthManager.Inst.curhp = managerHealth;
         HealthManager.Inst.OnHealth(1);
-        UIManager.Inst.SetPazeText(paze + 1);
+        UIManager.Inst.SetPazeGrid(maxPaze);
 
         isSetting = false;
     }
@@ -92,7 +93,7 @@ public class GameManager : MonoBehaviour
 
     public void SetGame()
     {
-        paze = 0;
+        curPaze = 0;
         managerPower = 3;
         managerHealth = 3;
         enemySummonCount = 3;
@@ -110,7 +111,7 @@ public class GameManager : MonoBehaviour
         enemySummonCount += 0.75f;
         managerPower += 1;
         summonCount = 3;
-        paze++;
+        curPaze++;
 
         SceneManager.LoadScene("InGame");
     }

@@ -31,7 +31,7 @@ public class CinemachineManager : MonoBehaviour
     void LateUpdate()
     {
         tileSize = TileManager.Inst.tileSize;
-        joomSize = tileSize * 0.95f;
+        joomSize = tileSize * 0.8f;
         cinemacineSize = isJoom ? joomSize : tileSize;
 
         realCineSize = Mathf.Lerp(realCineSize, cinemacineSize, Time.deltaTime * 4);

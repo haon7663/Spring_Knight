@@ -40,7 +40,7 @@ public class TileManager : MonoBehaviour
             tiles[i].position = new Vector2(posX, posY);
         }
 
-        var tilemap = stageTileMaps[GameManager.Inst.paze].tileMaps;
+        var tilemap = stageTileMaps[GameManager.Inst.curPaze].tileMaps;
         Instantiate(tilemap[Random.Range(0, tilemap.Length)]);
     }
 

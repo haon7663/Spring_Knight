@@ -19,8 +19,8 @@ public class EnemyRigidbody : MonoBehaviour
         gameObject.layer = 9;
 
         m_Rigidbody2D.mass = 1;
-        m_Rigidbody2D.velocity = velocity * 2.5f;
-        m_Rigidbody2D.drag = 12;
+        m_Rigidbody2D.velocity = velocity * 1.5f;
+        m_Rigidbody2D.drag = 5;
 
         yield return StartCoroutine(m_EnemyBundle.sprite.DeathFade());
 

@@ -48,7 +48,7 @@ public class Movement : MonoBehaviour
 
         CinemachineManager.Inst.isJoom = count > 0;
 
-        multiSpeed = Mathf.Lerp(multiSpeed, 1, Time.deltaTime * 3);
+        multiSpeed = Mathf.Lerp(multiSpeed, 1, Time.deltaTime);
 
         lastVelocity = normalVelocity * multiSpeed;
 
@@ -70,7 +70,7 @@ public class Movement : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle);
         SetNormalVelocity(-transform.right * 15);
         transform.rotation = Quaternion.Euler(0, 0, 0);
-        SetMultiSpeed(1.5f);
+        SetMultiSpeed(1.75f);
     }
 
     public void CrashEnemy(Collision2D collision)

@@ -21,7 +21,7 @@ public class SetTimeScale : MonoBehaviour
         if (Movement.Inst.isIgnoreCollison) return;
         var setTime = defaultTimeScale;
         for (int i = 0; i < offset.Length; i++)
-            if (Physics2D.Raycast(transform.position + offset[i], m_Rigidbody2D.velocity, 10000, enemyLayer) && Movement.Inst.count > 0)
+            if (Physics2D.Raycast(transform.position + offset[i], m_Rigidbody2D.velocity, 1, enemyLayer) && Movement.Inst.count > 0)
                 setTime = 0.4f;
 
         Time.timeScale = Mathf.Lerp(Time.timeScale, setTime, Time.deltaTime * 9);
