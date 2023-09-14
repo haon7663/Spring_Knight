@@ -85,6 +85,8 @@ public class PlayerController : MonoBehaviour
         if (power > maxPower)
             power = maxPower;
 
+        UIManager.Inst.SetPower(power);
+
         SetAngle();
     }
     void SetAngle()
