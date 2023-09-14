@@ -105,6 +105,7 @@ public class Movement : MonoBehaviour
                     enemy.GetComponent<EnemyDashSign>().AfterDash();
             }
             SetNormalVelocity(Vector2.zero);
+            HealthManager.Inst.OnFade(true);
 
             count = 0;
         }
@@ -143,13 +144,14 @@ public class Movement : MonoBehaviour
         var reflectVelocity = MoveReflect(collision);
         m_PlayerSpriteRenderer.SetTransformFlip(collision.transform);
         isIgnoreCollison = true;
-        for (float i = 0; i < 0.2f; i += Time.deltaTime)
+        for (float i = 0; i < 0.25f; i += Time.deltaTime)
         {
             SetNormalVelocity(Vector2.zero);
-            Time.timeScale = 0.4f;
+            Time.timeScale = 1;
             if (collision == null) break;  
             yield return YieldInstructionCache.WaitForFixedUpdate;
         }
+        Time.timeScale = 0.12f;
         isIgnoreCollison = false;
 
         var slash = Instantiate(fireSlash, transform.position, Quaternion.identity).transform;
@@ -158,7 +160,7 @@ public class Movement : MonoBehaviour
 
         m_SetAnimation.AttackTrigger();
         attackTimer = 0.35f;
-        CinemachineShake.Instance.ShakeCamera(6, 0.6f);
+        CinemachineShake.Instance.ShakeCamera(12, 0.25f);
         collision.transform.GetComponent<EnemyDefence>().OnDamage(saveVelocity);
         ComboPlus();
 
@@ -184,6 +186,7 @@ public class Movement : MonoBehaviour
     public IEnumerator Hit(Transform target)
     {
         HealthManager.Inst.OnDamage();
+        StartCoroutine(m_PlayerSpriteRenderer.GracePerioding());
 
         yield return StartCoroutine(Bounced(target));
 
@@ -207,12 +210,17 @@ public class Movement : MonoBehaviour
         normalVelocity = m_Rigidbody2D.velocity;
         m_Rigidbody2D.gravityScale = 5;
 
+        float slopeTime = 0.5f;
+
         if (HealthManager.Inst.curhp <= 0)
             while (!m_Collison.onDown)
                 yield return YieldInstructionCache.WaitForFixedUpdate;
         else
-            while (!m_Collison.onCollision)
+            while (!m_Collison.onCollision || slopeTime > 0)
+            {
+                slopeTime -= Time.deltaTime;
                 yield return YieldInstructionCache.WaitForFixedUpdate;
+            }
 
         m_Rigidbody2D.gravityScale = 0;
         lastVelocity = Vector2.zero;

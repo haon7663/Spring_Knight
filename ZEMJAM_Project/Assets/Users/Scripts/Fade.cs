@@ -2,30 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Fade : MonoBehaviour
 {
-    public static Fade instance;
-    private Animator mAnimator;
-    private Image mImage;
+    public static Fade Inst;
+    void Awake() => Inst = this;
 
-    private void Awake()
-    {
-        instance = this;
-    }
+    [SerializeField] Image m_Image;
+
     private void Start()
     {
-        mAnimator = GetComponent<Animator>();
-        mImage = GetComponent<Image>();
         Fadeout();
     }
 
-    private void Fadeout()
+    void Fadeout()
     {
-        mAnimator.Play("FadeOut");
+        m_Image.enabled = true; 
+        m_Image.DOFade(0, 0.1f);
     }
-    public void Fadein()
+    public void Fadein(float time = 0.1f)
     {
-        mAnimator.Play("FadeIn");
+        m_Image.DOFade(1, time);
     }
 }

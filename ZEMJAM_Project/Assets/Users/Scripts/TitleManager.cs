@@ -19,7 +19,7 @@ public class TitleManager : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0) && !isCalled)
         {
-            Fade.instance.Fadein();
+            Fade.Inst.Fadein();
             Invoke(nameof(GameStart), 0.5f);
             isCalled = true;
         }

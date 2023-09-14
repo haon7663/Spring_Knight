@@ -36,7 +36,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
         Inst = this;
     }
 
@@ -46,6 +45,7 @@ public class GameManager : MonoBehaviour
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Inst = this;
         Time.timeScale = 1;
 
         m_PlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
         HealthManager.Inst.SetHealth(2);
         HealthManager.Inst.curhp = managerHealth;
         HealthManager.Inst.OnHealth(1);
-        UIManager.Inst.SetPazeGrid(maxPaze);
+        UIManager.Inst.SetPazeGrid(curPaze, maxPaze);
 
         isSetting = false;
     }
@@ -103,8 +103,8 @@ public class GameManager : MonoBehaviour
     IEnumerator MoveScene()
     {
         yield return new WaitForSeconds(1);
-        Fade.instance.Fadein();
-        yield return new WaitForSeconds(0.4f);
+        Fade.Inst.Fadein();
+        yield return new WaitForSeconds(0.1f);
 
         managerHealth = HealthManager.Inst.curhp;
         TileManager.Inst.tileSize += 2;

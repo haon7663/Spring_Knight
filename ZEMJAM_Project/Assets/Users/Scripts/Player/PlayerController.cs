@@ -45,10 +45,10 @@ public class PlayerController : MonoBehaviour
 
         if (m_Movement.count <= 0)
         {
-            if (Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary))
+            if (isTouch)
             {
                 var camZ = -Camera.main.transform.position.z;
-
+                HealthManager.Inst.OnFade(false);
 #if (UNITY_EDITOR)
                 inputTouchPos = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, camZ));
 #elif (UNITY_ANDROID)

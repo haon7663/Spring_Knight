@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class HealthManager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class HealthManager : MonoBehaviour
     [SerializeField] RectTransform healthPrefab;
     [SerializeField] Transform helathParent;
     [SerializeField] Image[] healths;
+    [SerializeField] Image[] healthParents;
 
     [SerializeField] Sprite disabledHeart;
     [SerializeField] Sprite abledHeart;
@@ -30,35 +32,42 @@ public class HealthManager : MonoBehaviour
 
     void LateUpdate()
     {
-        helathParent.position = mainCamera.WorldToScreenPoint(player.position + new Vector3(0, 1));
+        helathParent.position = (player.position + new Vector3(0, player.position.y > 4.3f ? -1 : 1));
     }
     public void SetHealth(int maxhp)
     {
         this.maxhp = maxhp;
+        healthParents = new Image[maxhp];
         healths = new Image[maxhp];
         for (int i = 0; i < maxhp; i++)
         {
             var health = healths[i] == null ? Instantiate(healthPrefab, helathParent) : healths[i].GetComponentInParent<RectTransform>();
             health.localPosition = new Vector2(((maxhp-1) * -30) + (60 * i), 0);
+            healthParents[i] = health.GetComponent<Image>();
             healths[i] = health.GetChild(0).GetComponent<Image>();
         }
     }
-    public void OnDamage()
+    public void OnFade(bool isFadeIn)
     {
-        curhp--;
-        if (curhp < 0) curhp = 0;
         for (int i = 0; i < maxhp; i++)
         {
-            healths[i].sprite = disabledHeart;
+            healths[i].DOFade(isFadeIn ? 1 : 0, 0.25f);
+            healthParents[i].DOFade(isFadeIn ? 1 : 0, 0.25f);
         }
-        for (int i = 0; i < curhp; i++)
-        {
-            healths[i].sprite = abledHeart;
-        }
+    }
+    public void OnDamage(int damage = -1)
+    {
+        ManageHealth(damage);
+        StartCoroutine(CameraEffect.Inst.OnDamage());
     }
     public void OnHealth(int health = 0)
     {
-        curhp += health;
+        ManageHealth(health);
+    }
+
+    void ManageHealth(int value)
+    {
+        curhp += value;
         if (curhp > maxhp) curhp = maxhp;
         for (int i = 0; i < maxhp; i++)
         {
@@ -68,5 +77,6 @@ public class HealthManager : MonoBehaviour
         {
             healths[i].sprite = abledHeart;
         }
+        OnFade(true);
     }
 }
