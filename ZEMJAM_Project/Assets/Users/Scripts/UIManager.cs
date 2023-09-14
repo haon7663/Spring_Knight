@@ -11,10 +11,17 @@ public class UIManager : MonoBehaviour
 
     [Header("SetPaze")]
     [SerializeField] Transform pazeBar;
-    [SerializeField] RectTransform pazeGrid;
     [SerializeField] Image pazeFilled;
+    [SerializeField] RectTransform pazeGrid;
+    [SerializeField] RectTransform pazePlayer;
 
-    public void SetPazeGrid(int curPaze, int maxPaze)
+    [Space]
+    [Header("SetPower")]
+    [SerializeField] Transform powerBar;
+    [SerializeField] Image powerFilled;
+    [SerializeField] RectTransform powerGrid;
+
+    public void SetPaze(int curPaze, int maxPaze)
     {
         float pazeCount = maxPaze - 1;
         for(int i = 1; i <= pazeCount; i++)
@@ -23,6 +30,25 @@ public class UIManager : MonoBehaviour
             grid.anchoredPosition = new Vector3(i * (700 / (pazeCount+1)), 0);
         }
 
-        pazeFilled.DOFillAmount((curPaze+1) / (float)maxPaze, 0.25f);
+        pazeFilled.fillAmount = (curPaze) / (float)maxPaze;
+        pazePlayer.anchoredPosition = new Vector2(58 + (curPaze - 1) * (700 / (pazeCount + 1)), pazePlayer.anchoredPosition.y);
+
+        pazeFilled.DOFillAmount((curPaze+1) / (float)maxPaze, 0.75f);
+        pazePlayer.DOAnchorPosX(58 + curPaze * (700 / (pazeCount + 1)), 0.75f);
+    }
+
+    public void SetPowerGrid(int maxPower)
+    {
+        float powerCount = maxPower - 2;
+        for (int i = 1; i <= powerCount; i++)
+        {
+            RectTransform grid = Instantiate(powerGrid, powerBar);
+            grid.anchoredPosition = new Vector3(i * (700 / (powerCount + 1)), 0);
+        }
+    }
+    public void SetPower(float curPower)
+    {
+        float maxPower = GameManager.Inst.managerPower - 1;
+        powerFilled.DOFillAmount((curPower-1) / maxPower, 0.3f);
     }
 }
