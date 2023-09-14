@@ -109,6 +109,7 @@ public class Movement : MonoBehaviour
 
             count = 0;
         }
+        UIManager.Inst.SetPower(count);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -144,14 +145,9 @@ public class Movement : MonoBehaviour
         var reflectVelocity = MoveReflect(collision);
         m_PlayerSpriteRenderer.SetTransformFlip(collision.transform);
         isIgnoreCollison = true;
-        for (float i = 0; i < 0.25f; i += Time.deltaTime)
-        {
-            SetNormalVelocity(Vector2.zero);
-            Time.timeScale = 1;
-            if (collision == null) break;  
-            yield return YieldInstructionCache.WaitForFixedUpdate;
-        }
-        Time.timeScale = 0.12f;
+        Time.timeScale = 0.05f;
+        yield return YieldInstructionCache.WaitForFixedUpdate;
+
         isIgnoreCollison = false;
 
         var slash = Instantiate(fireSlash, transform.position, Quaternion.identity).transform;
@@ -161,7 +157,7 @@ public class Movement : MonoBehaviour
         m_SetAnimation.AttackTrigger();
         attackTimer = 0.35f;
         CinemachineShake.Instance.ShakeCamera(12, 0.25f);
-        collision.transform.GetComponent<EnemyDefence>().OnDamage(saveVelocity);
+        collision.transform.GetComponent<EnemyDefence>().OnDamage(transform, saveVelocity);
         ComboPlus();
 
         SetMultiSpeed(1.25f);
