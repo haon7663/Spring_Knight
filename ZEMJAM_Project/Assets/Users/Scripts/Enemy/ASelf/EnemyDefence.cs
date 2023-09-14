@@ -9,7 +9,7 @@ public class EnemyDefence : MonoBehaviour
     public int defence;
     [SerializeField] int minDefence;
     [SerializeField] int maxDefence;
-    [SerializeField] GameObject defenceParent;
+    [SerializeField] RectTransform defenceParent;
     [SerializeField] GameObject hitParticle;
 
     RectTransform defenceBar;
@@ -23,7 +23,7 @@ public class EnemyDefence : MonoBehaviour
 
     void Start()
     {
-        defenceBar = Instantiate(defenceParent, DefenceManager.Inst.Canvas).GetComponent<RectTransform>();
+        defenceBar = Instantiate(defenceParent, DefenceManager.Inst.defenceBundle);
 
         if (maxDefence == 0) defence = minDefence;
         else defence = Random.Range(minDefence, maxDefence + 1);
@@ -53,13 +53,13 @@ public class EnemyDefence : MonoBehaviour
         return damage - defence;
     }
 
-    public void OnDamage(Vector3 velocity)
+    public void OnDamage(Transform target, Vector3 velocity)
     {
         if (GetComponent<EnemyDestroy>()) GetComponent<EnemyDestroy>().AfterDestroy();
 
         SummonManager.Inst.RemoveEnemy(gameObject);
         Destroy(defenceBar.gameObject);
 
-        StartCoroutine(m_EnemyBundle.rigid.BouncedOff(velocity));
+        StartCoroutine(m_EnemyBundle.rigid.BouncedOff(target, Vector3.Magnitude(velocity)));
     }
 }
