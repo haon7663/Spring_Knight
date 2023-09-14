@@ -132,20 +132,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd71c11da0af654bba64b340fc61fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EnemyBundle: {fileID: 0}
   defence: 0
   minDefence: 2
   maxDefence: 0
-  defences:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  defenceParent: {fileID: 1383085560851913388, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
+  defenceParent: {fileID: 1517254607135314592, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
   hitParticle: {fileID: 8307181888699059583, guid: ba0f61d23748a7f49b2d153da5a812b9, type: 3}
 --- !u!114 &-5265338082460505737
 MonoBehaviour:
@@ -159,7 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a42dc6ebca7d52d40a73f82a8b857dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Rigidbody2D: {fileID: 0}
 --- !u!114 &9103119183453635078
 MonoBehaviour:
   m_ObjectHideFlags: 0
