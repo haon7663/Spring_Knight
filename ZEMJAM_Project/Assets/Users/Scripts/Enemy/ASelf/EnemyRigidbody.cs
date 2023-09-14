@@ -14,13 +14,18 @@ public class EnemyRigidbody : MonoBehaviour
         if (TryGetComponent(out Rigidbody2D rigid))
             m_Rigidbody2D = rigid;
     }
-    public IEnumerator BouncedOff(Vector3 velocity)
+    public IEnumerator BouncedOff(Transform target, float distance)
     {
+        Debug.Log("target: " + target + "distance: " + distance);
+        if (TryGetComponent(out PeriodicMovement periodic))
+            periodic.enabled = false;
+
         gameObject.layer = 9;
 
         m_Rigidbody2D.mass = 1;
-        m_Rigidbody2D.velocity = velocity * 1.5f;
         m_Rigidbody2D.drag = 0;
+        Vector3 direction = (target.position - transform.position).normalized;
+        m_Rigidbody2D.velocity = new Vector2(direction.x, direction.y) * -distance;
 
         yield return StartCoroutine(m_EnemyBundle.sprite.DeathFade());
 
