@@ -7,7 +7,7 @@ public class DefenceManager : MonoBehaviour
     public static DefenceManager Inst { get; private set; }
     void Awake() => Inst = this;
 
-    public Transform Canvas;
+    public Transform defenceBundle;
 
     public Vector2 GetDefPosition(int index, int defence)
     {
