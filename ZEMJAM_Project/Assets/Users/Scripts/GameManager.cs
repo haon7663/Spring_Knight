@@ -17,10 +17,10 @@ public class GameManager : MonoBehaviour
 
     public int curPaze;
     public int maxPaze;
-    float enemySummonCount;
-    int managerHealth = 3;
-    int managerPower = 3;
-    int summonCount = 3;
+    public float enemySummonCount;
+    public int managerHealth = 3;
+    public int managerPower = 3;
+    public int summonCount = 3;
 
     void Awake()
     {
@@ -54,7 +54,9 @@ public class GameManager : MonoBehaviour
         HealthManager.Inst.SetHealth(2);
         HealthManager.Inst.curhp = managerHealth;
         HealthManager.Inst.OnHealth(1);
-        UIManager.Inst.SetPazeGrid(curPaze, maxPaze);
+
+        UIManager.Inst.SetPowerGrid(managerPower);
+        UIManager.Inst.SetPaze(curPaze, maxPaze);
 
         isSetting = false;
     }
