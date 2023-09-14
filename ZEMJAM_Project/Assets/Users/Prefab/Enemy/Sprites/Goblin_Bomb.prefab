@@ -34,7 +34,7 @@ Transform:
   m_GameObject: {fileID: 1096869984674747128}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 2103521503
   m_SortingLayer: 1
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 21e263c6849fff7428b183eaa9c75b9b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7300c8abf4019de439fc9b64beb78b64, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -132,20 +132,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd71c11da0af654bba64b340fc61fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EnemyBundle: {fileID: 0}
   defence: 0
   minDefence: 2
   maxDefence: 0
-  defences:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  defenceParent: {fileID: 1383085560851913388, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
+  defenceParent: {fileID: 1517254607135314592, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
   hitParticle: {fileID: 8307181888699059583, guid: ba0f61d23748a7f49b2d153da5a812b9, type: 3}
 --- !u!114 &2792018219024196534
 MonoBehaviour:
@@ -159,7 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a42dc6ebca7d52d40a73f82a8b857dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Rigidbody2D: {fileID: 0}
 --- !u!114 &1096869984674747129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,15 +178,15 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.5515151, y: 1.5515151}
+    pivot: {x: 0.49, y: 0.44}
+    oldSize: {x: 3.125, y: 3.125}
     newSize: {x: 1, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1, y: 1.45}
+  m_Size: {x: 0.81323475, y: 1.2518173}
   m_EdgeRadius: 0
 --- !u!50 &1096869984674747130
 Rigidbody2D:
