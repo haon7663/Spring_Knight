@@ -22,7 +22,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] RectTransform powerGrid;
     [SerializeField] Text powerText;
 
-    public RectTransform pazeRect, powerRect;
+    [Space]
+    [Header("SetProperties")]
+    [SerializeField] Image propertiesWindow;
+    [SerializeField] RectTransform propertiesPanel;
+
+    RectTransform pazeRect, powerRect;
+    public bool onProperties;
     bool onPower;
 
     void Start()
@@ -30,6 +36,29 @@ public class UIManager : MonoBehaviour
         pazeRect = pazeBar.transform.parent.GetComponent<RectTransform>();
         powerRect = powerBar.transform.parent.GetComponent<RectTransform>();
         SwapUI(false, 0.25f);
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.D))
+        {
+            SetProperties(!onProperties);
+        }
+    }
+
+    public void SetProperties(bool onProperties)
+    {
+        this.onProperties = onProperties;
+        if (onProperties)
+        {
+            propertiesWindow.DOFade(0.7f, 0.25f).SetUpdate(true);
+            propertiesPanel.DOAnchorPosY(0, 0.25f).SetUpdate(true);
+        }
+        else
+        {
+            propertiesWindow.DOFade(0, 0.25f).SetUpdate(true);
+            propertiesPanel.DOAnchorPosY(1600, 0.25f).SetUpdate(true);
+        }
     }
 
     public void SetPaze(int curPaze, int maxPaze)
@@ -78,7 +107,6 @@ public class UIManager : MonoBehaviour
             powerFilled.DOFillAmount(fillValue, 0.3f);
         }
     }
-
     public void SwapUI(bool onPower, float time)
     {
         this.onPower = onPower;

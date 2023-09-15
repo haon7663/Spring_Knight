@@ -120,6 +120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9549ad0a586128e49b3138fe0c57de53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultMaterial: {fileID: 2100000, guid: 9a09c6ea159d3214a94e42196c56e7e7, type: 2}
+  whiteMaterial: {fileID: 2100000, guid: b85327a6ec4a4da4ab1898277ed7180c, type: 2}
   doFlip: 0
 --- !u!114 &2881822804465229031
 MonoBehaviour:

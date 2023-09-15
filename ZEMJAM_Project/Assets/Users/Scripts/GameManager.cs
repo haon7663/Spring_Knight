@@ -1,10 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,15 +9,20 @@ public class GameManager : MonoBehaviour
 
     public PlayerController m_PlayerController;
 
+    public enum GameState { Loading, Pause, Play }
+    public GameState m_GameState;
+
     public bool isLoadScene;
     public bool isSetting;
 
+    [Space]
+    [Header("Stats")]
     public int curPaze;
     public int maxPaze;
-    public float enemySummonCount;
     public int managerHealth = 3;
     public int managerPower = 3;
     public int summonCount = 3;
+    public float enemySummonCount;
 
     void Awake()
     {
@@ -42,6 +44,10 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    public void ChangeState(GameState gameState)
+    {
+        m_GameState = gameState;
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {

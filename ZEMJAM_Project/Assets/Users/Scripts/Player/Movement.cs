@@ -81,11 +81,12 @@ public class Movement : MonoBehaviour
             return;
         }
 
-        int totalDamage = collision.transform.GetComponent<EnemyDefence>().AttemptAttack(bouncedCount + 1);
+        var enemy = collision.transform.GetComponent<EnemyDefence>();
+        int totalDamage = enemy.AttemptAttack(bouncedCount + 1);
         if (totalDamage < 0)
             FailedAttack(collision);
         else
-            SucceedAttack(collision, totalDamage);
+            SucceedAttack(collision, enemy.defence);
     }
     public void CrashWall(Collision2D collision)
     {
@@ -134,12 +135,11 @@ public class Movement : MonoBehaviour
 
         combo.sprite = m_ComboSprite[bouncedCount > 14 ? 14 : bouncedCount];
         combo.transform.position += new Vector3(transform.position.x > 0 ? -0.75f : 0.75f, transform.position.y > 0 ? -0.7f : 1f);
-        combo.transform.localScale = new Vector3(1f + (float)bouncedCount / 25f, 1f + (float)bouncedCount / 25f, 1);
 
         bouncedCount++;
     }
 
-    public void SucceedAttack(Collision2D collision, int totalDamage)
+    public void SucceedAttack(Collision2D collision, int defence)
     {
         var saveVelocity = normalVelocity;
         var reflectVelocity = MoveReflect(collision);
@@ -151,7 +151,7 @@ public class Movement : MonoBehaviour
 
         m_SetAnimation.AttackTrigger();
         attackTimer = 0.35f;
-        CinemachineShake.Instance.ShakeCamera(12, 0.25f);
+        CinemachineShake.Instance.ShakeCamera(10 + defence, 0.25f + defence*0.02f);
         m_SetLight.SuddenLight(0.8f, 0.4f);
         collision.transform.GetComponent<EnemyDefence>().OnDamage(transform, saveVelocity);
         ComboPlus();
