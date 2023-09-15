@@ -9,6 +9,7 @@ public class Fruit : Item
     public override void UseItem()
     {
         Movement.Inst.count += m_Count;
+        UIManager.Inst.SetPower(Movement.Inst.count);
         Destroy(gameObject);
     }
 }
