@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 6135692410442754914}
   - component: {fileID: 1096869984674747130}
   - component: {fileID: -2926060319527803436}
+  - component: {fileID: 4606017376057083417}
   m_Layer: 7
   m_Name: Goblin_Bomb
   m_TagString: Enemy
@@ -305,3 +306,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4606017376057083417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096869984674747128}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b356a46d1481e54fb257ea80c7611b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+  outlineSize: 1
