@@ -43,22 +43,20 @@ public class PlayerSpriteRenderer : MonoBehaviour
                 m_SpriteRenderer.flipX = true;
         }
 
-        /*if (m_Movement.count > 0)
+        if (m_Movement.count > 0)
         {
             var bounceCount = m_Movement.bouncedCount;
             afterTimer += Time.deltaTime;
             if (afterTimer > 0.05f)
             {
-                if (bounceCount >= 3)
+                if (bounceCount > 4)
                 {
                     SummonAfterImage(m_SpriteRenderer);
-                    if (bounceCount >= 10)
-                        SummonAfterImage(m_SpinSpriteRenderer);
 
                     afterTimer = 0;
                 }
             }
-        }*/
+        }
     }
 
     public void SetTransformFlip(Transform target)
