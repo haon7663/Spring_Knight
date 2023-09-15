@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using DG.Tweening;
-using Cinemachine;
+using UnityEngine.Rendering.Universal;
 
 public class Movement : MonoBehaviour
 {
@@ -15,6 +12,7 @@ public class Movement : MonoBehaviour
     SetAnimation m_SetAnimation;
     PlayerSpriteRenderer m_PlayerSpriteRenderer;
     Collison m_Collison;
+    SetLight m_SetLight;
 
     public Sprite[] m_ComboSprite;
     public GameObject m_Combo;
@@ -40,6 +38,7 @@ public class Movement : MonoBehaviour
         m_SetAnimation = GetComponent<SetAnimation>();
         m_PlayerSpriteRenderer = GetComponent<PlayerSpriteRenderer>();
         m_Collison = GetComponent<Collison>();
+        m_SetLight = GetComponent<SetLight>();
     }
 
     void Update()
@@ -86,7 +85,7 @@ public class Movement : MonoBehaviour
         if (totalDamage < 0)
             FailedAttack(collision);
         else
-            StartCoroutine(SucceedAttack(collision, totalDamage));
+            SucceedAttack(collision, totalDamage);
     }
     public void CrashWall(Collision2D collision)
     {
@@ -106,6 +105,7 @@ public class Movement : MonoBehaviour
             }
             SetNormalVelocity(Vector2.zero);
             HealthManager.Inst.OnFade(true);
+            UIManager.Inst.SwapUI(false, 0.25f);
 
             count = 0;
         }
@@ -139,17 +139,12 @@ public class Movement : MonoBehaviour
         bouncedCount++;
     }
 
-    public IEnumerator SucceedAttack(Collision2D collision, int totalDamage)
+    public void SucceedAttack(Collision2D collision, int totalDamage)
     {
         var saveVelocity = normalVelocity;
         var reflectVelocity = MoveReflect(collision);
         m_PlayerSpriteRenderer.SetTransformFlip(collision.transform);
-        isIgnoreCollison = true;
         Time.timeScale = 0.05f;
-        yield return YieldInstructionCache.WaitForFixedUpdate;
-
-        isIgnoreCollison = false;
-
         var slash = Instantiate(fireSlash, transform.position, Quaternion.identity).transform;
         slash.localScale = new Vector2(collision.transform.position.x > transform.position.x ? 1 : -1, 1);
         Instantiate(fireHitEffect, collision.transform.position, Quaternion.Euler(0, 0, Random.Range(0, 359)));
@@ -157,6 +152,7 @@ public class Movement : MonoBehaviour
         m_SetAnimation.AttackTrigger();
         attackTimer = 0.35f;
         CinemachineShake.Instance.ShakeCamera(12, 0.25f);
+        m_SetLight.SuddenLight(0.8f, 0.4f);
         collision.transform.GetComponent<EnemyDefence>().OnDamage(transform, saveVelocity);
         ComboPlus();
 
