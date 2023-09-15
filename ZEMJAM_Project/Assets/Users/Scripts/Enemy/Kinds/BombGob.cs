@@ -12,5 +12,6 @@ public class BombGob : EnemyDestroy
         Movement player = GameObject.FindGameObjectWithTag("Player").GetComponent<Movement>();
         player.boostPower = 3;
         player.count += 3;
+        UIManager.Inst.SetPower(player.count);
     }
 }
