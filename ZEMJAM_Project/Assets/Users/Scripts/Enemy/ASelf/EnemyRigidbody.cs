@@ -16,7 +16,6 @@ public class EnemyRigidbody : MonoBehaviour
     }
     public IEnumerator BouncedOff(Transform target, float distance)
     {
-        Debug.Log("target: " + target + "distance: " + distance);
         if (TryGetComponent(out PeriodicMovement periodic))
             periodic.enabled = false;
 
