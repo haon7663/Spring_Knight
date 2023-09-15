@@ -20,6 +20,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] Transform powerBar;
     [SerializeField] Image powerFilled;
     [SerializeField] RectTransform powerGrid;
+    [SerializeField] Text powerText;
+
+    public RectTransform pazeRect, powerRect;
+    bool onPower;
+
+    void Start()
+    {
+        pazeRect = pazeBar.transform.parent.GetComponent<RectTransform>();
+        powerRect = powerBar.transform.parent.GetComponent<RectTransform>();
+        SwapUI(false, 0.25f);
+    }
 
     public void SetPaze(int curPaze, int maxPaze)
     {
@@ -49,6 +60,31 @@ public class UIManager : MonoBehaviour
     public void SetPower(float curPower)
     {
         float maxPower = GameManager.Inst.managerPower - 1;
-        powerFilled.DOFillAmount((curPower-1) / maxPower, 0.3f);
+        var value = curPower - 1 - maxPower;
+        var fillValue = (curPower - 1) / maxPower;
+        if (value > 0)
+        {
+            DOTween.Kill(powerFilled);
+            powerText.text = " +" + value.ToString();
+            powerText.rectTransform.DOAnchorPosX(93f, 0.15f);
+            powerText.DOFade(1, 0.1f);
+            powerFilled.DOFillAmount(1, 0.02f);
+        }
+        else
+        {
+            DOTween.Kill(powerFilled);
+            powerText.rectTransform.DOAnchorPosX(12, 0.15f);
+            powerText.DOFade(0, 0.1f);
+            powerFilled.DOFillAmount(fillValue, 0.3f);
+        }
+    }
+
+    public void SwapUI(bool onPower, float time)
+    {
+        this.onPower = onPower;
+        pazeRect.gameObject.SetActive(!onPower);
+        powerRect.gameObject.SetActive(onPower);
+        pazeRect.DOAnchorPosY(onPower ? 1000 : 800, time);
+        powerRect.DOAnchorPosY(onPower ? 775 : 1000, time);
     }
 }
