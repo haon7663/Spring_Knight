@@ -12,12 +12,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] RectTransform joyPanel;
     [SerializeField] RectTransform joyStick;
-    [SerializeField] RectTransform powerBar;
-    [SerializeField] Image powerFill;
-    [SerializeField] Text powerText;
     [SerializeField] Transform directionArrow;
 
-    [SerializeField] Vector3[] offset;
     [SerializeField] LayerMask enemyLayer;
 
     Camera mainCamera;
@@ -73,7 +69,6 @@ public class PlayerController : MonoBehaviour
                 }
 
                 SetDistance();
-                SetPowerBar();
                 SetJoyArrow();
 
                 m_PlayerSpriteRenderer.SetVectorFlip(startTouchPos, endTouchPos);
@@ -147,13 +142,6 @@ public class PlayerController : MonoBehaviour
             angle = angle <= -87 && angle > -180 ? -87 : angle;
         }
     }
-    void SetPowerBar()
-    {
-        powerBar.transform.position = transform.position + new Vector3(transform.position.x > 0 ? -0.7f : 0.7f, transform.position.y > 0 ? -0.4f : 0.4f);
-        fill = Mathf.Lerp(fill, power / maxPower, Time.deltaTime * 12);
-        powerFill.fillAmount = fill;
-        powerText.text = power.ToString();
-    }
     void SetJoyArrow()
     {
         var inputDir = endTouchPos - startTouchPos;
@@ -165,28 +153,19 @@ public class PlayerController : MonoBehaviour
         joyPanel.position = startTouchPos;
         joyStick.position = clampedDir + startTouchPos;
 
-        for (int i = 0; i < offset.Length; i++)
+        var ray = m_Collison.rayOffset;
+        for (int i = 0; i < ray.Length; i++)
         {
-            var ray = Physics2D.Raycast(transform.position + offset[i], -inputDir.normalized, 100, enemyLayer);
-            if (ray)
-            {
-                Debug.Log(ray.transform.name);
-                ray.transform.GetComponent<EnemySprite>().HitRay();
-            }
+            var hit = Physics2D.Raycast(transform.position + ray[i], -inputDir.normalized, 100, enemyLayer);
+            if (hit)
+
+                hit.transform.GetComponent<EnemySprite>().HitRay();
         }
     }
     void SetUIActive(bool value)
     {
         joyPanel.gameObject.SetActive(value);
-        powerBar.gameObject.SetActive(value);
         directionArrow.gameObject.SetActive(value);
     }
     #endregion
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-            for (int i = 0; i < offset.Length; i++)
-                Gizmos.DrawRay(transform.position + offset[i], -(endTouchPos - startTouchPos).normalized * 100);
-    }
 }

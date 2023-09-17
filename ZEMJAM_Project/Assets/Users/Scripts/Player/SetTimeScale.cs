@@ -5,8 +5,8 @@ using UnityEngine;
 public class SetTimeScale : MonoBehaviour
 {
     Rigidbody2D m_Rigidbody2D;
+    Collison m_Collison;
 
-    [SerializeField] Vector3[] offset;
     [SerializeField] LayerMask enemyLayer;
 
     [SerializeField] float defaultTimeScale;
@@ -15,6 +15,7 @@ public class SetTimeScale : MonoBehaviour
     void Start()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
+        m_Collison = GetComponent<Collison>();
     }
 
     void LateUpdate()
@@ -35,18 +36,12 @@ public class SetTimeScale : MonoBehaviour
     {
         if (GameManager.Inst.onDeath) return;
 
-        for (int i = 0; i < offset.Length; i++)
-            if (Physics2D.Raycast(transform.position + offset[i], m_Rigidbody2D.velocity, 1, enemyLayer) && Movement.Inst.count > 0)
+        var ray = m_Collison.rayOffset;
+        for (int i = 0; i < ray.Length; i++)
+            if (Physics2D.Raycast(transform.position + ray[i], m_Rigidbody2D.velocity, 1, enemyLayer) && Movement.Inst.count > 0)
             {
                 Time.timeScale = 0.15f;
                 setTime = 0.15f;
             }
-    }
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.cyan;
-        if (m_Rigidbody2D)
-            for (int i = 0; i < offset.Length; i++)
-                Gizmos.DrawRay(transform.position + offset[i], m_Rigidbody2D.velocity);
     }
 }

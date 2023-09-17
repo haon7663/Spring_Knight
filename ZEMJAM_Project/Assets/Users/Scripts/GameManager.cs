@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum GameMode { STAGE, INFINITE, GOLD }
 public enum GameState { LOADING, PAUSE, PLAY, DEATH }
 public class GameManager : MonoBehaviour
 {
@@ -10,13 +11,14 @@ public class GameManager : MonoBehaviour
 
     public PlayerController m_PlayerController;
 
+    public GameMode m_GameMode;
     public GameState m_GameState;
 
     public bool isLoadScene;
     public bool isSetting;
 
     [Space]
-    [Header("Stats")]
+    [Header("State")]
     public bool onPlay;
     public bool onPause;
     public bool onDeath;
@@ -25,10 +27,14 @@ public class GameManager : MonoBehaviour
     [Header("Stats")]
     public int curPaze;
     public int maxPaze;
-    public int managerHealth = 3;
-    public int managerPower = 3;
+    public int maxHealth = 3;
+    public int maxPower = 3;
     public int summonCount = 3;
     public float enemySummonCount;
+
+    [Space]
+    [Header("Time")]
+    public float maxTimer = 30;
 
     void Awake()
     {
@@ -85,13 +91,13 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
 
         m_PlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        m_PlayerController.maxPower = managerPower;
+        m_PlayerController.maxPower = maxPower;
 
         HealthManager.Inst.SetHealth(2);
-        HealthManager.Inst.curhp = managerHealth;
+        HealthManager.Inst.curhp = maxHealth;
         HealthManager.Inst.OnHealth(1);
 
-        UIManager.Inst.SetPowerGrid(managerPower);
+        UIManager.Inst.SetPowerGrid(maxPower);
         UIManager.Inst.SetPaze(curPaze, maxPaze);
 
         isSetting = false;
@@ -132,8 +138,8 @@ public class GameManager : MonoBehaviour
     public void SetGame()
     {
         curPaze = 0;
-        managerPower = 3;
-        managerHealth = 3;
+        maxPower = 3;
+        maxHealth = 3;
         enemySummonCount = 3;
         TileManager.Inst.tileSize = 7;
     }
@@ -145,10 +151,10 @@ public class GameManager : MonoBehaviour
         Fade.Inst.Fadein();
         yield return new WaitForSeconds(0.1f);
 
-        managerHealth = HealthManager.Inst.curhp;
+        maxHealth = HealthManager.Inst.curhp;
         TileManager.Inst.tileSize += 2;
         enemySummonCount += 0.75f;
-        managerPower += 1;
+        maxPower += 1;
         summonCount = 3;
         curPaze++;
 

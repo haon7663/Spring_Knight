@@ -23,6 +23,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] Text powerText;
 
     [Space]
+    [Header("SetScore")]
+    [SerializeField] Text scoreText;
+
+    [Space]
+    [Header("SetTimer")]
+    [SerializeField] Image timeFilled;
+    [SerializeField] Text timeText;
+    float timer;
+
+    [Space]
     [Header("SetProperties")]
     [SerializeField] Image propertiesWindow;
     [SerializeField] RectTransform propertiesPanel;
@@ -43,6 +53,11 @@ public class UIManager : MonoBehaviour
         {
             SetProperties(!onProperties);
         }
+
+        if (!GameManager.Inst.onPlay) return;
+        timeFilled.fillAmount = timer / GameManager.Inst.maxTimer;
+        timeText.text = timer.ToString("F1") + "sec";
+        timer -= Time.deltaTime;
     }
 
     public void SetProperties(bool onProperties)
@@ -90,7 +105,7 @@ public class UIManager : MonoBehaviour
     }
     public void SetPower(float curPower)
     {
-        float maxPower = GameManager.Inst.managerPower - 1;
+        float maxPower = GameManager.Inst.maxPower - 1;
         var value = curPower - 1 - maxPower;
         var fillValue = (curPower - 1) / maxPower;
         if (value > 0)

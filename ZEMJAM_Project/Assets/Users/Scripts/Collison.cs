@@ -10,6 +10,7 @@ public class Collison : MonoBehaviour
     [Space]
     [Header("Collisions")]
     [SerializeField] BoxCollider2D m_BoxCollider2D;
+    public Vector3[] rayOffset;
     public bool onCollision;
     public bool onUp;
     public bool onDown;
