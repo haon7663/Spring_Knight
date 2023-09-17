@@ -19,7 +19,6 @@ public class Movement : MonoBehaviour
 
     public int bouncedCount;
     public float count;
-    public float boostPower;
     public float multiSpeed = 1;
 
     public bool isIgnoreCollison;
@@ -28,6 +27,7 @@ public class Movement : MonoBehaviour
 
     [SerializeField] GameObject fireSlash;
     [SerializeField] GameObject fireHitEffect;
+    [SerializeField] Transform playerFollow;
 
     Vector2 normalVelocity, lastVelocity;
 
@@ -43,13 +43,14 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Inst.isSetting || HealthManager.Inst.curhp <= 0) return;
+        if (GameManager.Inst.isSetting || GameManager.Inst.onDeath) return;
 
         CinemachineManager.Inst.isJoom = count > 0;
 
+        lastVelocity = normalVelocity * multiSpeed;
         multiSpeed = Mathf.Lerp(multiSpeed, 1, Time.deltaTime);
 
-        lastVelocity = normalVelocity * multiSpeed;
+        playerFollow.position = (Vector2)transform.position + m_Rigidbody2D.velocity * 0.15f;
 
         isAttacking = attackTimer > 0;
         attackTimer -= Time.deltaTime;
@@ -143,6 +144,7 @@ public class Movement : MonoBehaviour
     {
         var saveVelocity = normalVelocity;
         var reflectVelocity = MoveReflect(collision);
+        SetMultiSpeed(1.25f);
         m_PlayerSpriteRenderer.SetTransformFlip(collision.transform);
         Time.timeScale = 0.05f;
         var slash = Instantiate(fireSlash, transform.position, Quaternion.identity).transform;
@@ -156,7 +158,6 @@ public class Movement : MonoBehaviour
         collision.transform.GetComponent<EnemyDefence>().OnDamage(transform, saveVelocity);
         ComboPlus();
 
-        SetMultiSpeed(1.25f);
 
         StartCoroutine(m_Collison.CapsuleAble());
         SetNormalVelocity(reflectVelocity);
@@ -179,40 +180,42 @@ public class Movement : MonoBehaviour
     {
         HealthManager.Inst.OnDamage();
         StartCoroutine(m_PlayerSpriteRenderer.GracePerioding());
+        CinemachineShake.Instance.ShakeCamera(15, 0.3f);
+
+        m_SetAnimation.Hit(true);
+
+        Time.timeScale = 0.15f;
+        if (HealthManager.Inst.curhp <= 0)
+        {
+            Time.timeScale = 0.035f;
+            GameManager.Inst.ChangeState(GameState.DEATH);
+        }
 
         yield return StartCoroutine(Bounced(target));
 
-        /*if (HealthManager.Inst.curhp <= 0)
-        {
-            m_Animator.SetBool("isDeath", true);
-            if(m_Collison.onDown && m_Animator.GetBool("isDeath"))
-            {
-                Fade.instance.Fadein();
-                Invoke(nameof(Death), 0.5f);
-            }
-        }*/
+        if (HealthManager.Inst.curhp > 0)
+            m_SetAnimation.Hit(false);
+        else
+            StartCoroutine(m_SetAnimation.Death());
     }
     public IEnumerator Bounced(Transform target)
     {
         count = 0;
         gameObject.layer = 8;
 
+        isIgnoreCollison = HealthManager.Inst.curhp <= 0;
+        m_PlayerSpriteRenderer.SetTransformFlip(target);
         m_Rigidbody2D.velocity = Vector2.zero;
         m_Rigidbody2D.AddForce(new Vector2(target.position.x - transform.position.x > 0 ? -0.5f : 0.5f, 1), ForceMode2D.Impulse);
         normalVelocity = m_Rigidbody2D.velocity;
         m_Rigidbody2D.gravityScale = 5;
 
-        float slopeTime = 0.5f;
-
         if (HealthManager.Inst.curhp <= 0)
             while (!m_Collison.onDown)
                 yield return YieldInstructionCache.WaitForFixedUpdate;
         else
-            while (!m_Collison.onCollision || slopeTime > 0)
-            {
-                slopeTime -= Time.deltaTime;
+            while (!m_Collison.onCollision)
                 yield return YieldInstructionCache.WaitForFixedUpdate;
-            }
 
         m_Rigidbody2D.gravityScale = 0;
         lastVelocity = Vector2.zero;
@@ -232,7 +235,7 @@ public class Movement : MonoBehaviour
         multiSpeed = value;
     }
 
-    void Death()
+    public void Death()
     {
         SceneManager.LoadScene("Death");
     }

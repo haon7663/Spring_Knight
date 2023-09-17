@@ -12,13 +12,14 @@ public class CinemachineManager : MonoBehaviour
     public CinemachineVirtualCamera cinevirtual;
 
     public Transform player;
+    public Transform playerFollow;
     public Transform tile;
 
     public bool isJoom;
     float realCineSize;
     float cinemacineSize;
 
-    float tileSize, joomSize;
+    float tileSize, joomSize, deathSize;
 
     void Start()
     {
@@ -26,17 +27,18 @@ public class CinemachineManager : MonoBehaviour
         realCineSize = tileSize;
         cinevirtual.m_Lens.OrthographicSize = realCineSize;
         cinevirtual.Follow = tile;
+        joomSize = tileSize * 0.85f;
+        deathSize = tileSize * 0.7f;
     }
 
     void LateUpdate()
     {
-        tileSize = TileManager.Inst.tileSize;
-        joomSize = tileSize * 0.8f;
-        cinemacineSize = isJoom ? joomSize : tileSize;
+        if (!SettingManager.Inst.onCameraFollow) return;
+        cinemacineSize = GameManager.Inst.onDeath ? deathSize : isJoom ? joomSize : tileSize;
 
         realCineSize = Mathf.Lerp(realCineSize, cinemacineSize, Time.deltaTime * 4);
         cinevirtual.m_Lens.OrthographicSize = realCineSize;
 
-        cinevirtual.Follow = isJoom ? player : tile;
+        cinevirtual.Follow = GameManager.Inst.onDeath ? player : isJoom ? playerFollow : tile;
     }
 }

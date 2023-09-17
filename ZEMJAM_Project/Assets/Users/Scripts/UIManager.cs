@@ -29,7 +29,6 @@ public class UIManager : MonoBehaviour
 
     RectTransform pazeRect, powerRect;
     public bool onProperties;
-    bool onPower;
 
     void Start()
     {
@@ -51,11 +50,14 @@ public class UIManager : MonoBehaviour
         this.onProperties = onProperties;
         if (onProperties)
         {
+            GameManager.Inst.ChangeState(GameState.PAUSE);
+            propertiesPanel.anchoredPosition = new Vector2(0, 1600);
             propertiesWindow.DOFade(0.7f, 0.25f).SetUpdate(true);
             propertiesPanel.DOAnchorPosY(0, 0.25f).SetUpdate(true);
         }
         else
         {
+            GameManager.Inst.ChangeState(GameState.PLAY);
             propertiesWindow.DOFade(0, 0.25f).SetUpdate(true);
             propertiesPanel.DOAnchorPosY(1600, 0.25f).SetUpdate(true);
         }
@@ -109,7 +111,6 @@ public class UIManager : MonoBehaviour
     }
     public void SwapUI(bool onPower, float time)
     {
-        this.onPower = onPower;
         pazeRect.gameObject.SetActive(!onPower);
         powerRect.gameObject.SetActive(onPower);
         pazeRect.DOAnchorPosY(onPower ? 1000 : 800, time);

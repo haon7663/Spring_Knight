@@ -33,7 +33,7 @@ public class Collison : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (Movement.Inst.isIgnoreCollison) return;
+        if (Movement.Inst.isIgnoreCollison || GameManager.Inst.onDeath) return;
 
         if (collision.transform.CompareTag("Enemy"))
             Movement.Inst.CrashEnemy(collision);

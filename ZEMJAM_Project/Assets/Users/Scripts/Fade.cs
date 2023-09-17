@@ -13,13 +13,17 @@ public class Fade : MonoBehaviour
 
     private void Start()
     {
-        Fadeout();
+        StartCoroutine(Fadeout());
     }
 
-    void Fadeout()
+    IEnumerator Fadeout()
     {
         m_Image.enabled = true; 
         m_Image.DOFade(0, 0.1f);
+        yield return YieldInstructionCache.WaitForSeconds(0.1f);
+        GameManager.Inst.ChangeState(GameState.PAUSE);
+
+        UIManager.Inst.SetProperties(GameManager.Inst.curPaze != 0);
     }
     public void Fadein(float time = 0.1f)
     {

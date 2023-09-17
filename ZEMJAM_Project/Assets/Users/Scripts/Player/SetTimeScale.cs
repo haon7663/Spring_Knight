@@ -10,6 +10,7 @@ public class SetTimeScale : MonoBehaviour
     [SerializeField] LayerMask enemyLayer;
 
     [SerializeField] float defaultTimeScale;
+    float setTime;
 
     void Start()
     {
@@ -18,20 +19,30 @@ public class SetTimeScale : MonoBehaviour
 
     void LateUpdate()
     {
-        if (Movement.Inst.isIgnoreCollison) return;
+        if (GameManager.Inst.onPause)
+        {
+            Time.timeScale = 0;
+            return;
+        }
 
-        var setTime = defaultTimeScale;
+        setTime = defaultTimeScale;
+        SetRigidTime();
+
+        Time.timeScale = Mathf.Lerp(Time.timeScale, setTime, Time.deltaTime * 9);
+    }
+
+    void SetRigidTime()
+    {
+        if (GameManager.Inst.onDeath) return;
+
         for (int i = 0; i < offset.Length; i++)
             if (Physics2D.Raycast(transform.position + offset[i], m_Rigidbody2D.velocity, 1, enemyLayer) && Movement.Inst.count > 0)
             {
                 Time.timeScale = 0.15f;
                 setTime = 0.15f;
             }
-
-
-        Time.timeScale = Mathf.Lerp(Time.timeScale, setTime, Time.deltaTime * 9);
     }
-    private void OnDrawGizmos()
+    void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
         if (m_Rigidbody2D)

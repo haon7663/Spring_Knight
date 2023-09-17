@@ -31,10 +31,26 @@ public class SetAnimation : MonoBehaviour
     {
         m_Animator.SetTrigger("attack");
     }
-
     public void Spin(bool value)
     {
         m_Animator.SetBool("isSpin", value);
         if(value) m_Animator.SetTrigger("spin");
+    }
+    public void Ready(bool value)
+    {
+        m_Animator.SetBool("isReady", value);
+    }
+
+    public void Hit(bool isHit)
+    {
+        m_Animator.SetBool("isHit", isHit);
+    }
+    public IEnumerator Death()
+    {
+        m_Animator.SetBool("isDeath", true);
+        m_Animator.SetTrigger("death");
+        yield return YieldInstructionCache.WaitForSeconds(1f);
+        Fade.Inst.Fadein();
+        Invoke(nameof(m_Movement.Death), 0.2f);
     }
 }

@@ -15,12 +15,13 @@ GameObject:
   - component: {fileID: 2881822804465229031}
   - component: {fileID: 3259653393102852605}
   - component: {fileID: 3990714536910659905}
+  - component: {fileID: 6879224043518350074}
   - component: {fileID: 1363948505708419002}
   - component: {fileID: 2626686971624670763}
   - component: {fileID: 9000196581056627383}
   - component: {fileID: -6592035485479434090}
   m_Layer: 7
-  m_Name: OakBarrel
+  m_Name: BigSloth
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_SortingLayerID: 2103521503
   m_SortingLayer: 1
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: dfe49c08d0e3253418215637fd827875, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e6fa875a80ab23f4f9adcf1d12f71ca6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -122,6 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultMaterial: {fileID: 2100000, guid: 9a09c6ea159d3214a94e42196c56e7e7, type: 2}
   whiteMaterial: {fileID: 2100000, guid: b85327a6ec4a4da4ab1898277ed7180c, type: 2}
+  rayMaterial: {fileID: 0}
   doFlip: 0
 --- !u!114 &2881822804465229031
 MonoBehaviour:
@@ -136,8 +138,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defence: 0
-  minDefence: 3
-  maxDefence: 4
+  minDefence: 5
+  maxDefence: 6
   defenceParent: {fileID: 1517254607135314592, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
   hitParticle: {fileID: 8307181888699059583, guid: ba0f61d23748a7f49b2d153da5a812b9, type: 3}
 --- !u!114 &3259653393102852605
@@ -164,8 +166,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b19ed7b2b09b9cd4d822bfb4d5328c8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entity: {fileID: 0}
+  entity: {fileID: 1498345847384431939, guid: 3f08258bb346fb64787f5a32312bdde1, type: 3}
   Count: 2
+--- !u!114 &6879224043518350074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7573513761752066226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07303be57725730409de963064f7575a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sinSpeed: 0.5
+  sinValue: 0.15
 --- !u!61 &1363948505708419002
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -179,18 +195,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.025}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.4628571, y: 1.4628571}
+    pivot: {x: 0.477, y: 0.415}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 2.56, y: 2.56}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.225, y: 1.37}
+  m_Size: {x: 0.8468082, y: 0.8454118}
   m_EdgeRadius: 0
 --- !u!50 &2626686971624670763
 Rigidbody2D:
@@ -321,5 +337,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b356a46d1481e54fb257ea80c7611b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+  color: {r: 1, g: 1, b: 1, a: 1}
   outlineSize: 1

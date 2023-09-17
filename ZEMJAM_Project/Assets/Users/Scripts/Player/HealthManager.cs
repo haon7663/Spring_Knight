@@ -49,10 +49,21 @@ public class HealthManager : MonoBehaviour
     }
     public void OnFade(bool isFadeIn)
     {
+        Sequence sequence = DOTween.Sequence();
+
         for (int i = 0; i < maxhp; i++)
         {
-            healths[i].DOFade(isFadeIn ? 1 : 0, 0.25f);
-            healthParents[i].DOFade(isFadeIn ? 1 : 0, 0.25f);
+            sequence.Join(healths[i].DOFade(isFadeIn ? 1 : 0, 0.25f))
+                .Join(healthParents[i].DOFade(isFadeIn ? 1 : 0, 0.25f));
+        }
+        sequence.AppendInterval(0.26f);
+        if (curhp <= 0)
+        {
+            for (int i = 0; i < maxhp; i++)
+            {
+                sequence.Join(healths[i].DOFade(0, 0.25f))
+                    .Join(healthParents[i].DOFade(0, 0.25f));
+            }
         }
     }
     public void OnDamage(int damage = -1)

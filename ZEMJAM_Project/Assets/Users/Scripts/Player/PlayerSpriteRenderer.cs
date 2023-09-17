@@ -28,21 +28,9 @@ public class PlayerSpriteRenderer : MonoBehaviour
 
         SetMaterial();
 
-        if (m_Movement.count <= 0 && m_Collison.onCollision)
-        {
-            if (m_Collison.onRight)
-                m_SpriteRenderer.flipX = true;
-            else if (m_Collison.onLeft)
-                m_SpriteRenderer.flipX = false;
-        }
-        else if(!m_Movement.isAttacking)
-        {
-            if (m_Rigidbody2D.velocity.x > 0)
-                m_SpriteRenderer.flipX = false;
-            else if (m_Rigidbody2D.velocity.x < 0)
-                m_SpriteRenderer.flipX = true;
-        }
+        if (gameObject.layer == 8) return;
 
+        SetFlip();
         if (m_Movement.count > 0)
         {
             var bounceCount = m_Movement.bouncedCount;
@@ -52,16 +40,36 @@ public class PlayerSpriteRenderer : MonoBehaviour
                 if (bounceCount > 4)
                 {
                     SummonAfterImage(m_SpriteRenderer);
-
                     afterTimer = 0;
                 }
             }
         }
     }
 
-    public void SetTransformFlip(Transform target)
+    void SetFlip()
     {
-        m_SpriteRenderer.flipX = transform.position.x > target.position.x;
+        if (m_Movement.count <= 0 && m_Collison.onCollision)
+        {
+            if (m_Collison.onRight)
+                m_SpriteRenderer.flipX = true;
+            else if (m_Collison.onLeft)
+                m_SpriteRenderer.flipX = false;
+        }
+        else if (!m_Movement.isAttacking)
+        {
+            if (m_Rigidbody2D.velocity.x > 0)
+                m_SpriteRenderer.flipX = false;
+            else if (m_Rigidbody2D.velocity.x < 0)
+                m_SpriteRenderer.flipX = true;
+        }
+    }
+    public void SetTransformFlip(Transform target, Transform selfTarget = null)
+    {
+        m_SpriteRenderer.flipX = (selfTarget ? selfTarget.position.x : transform.position.x) > target.position.x;
+    }
+    public void SetVectorFlip(Vector2 target, Vector2 selfTarget)
+    {
+        m_SpriteRenderer.flipX = selfTarget.x > target.x;
     }
     void SummonAfterImage(SpriteRenderer spriteRenderer)
     {

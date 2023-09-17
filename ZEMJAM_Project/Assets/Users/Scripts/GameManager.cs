@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum GameState { LOADING, PAUSE, PLAY, DEATH }
 public class GameManager : MonoBehaviour
 {
     public static GameManager Inst { get; set; }
 
     public PlayerController m_PlayerController;
 
-    public enum GameState { Loading, Pause, Play }
     public GameState m_GameState;
 
     public bool isLoadScene;
     public bool isSetting;
+
+    [Space]
+    [Header("Stats")]
+    public bool onPlay;
+    public bool onPause;
+    public bool onDeath;
 
     [Space]
     [Header("Stats")]
@@ -48,6 +54,30 @@ public class GameManager : MonoBehaviour
     public void ChangeState(GameState gameState)
     {
         m_GameState = gameState;
+        switch(m_GameState)
+        {
+            case GameState.PLAY:
+                Time.timeScale = 1;
+                onPlay = true;
+                onPause = false;
+                break;
+            case GameState.LOADING:
+                Time.timeScale = 1;
+                onPlay = false;
+                onPause = false;
+                break;
+            case GameState.PAUSE:
+                Time.timeScale = 0;
+                onPlay = false;
+                onPause = true;
+                break;
+            case GameState.DEATH:
+                onDeath = true;
+                onPlay = false;
+                onPause = false;
+                break;
+        }
+
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -110,6 +140,7 @@ public class GameManager : MonoBehaviour
     
     IEnumerator MoveScene()
     {
+        ChangeState(GameState.LOADING);
         yield return new WaitForSeconds(1);
         Fade.Inst.Fadein();
         yield return new WaitForSeconds(0.1f);

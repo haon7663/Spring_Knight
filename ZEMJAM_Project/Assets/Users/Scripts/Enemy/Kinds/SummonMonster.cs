@@ -10,7 +10,7 @@ public class SummonMonster : EnemyDestroy
     {
         for (int i = 0; i < Count; i++)
         {
-            GameObject summonedEntity = Instantiate(entity, transform.position, Quaternion.identity);
+            GameObject summonedEntity = Instantiate(entity, transform.position + new Vector3(-0.5f + i, 0), Quaternion.identity);
             SummonManager.Inst.enemyList.Add(summonedEntity);
         }
     }

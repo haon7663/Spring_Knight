@@ -6,20 +6,24 @@ using DG.Tweening;
 public class EnemySprite : MonoBehaviour
 {
     SpriteRenderer m_SpriteRenderer;
+    SpriteOutline m_SpriteOutline;
     Transform playerTransform;
 
     [Header("Materials")]
     [SerializeField] Material defaultMaterial;
     [SerializeField] Material whiteMaterial;
+    [SerializeField] Material rayMaterial;
 
     public bool doFlip;
 
-    float hitTimer;
+    float hitTimer, rayTimer;
 
     void Awake()
     {
         if (TryGetComponent(out SpriteRenderer sprite))
             m_SpriteRenderer = sprite;
+        if (TryGetComponent(out SpriteOutline outline))
+            m_SpriteOutline = outline;
 
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
@@ -39,8 +43,19 @@ public class EnemySprite : MonoBehaviour
 
     void SetMaterial()
     {
-        m_SpriteRenderer.material = hitTimer > 0 ? whiteMaterial : defaultMaterial;
-        if (hitTimer > 0) hitTimer -= Time.deltaTime;
+        bool isHit = rayTimer > 0;
+        m_SpriteRenderer.material = isHit ? rayMaterial : hitTimer > 0 ? whiteMaterial : defaultMaterial;
+        m_SpriteOutline.enabled = isHit;
+
+        if (hitTimer > 0)
+            hitTimer -= Time.deltaTime;
+        if (rayTimer > 0)
+            rayTimer -= Time.deltaTime;
+    }
+
+    public void HitRay()
+    {
+        rayTimer = Time.deltaTime;
     }
 
     IEnumerator GracePeriod()

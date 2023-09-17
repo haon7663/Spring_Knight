@@ -5,9 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class SettingManager : MonoBehaviour
 {
+    public static SettingManager Inst;
+    void Awake() => Inst = this;
+
+    [Space]
+    [Header("SettingBar")]
     [SerializeField] GameObject setting;
     [SerializeField] GameObject defaultSetting;
     [SerializeField] GameObject soundSetting;
+
+    [Space]
+    [Header("PlayerSetting")]
+    public bool onCameraFollow = true;
+    public bool onVibration = false;
 
     Camera mainCamera;
 
@@ -15,11 +25,11 @@ public class SettingManager : MonoBehaviour
     Vector3 saveAngle;
     Vector3 savePos;
 
-    private void Start()
+    void Start()
     {
         mainCamera = Camera.main;
     }
-    private void LateUpdate()
+    void LateUpdate()
     {
         if (setting.activeSelf)
         {
@@ -28,6 +38,13 @@ public class SettingManager : MonoBehaviour
             Time.timeScale = 0;
         }
     }
+
+    void OnApplicationPause(bool pauseStatus)
+    {
+        setting.SetActive(pauseStatus);
+    }
+
+    #region ButtonSetting
     public void OnSetting()
     {
         setting.SetActive(!setting.activeSelf);
@@ -39,10 +56,6 @@ public class SettingManager : MonoBehaviour
             saveTimeScale = Time.timeScale;
         }
         GameManager.Inst.isSetting = setting.activeSelf;
-    }
-    void OnApplicationPause(bool pauseStatus)
-    {
-        setting.SetActive(pauseStatus);
     }
     public void OnReGame()
     {
@@ -59,4 +72,32 @@ public class SettingManager : MonoBehaviour
         defaultSetting.SetActive(!defaultSetting.activeSelf);
         soundSetting.SetActive(!soundSetting.activeSelf);
     }
+    #endregion
+
+    #region Vibartion
+#if UNITY_ANDROID && !UNITY_EDITOR
+    public static AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+    public static AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+    public static AndroidJavaObject vibrator = currentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator");
+#else
+    public static AndroidJavaClass unityPlayer;
+    public static AndroidJavaObject currentActivity;
+    public static AndroidJavaObject vibrator;
+#endif
+    public void Vibrate(long milliseconds)
+    {
+        if (IsAndroid() && onVibration)
+            vibrator.Call("vibrate", milliseconds);
+        else
+            Handheld.Vibrate();
+    }
+    private bool IsAndroid()
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        return true;
+#else
+        return false;
+#endif
+    }
+    #endregion
 }

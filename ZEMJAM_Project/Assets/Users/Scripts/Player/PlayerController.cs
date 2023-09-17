@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
 {
     Movement m_Movement;
     Collison m_Collison;
+    SetAnimation m_SetAnimation;
+    PlayerSpriteRenderer m_PlayerSpriteRenderer;
 
     [SerializeField] RectTransform joyPanel;
     [SerializeField] RectTransform joyStick;
@@ -14,6 +16,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Image powerFill;
     [SerializeField] Text powerText;
     [SerializeField] Transform directionArrow;
+
+    [SerializeField] Vector3[] offset;
+    [SerializeField] LayerMask enemyLayer;
 
     Camera mainCamera;
 
@@ -31,10 +36,13 @@ public class PlayerController : MonoBehaviour
     {
         m_Movement = GetComponent<Movement>();
         m_Collison = GetComponent<Collison>();
+        m_SetAnimation = GetComponent<SetAnimation>();
+        m_PlayerSpriteRenderer = GetComponent<PlayerSpriteRenderer>();
         mainCamera = Camera.main;
     }
     void Update()
     {
+        if (!GameManager.Inst.onPlay) return;
         Dragment();
     }
 
@@ -59,6 +67,7 @@ public class PlayerController : MonoBehaviour
                 {
                     UIManager.Inst.SwapUI(true, 0.25f);
                     SetUIActive(true);
+                    m_SetAnimation.Ready(true);
                     startTouchPos = inputTouchPos;
                     isTouchDown = true;
                 }
@@ -66,12 +75,15 @@ public class PlayerController : MonoBehaviour
                 SetDistance();
                 SetPowerBar();
                 SetJoyArrow();
+
+                m_PlayerSpriteRenderer.SetVectorFlip(startTouchPos, endTouchPos);
             }
             if (Input.GetMouseButtonUp(0) || touch.phase == TouchPhase.Ended)
             {
                 m_Movement.Dash(power, angle);
                 SetUIActive(false);
                 isTouchDown = false;
+                m_SetAnimation.Ready(false);
             }
         }
     }
@@ -152,6 +164,16 @@ public class PlayerController : MonoBehaviour
         var clampedDir = inputMag <= 1.5f ? inputDir : inputDir.normalized * 1.51f;
         joyPanel.position = startTouchPos;
         joyStick.position = clampedDir + startTouchPos;
+
+        for (int i = 0; i < offset.Length; i++)
+        {
+            var ray = Physics2D.Raycast(transform.position + offset[i], -inputDir.normalized, 100, enemyLayer);
+            if (ray)
+            {
+                Debug.Log(ray.transform.name);
+                ray.transform.GetComponent<EnemySprite>().HitRay();
+            }
+        }
     }
     void SetUIActive(bool value)
     {
@@ -160,4 +182,11 @@ public class PlayerController : MonoBehaviour
         directionArrow.gameObject.SetActive(value);
     }
     #endregion
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+            for (int i = 0; i < offset.Length; i++)
+                Gizmos.DrawRay(transform.position + offset[i], -(endTouchPos - startTouchPos).normalized * 100);
+    }
 }

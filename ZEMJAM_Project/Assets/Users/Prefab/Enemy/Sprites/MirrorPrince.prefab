@@ -122,6 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultMaterial: {fileID: 2100000, guid: 9a09c6ea159d3214a94e42196c56e7e7, type: 2}
   whiteMaterial: {fileID: 2100000, guid: b85327a6ec4a4da4ab1898277ed7180c, type: 2}
+  rayMaterial: {fileID: 2100000, guid: b59910d3569c5f848a65e9c538f51fbb, type: 2}
   doFlip: 1
 --- !u!114 &6574170674519425452
 MonoBehaviour:
@@ -319,5 +320,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b356a46d1481e54fb257ea80c7611b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+  color: {r: 1, g: 1, b: 1, a: 1}
   outlineSize: 1
