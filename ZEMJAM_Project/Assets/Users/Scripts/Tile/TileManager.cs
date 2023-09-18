@@ -26,7 +26,7 @@ public class TileManager : MonoBehaviour
 
     void Start()
     {
-        var sizeX = tileSize - 1;
+        var sizeX = tileSize - 3;
         var sizeY = sizeX*2;
         tiles = new Tile[sizeX * sizeY];
 

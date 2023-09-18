@@ -158,7 +158,6 @@ public class PlayerController : MonoBehaviour
         {
             var hit = Physics2D.Raycast(transform.position + ray[i], -inputDir.normalized, 100, enemyLayer);
             if (hit)
-
                 hit.transform.GetComponent<EnemySprite>().HitRay();
         }
     }

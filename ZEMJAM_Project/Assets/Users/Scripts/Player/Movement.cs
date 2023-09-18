@@ -159,7 +159,6 @@ public class Movement : MonoBehaviour
         collision.transform.GetComponent<EnemyDefence>().OnDamage(transform, saveVelocity);
         ComboPlus();
 
-
         StartCoroutine(m_Collison.CapsuleAble());
         SetNormalVelocity(reflectVelocity);
     }
