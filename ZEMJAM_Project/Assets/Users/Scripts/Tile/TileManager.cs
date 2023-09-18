@@ -48,4 +48,13 @@ public class TileManager : MonoBehaviour
     {
         tiles[value].onTile = onTile;
     }
+
+    public int GetOnTileCount()
+    {
+        int value = 0;
+        for(int i = 0; i < tiles.Length; i++)
+            if (tiles[i].onTile)
+                value++;
+        return value;
+    }
 }

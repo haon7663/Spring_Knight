@@ -31,19 +31,24 @@ public class SummonManager : MonoBehaviour
 
     public void SummonEnemy()
     {
-        GameObject enemy = Instantiate(GetRandomEnemy(), TileManager.Inst.tiles[FindTileIndex()].position, Quaternion.identity);
+        var index = FindTileIndex();
+        GameObject enemy = Instantiate(GetRandomEnemy(), TileManager.Inst.tiles[index].position, Quaternion.identity);
         enemy.transform.SetParent(enemyBundle);
+        var scriptBundle = enemy.GetComponent<EnemyBundle>();
+        scriptBundle.defence.index = index;
 
         enemyList.Add(enemy);
     }
 
     public void SummonItem()
     {
-        GameObject item = Instantiate(GetRandomItem(), TileManager.Inst.tiles[FindTileIndex()].position, Quaternion.identity);
+        var index = FindTileIndex();
+        GameObject item = Instantiate(GetRandomItem(), TileManager.Inst.tiles[index].position, Quaternion.identity);
         item.transform.SetParent(itemBundle);
+
     }
 
-    int FindTileIndex()
+    public int FindTileIndex(bool isTakeTile = true)
     {
         int preIndex;
         do
@@ -51,7 +56,8 @@ public class SummonManager : MonoBehaviour
             preIndex = Random.Range(0, TileManager.Inst.tiles.Length);
         } while (TileManager.Inst.tiles[preIndex].onTile);
 
-        TileManager.Inst.TakeTile(preIndex, true);
+        if(isTakeTile)
+            TileManager.Inst.TakeTile(preIndex, true);
         return preIndex;
     }
 

@@ -6,6 +6,7 @@ public class EnemyDefence : MonoBehaviour
 {
     EnemyBundle m_EnemyBundle;
 
+    public int index;
     public int defence;
     [SerializeField] int minDefence;
     [SerializeField] int maxDefence;
@@ -57,6 +58,7 @@ public class EnemyDefence : MonoBehaviour
     {
         if (GetComponent<EnemyDestroy>()) GetComponent<EnemyDestroy>().AfterDestroy();
 
+        TileManager.Inst.TakeTile(index, false);
         SummonManager.Inst.RemoveEnemy(gameObject);
         Destroy(defenceBar.gameObject);
 

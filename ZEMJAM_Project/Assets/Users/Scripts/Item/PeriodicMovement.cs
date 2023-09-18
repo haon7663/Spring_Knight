@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PeriodicMovement : MonoBehaviour
 {
-    Vector2 startPos;
+    EnemyBundle m_EnemyBundle;
 
     [SerializeField] float sinSpeed;
     [SerializeField] float sinValue;
@@ -12,7 +12,10 @@ public class PeriodicMovement : MonoBehaviour
 
     private void Start()
     {
-        startPos = transform.position;
+        if(TryGetComponent(out EnemyBundle enemyBundle))
+            m_EnemyBundle = enemyBundle;
+
+        m_EnemyBundle = GetComponent<EnemyBundle>();
         sin = Random.Range(0f, 2 * Mathf.PI);
         sinSpeed = Random.Range(sinSpeed * 0.75f, sinSpeed * 1.25f);
         sinValue = Random.Range(sinValue * 0.9f, sinValue * 1.1f);
@@ -21,6 +24,8 @@ public class PeriodicMovement : MonoBehaviour
     private void Update()
     {
         sin += Time.deltaTime * sinSpeed;
-        transform.position = startPos + new Vector2(0, Mathf.Sin(sin)) * sinValue;
+        
+        if (m_EnemyBundle)
+            transform.position = m_EnemyBundle.rigid.startPos + new Vector2(0, Mathf.Sin(sin)) * sinValue;
     }
 }

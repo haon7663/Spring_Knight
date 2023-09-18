@@ -36,14 +36,18 @@ public class Collison : MonoBehaviour
     {
         if (Movement.Inst.isIgnoreCollison || GameManager.Inst.onDeath) return;
 
-        if (collision.transform.CompareTag("Enemy"))
-            Movement.Inst.CrashEnemy(collision);
-
-        else if (collision.transform.CompareTag("Wall"))
+        if (collision.transform.CompareTag("Wall"))
             Movement.Inst.CrashWall(collision);
 
         else if (collision.transform.CompareTag("Damage"))
             StartCoroutine(Movement.Inst.Hit(collision.transform));
+    }
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (Movement.Inst.isIgnoreCollison || GameManager.Inst.onDeath) return;
+
+        if (collision.transform.CompareTag("Enemy"))
+            Movement.Inst.CrashEnemy(collision);
     }
 
     void OnDrawGizmos()

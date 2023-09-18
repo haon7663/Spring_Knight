@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyRigidbody : MonoBehaviour
 {
+    public Vector2 startPos;
+
     EnemyBundle m_EnemyBundle;
     Rigidbody2D m_Rigidbody2D;
 
@@ -13,7 +15,10 @@ public class EnemyRigidbody : MonoBehaviour
             m_EnemyBundle = bundle;
         if (TryGetComponent(out Rigidbody2D rigid))
             m_Rigidbody2D = rigid;
+
+        startPos = transform.position;
     }
+
     public IEnumerator BouncedOff(Transform target, float distance)
     {
         if (TryGetComponent(out PeriodicMovement periodic))

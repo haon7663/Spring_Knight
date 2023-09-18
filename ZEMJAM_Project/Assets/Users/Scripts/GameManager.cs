@@ -34,7 +34,11 @@ public class GameManager : MonoBehaviour
 
     [Space]
     [Header("Time")]
-    public float maxTimer = 30;
+    public float maxTimer = 45;
+
+    [Space]
+    [Header("Score")]
+    public int score;
 
     void Awake()
     {
@@ -56,6 +60,21 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    public void ChangeMode(GameMode gameMode)
+    {
+        m_GameMode = gameMode;
+        switch (m_GameMode)
+        {
+            case GameMode.STAGE:
+                break;
+            case GameMode.INFINITE:
+                UIManager.Inst.OpenTimer(maxTimer);
+                break;
+            case GameMode.GOLD:
+                break;
+        }
     }
     public void ChangeState(GameState gameState)
     {
@@ -83,7 +102,6 @@ public class GameManager : MonoBehaviour
                 onPause = false;
                 break;
         }
-
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -99,6 +117,7 @@ public class GameManager : MonoBehaviour
 
         UIManager.Inst.SetPowerGrid(maxPower);
         UIManager.Inst.SetPaze(curPaze, maxPaze);
+        ChangeMode(m_GameMode);
 
         isSetting = false;
     }
@@ -128,7 +147,7 @@ public class GameManager : MonoBehaviour
                 {
                     SummonManager.Inst.SummonEnemy();
                 }
-                SummonManager.Inst.SummonItem();
+                //SummonManager.Inst.SummonItem();
 
                 isLoadScene = false;
             }

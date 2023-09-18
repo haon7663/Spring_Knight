@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
 
     [Space]
     [Header("SetTimer")]
+    [SerializeField] GameObject timeBundle;
     [SerializeField] Image timeFilled;
     [SerializeField] Text timeText;
     float timer;
@@ -44,7 +45,7 @@ public class UIManager : MonoBehaviour
     {
         pazeRect = pazeBar.transform.parent.GetComponent<RectTransform>();
         powerRect = powerBar.transform.parent.GetComponent<RectTransform>();
-        SwapUI(false, 0.25f);
+        SwapUI(GameManager.Inst.m_GameMode != GameMode.STAGE, 0.25f);
     }
 
     void Update()
@@ -54,10 +55,22 @@ public class UIManager : MonoBehaviour
             SetProperties(!onProperties);
         }
 
-        if (!GameManager.Inst.onPlay) return;
+        if (timeFilled.gameObject.activeSelf && !GameManager.Inst.onPlay) return;
+
+        scoreText.text = GameManager.Inst.score.ToString();
         timeFilled.fillAmount = timer / GameManager.Inst.maxTimer;
         timeText.text = timer.ToString("F1") + "sec";
         timer -= Time.deltaTime;
+    }
+
+    public void OpenTimer(float time)
+    {
+        timeBundle.SetActive(true);
+        timer = time;
+    }
+    public void OpenScore()
+    {
+
     }
 
     public void SetProperties(bool onProperties)
