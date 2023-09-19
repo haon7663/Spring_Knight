@@ -33,15 +33,15 @@ public class EnemyDefence : MonoBehaviour
 
     public void SetDefence()
     {
-        for (int i = 0; i < defence; i++)
+        var def = defence - 1;
+        for (int i = 0; i < def; i++)
         {
             defences[i] = defenceBar.GetChild(i).gameObject;
             if (!defences[i].activeSelf) defences[i].SetActive(true);
 
-            var setPosition = DefenceManager.Inst.GetDefPosition(i, defence) * new Vector2(18, 9);
+            var setPosition = DefenceManager.Inst.GetDefPosition(i, def) * new Vector2(18, 9);
             defences[i].GetComponent<RectTransform>().localPosition = setPosition;
         }
-
     }
     void LateUpdate()
     {
