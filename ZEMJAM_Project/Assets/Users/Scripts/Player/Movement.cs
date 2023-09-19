@@ -108,7 +108,7 @@ public class Movement : MonoBehaviour
             SetNormalVelocity(Vector2.zero);
             HealthManager.Inst.OnFade(true);
             if(GameManager.Inst.m_GameMode == GameMode.STAGE)
-                UIManager.Inst.SwapUI(false, 0.25f);
+                UIManager.Inst.SwapUI(false, 0.6f);
 
             count = 0;
         }

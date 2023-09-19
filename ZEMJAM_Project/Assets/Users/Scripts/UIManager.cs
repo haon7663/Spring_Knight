@@ -45,7 +45,7 @@ public class UIManager : MonoBehaviour
     {
         pazeRect = pazeBar.transform.parent.GetComponent<RectTransform>();
         powerRect = powerBar.transform.parent.GetComponent<RectTransform>();
-        SwapUI(GameManager.Inst.m_GameMode != GameMode.STAGE, 0.25f);
+        SwapUI(GameManager.Inst.m_GameMode != GameMode.STAGE, 0.6f);
     }
 
     void Update()
@@ -113,7 +113,7 @@ public class UIManager : MonoBehaviour
         for (int i = 1; i <= powerCount; i++)
         {
             RectTransform grid = Instantiate(powerGrid, powerBar);
-            grid.anchoredPosition = new Vector3(i * (700 / (powerCount + 1)), 0);
+            grid.anchoredPosition = new Vector3(i * (468 / (powerCount + 1)) + 216.5f, 0);
         }
     }
     public void SetPower(float curPower)
@@ -127,7 +127,7 @@ public class UIManager : MonoBehaviour
             powerText.text = " +" + value.ToString();
             powerText.rectTransform.DOAnchorPosX(93f, 0.15f);
             powerText.DOFade(1, 0.1f);
-            powerFilled.DOFillAmount(1, 0.02f);
+            powerFilled.DOFillAmount(1, 0.01f);
         }
         else
         {
@@ -142,6 +142,6 @@ public class UIManager : MonoBehaviour
         pazeRect.gameObject.SetActive(!onPower);
         powerRect.gameObject.SetActive(onPower);
         pazeRect.DOAnchorPosY(onPower ? 1000 : 800, time);
-        powerRect.DOAnchorPosY(onPower ? 775 : 1000, time);
+        powerRect.DOAnchorPosX(onPower ? 0 : -880, time);
     }
 }

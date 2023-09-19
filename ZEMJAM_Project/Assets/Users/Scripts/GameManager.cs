@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
         m_PlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         m_PlayerController.maxPower = maxPower;
 
-        HealthManager.Inst.SetHealth(2);
+        HealthManager.Inst.SetHealth(3);
         HealthManager.Inst.curhp = maxHealth;
         HealthManager.Inst.OnHealth(1);
 
