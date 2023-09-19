@@ -107,8 +107,7 @@ public class Movement : MonoBehaviour
             }
             SetNormalVelocity(Vector2.zero);
             HealthManager.Inst.OnFade(true);
-            if(GameManager.Inst.m_GameMode == GameMode.STAGE)
-                UIManager.Inst.SwapUI(false, 0.6f);
+            UIManager.Inst.SwapUI(false, 0.4f);
 
             count = 0;
         }
@@ -190,6 +189,7 @@ public class Movement : MonoBehaviour
             Time.timeScale = 0.035f;
             GameManager.Inst.ChangeState(GameState.DEATH);
         }
+        UIManager.Inst.SetPower(0);
 
         yield return StartCoroutine(Bounced(target));
 

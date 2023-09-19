@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameMode.INFINITE:
                 UIManager.Inst.OpenTimer(maxTimer);
+                UIManager.Inst.OpenScore();
                 break;
             case GameMode.GOLD:
                 break;

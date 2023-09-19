@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public enum Mainview { STAGE, INFINITE, STATS }
 public enum Otherview { SETMODE, SETSTAGE, SHOP, PLAYER }
 public class MainmenuManager : MonoBehaviour
@@ -60,6 +60,11 @@ public class MainmenuManager : MonoBehaviour
 
     public void SetOtherView()
     {
+        
+    }
 
+    public void GameStart()
+    {
+        Fade.Inst.Fadein(0.2f);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyDefence : MonoBehaviour
 {
@@ -34,12 +35,15 @@ public class EnemyDefence : MonoBehaviour
     public void SetDefence()
     {
         var def = defence - 1;
-        for (int i = 0; i < def; i++)
+        var perDef = def > 4 ? 4 : def;
+        for (int i = 0; i < perDef; i++)
         {
             defences[i] = defenceBar.GetChild(i).gameObject;
             if (!defences[i].activeSelf) defences[i].SetActive(true);
 
-            var setPosition = DefenceManager.Inst.GetDefPosition(i, def) * new Vector2(18, 9);
+            var setPosition = DefenceManager.Inst.GetDefPosition(i, def) * new Vector2(20, 0);
+            if(perDef == 4)
+                defences[i].GetComponent<Image>().sprite = DefenceManager.Inst.GetDefSprite(defence - i - 2);
             defences[i].GetComponent<RectTransform>().localPosition = setPosition;
         }
     }

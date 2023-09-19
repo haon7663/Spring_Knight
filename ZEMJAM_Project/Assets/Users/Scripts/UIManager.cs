@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     [Header("SetPower")]
     [SerializeField] Transform powerBar;
     [SerializeField] Image powerFilled;
+    [SerializeField] Image powerWhiteFilled;
     [SerializeField] RectTransform powerGrid;
     [SerializeField] Text powerText;
 
@@ -45,7 +46,7 @@ public class UIManager : MonoBehaviour
     {
         pazeRect = pazeBar.transform.parent.GetComponent<RectTransform>();
         powerRect = powerBar.transform.parent.GetComponent<RectTransform>();
-        SwapUI(GameManager.Inst.m_GameMode != GameMode.STAGE, 0.6f);
+        SwapUI(false, 0.4f);
     }
 
     void Update()
@@ -70,7 +71,7 @@ public class UIManager : MonoBehaviour
     }
     public void OpenScore()
     {
-
+        scoreText.gameObject.SetActive(true);
     }
 
     public void SetProperties(bool onProperties)
@@ -134,14 +135,17 @@ public class UIManager : MonoBehaviour
             DOTween.Kill(powerFilled);
             powerText.rectTransform.DOAnchorPosX(12, 0.15f);
             powerText.DOFade(0, 0.1f);
-            powerFilled.DOFillAmount(fillValue, 0.3f);
+            powerFilled.DOFillAmount(fillValue, 0.03f);
+            powerWhiteFilled.DOFillAmount(fillValue, 0.3f);
         }
     }
     public void SwapUI(bool onPower, float time)
     {
+        if (GameManager.Inst.m_GameMode != GameMode.STAGE) return;
+
         pazeRect.gameObject.SetActive(!onPower);
         powerRect.gameObject.SetActive(onPower);
         pazeRect.DOAnchorPosY(onPower ? 1000 : 800, time);
-        powerRect.DOAnchorPosX(onPower ? 0 : -880, time);
+        powerRect.DOAnchorPosX(onPower ? 0 : 880, time).SetEase(Ease.OutExpo);
     }
 }

@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
 
                 if (!isTouchDown)
                 {
-                    UIManager.Inst.SwapUI(true, 0.6f);
+                    UIManager.Inst.SwapUI(true, 0.4f);
                     SetUIActive(true);
                     m_SetAnimation.Ready(true);
                     startTouchPos = inputTouchPos;
