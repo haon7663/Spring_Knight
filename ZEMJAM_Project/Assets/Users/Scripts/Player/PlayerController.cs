@@ -71,7 +71,8 @@ public class PlayerController : MonoBehaviour
                 SetDistance();
                 SetJoyArrow();
 
-                m_PlayerSpriteRenderer.SetVectorFlip(startTouchPos, endTouchPos);
+                var isFlipX = m_Collison.onDown || m_Collison.onUp;
+                m_PlayerSpriteRenderer.SetVectorFlip(startTouchPos, endTouchPos, isFlipX);
             }
             if (Input.GetMouseButtonUp(0) || touch.phase == TouchPhase.Ended)
             {
