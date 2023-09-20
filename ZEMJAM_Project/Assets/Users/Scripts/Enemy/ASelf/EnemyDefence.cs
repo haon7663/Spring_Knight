@@ -9,6 +9,7 @@ public class EnemyDefence : MonoBehaviour
 
     public int index;
     public int defence;
+    [SerializeField] float defPositionY;
     [SerializeField] int minDefence;
     [SerializeField] int maxDefence;
     [SerializeField] RectTransform defenceParent;
@@ -41,7 +42,7 @@ public class EnemyDefence : MonoBehaviour
             defences[i] = defenceBar.GetChild(i).gameObject;
             if (!defences[i].activeSelf) defences[i].SetActive(true);
 
-            var setPosition = DefenceManager.Inst.GetDefPosition(i, def) * new Vector2(20, 0);
+            var setPosition = DefenceManager.Inst.GetDefPosition(i, def) * 20 + new Vector2(0, defPositionY);
             if(perDef == 4)
                 defences[i].GetComponent<Image>().sprite = DefenceManager.Inst.GetDefSprite(defence - i - 2);
             defences[i].GetComponent<RectTransform>().localPosition = setPosition;
