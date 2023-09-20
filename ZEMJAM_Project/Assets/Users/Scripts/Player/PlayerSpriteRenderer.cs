@@ -67,9 +67,10 @@ public class PlayerSpriteRenderer : MonoBehaviour
     {
         m_SpriteRenderer.flipX = (selfTarget ? selfTarget.position.x : transform.position.x) > target.position.x;
     }
-    public void SetVectorFlip(Vector2 target, Vector2 selfTarget)
+    public void SetVectorFlip(Vector2 target, Vector2 selfTarget, bool isFlipX)
     {
-        m_SpriteRenderer.flipX = selfTarget.x > target.x;
+        if(isFlipX)
+            m_SpriteRenderer.flipX = selfTarget.x > target.x;
     }
     void SummonAfterImage(SpriteRenderer spriteRenderer)
     {
