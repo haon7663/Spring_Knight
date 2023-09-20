@@ -90,7 +90,6 @@ public class GoogleManager : MonoBehaviour
             byte[] bytes = System.Text.Encoding.UTF8.GetBytes("1000Á¡");
             SavedGame().CommitUpdate(game, update, bytes, SaveData);
         }
-
     }
 
     void SaveData(SavedGameRequestStatus status, ISavedGameMetadata game)
