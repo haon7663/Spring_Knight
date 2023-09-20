@@ -1337,7 +1337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PlayerController: {fileID: 1315343750}
-  m_GameMode: 1
+  m_GameMode: 0
   m_GameState: 0
   isLoadScene: 0
   isSetting: 0

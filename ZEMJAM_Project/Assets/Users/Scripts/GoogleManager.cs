@@ -9,6 +9,22 @@ using UnityEngine.SceneManagement;
 
 public class GoogleManager : MonoBehaviour
 {
+    public static GoogleManager Inst { get; set; }
+
+    void Awake()
+    {
+        var obj = FindObjectsOfType<GoogleManager>();
+        if (obj.Length == 1)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        Inst = this;
+    }
+
     public Text LogText;
 
     private void Start()
