@@ -138,6 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 0
   defence: 0
+  defPositionY: 40
   minDefence: 6
   maxDefence: 8
   defenceParent: {fileID: 1517254607135314592, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
