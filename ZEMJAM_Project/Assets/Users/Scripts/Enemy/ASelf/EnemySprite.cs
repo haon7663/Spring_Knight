@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class EnemySprite : MonoBehaviour
 {
+    EnemyBundle m_EnemyBundle;
     SpriteRenderer m_SpriteRenderer;
     SpriteOutline m_SpriteOutline;
     Transform playerTransform;
@@ -24,6 +25,8 @@ public class EnemySprite : MonoBehaviour
             m_SpriteRenderer = sprite;
         if (TryGetComponent(out SpriteOutline outline))
             m_SpriteOutline = outline;
+        if (TryGetComponent(out EnemyBundle bundle))
+            m_EnemyBundle = bundle;
 
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
@@ -31,6 +34,7 @@ public class EnemySprite : MonoBehaviour
     void Start()
     {
         StartCoroutine(GracePeriod());
+        m_SpriteRenderer.sortingOrder = m_EnemyBundle.defence.index;
     }
 
     void LateUpdate()

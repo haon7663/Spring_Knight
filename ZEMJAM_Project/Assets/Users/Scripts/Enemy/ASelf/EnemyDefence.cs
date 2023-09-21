@@ -66,6 +66,8 @@ public class EnemyDefence : MonoBehaviour
         TileManager.Inst.TakeTile(index, false);
         SummonManager.Inst.RemoveEnemy(gameObject);
         Destroy(defenceBar.gameObject);
+        if (TryGetComponent(out DemensionDestroyer demension))
+            demension.PortalDestroy(0.15f);
 
         StartCoroutine(m_EnemyBundle.rigid.BouncedOff(target, Vector3.Magnitude(velocity)));
     }

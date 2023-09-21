@@ -45,7 +45,6 @@ public class SummonManager : MonoBehaviour
         var index = FindTileIndex();
         GameObject item = Instantiate(GetRandomItem(), TileManager.Inst.tiles[index].position, Quaternion.identity);
         item.transform.SetParent(itemBundle);
-
     }
 
     public int FindTileIndex(bool isTakeTile = true)

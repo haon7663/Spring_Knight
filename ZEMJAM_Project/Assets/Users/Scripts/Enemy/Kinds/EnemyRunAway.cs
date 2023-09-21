@@ -30,10 +30,6 @@ public class EnemyRunAway : EnemyDashSign
             }
         }
 
-
-
-        Debug.Log("EnemyRunAway / Index: " + result + " / Position: " + tiles[result].position);
-
         DOTween.To(() => m_EnemyBundle.rigid.startPos, x => m_EnemyBundle.rigid.startPos = x, tiles[result].position, 0.6f);
         TileManager.Inst.TakeTile(m_EnemyBundle.defence.index, false);
         m_EnemyBundle.defence.index = result;
