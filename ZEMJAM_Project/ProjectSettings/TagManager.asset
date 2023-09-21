@@ -43,7 +43,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - SlashParticleCollider
   m_SortingLayers:
   - name: Ground
     uniqueID: 1646583201

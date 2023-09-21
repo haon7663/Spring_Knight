@@ -147,8 +147,8 @@ public class Movement : MonoBehaviour
         SetMultiSpeed(1.25f);
         m_PlayerSpriteRenderer.SetTransformFlip(collision.transform);
         Time.timeScale = 0.05f;
-        var slash = Instantiate(fireSlash, transform.position, Quaternion.identity).transform;
-        slash.localScale = new Vector2(collision.transform.position.x > transform.position.x ? 1 : -1, 1);
+        var slash = Instantiate(fireSlash, transform.position, Quaternion.identity).GetComponent<SlashParticle>();
+        slash.SetParticle(collision.transform.position.x < transform.position.x, collision.transform);
         Instantiate(fireHitEffect, collision.transform.position, Quaternion.Euler(0, 0, Random.Range(0, 359)));
 
         m_SetAnimation.AttackTrigger();

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
-public enum TimeType { ONE, COUNT, MAX }
+public enum TimeType { ONE, COUNT, INFINITE }
 
 [Serializable]
 public struct Property
