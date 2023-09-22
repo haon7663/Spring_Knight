@@ -7592,7 +7592,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explainText: {fileID: 1244678397}
-  image: {fileID: 8245798}
+  spriteImage: {fileID: 0}
 --- !u!1 &939703095
 GameObject:
   m_ObjectHideFlags: 0
@@ -8129,8 +8129,11 @@ MonoBehaviour:
     isCalled: 0
     maxCount: 0
     curCount: 0
-    explain: "\uCCB4\uB825\uC744 3 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
-    image: {fileID: 0}
+    sprite: {fileID: 0}
+    explain: "\uD295\uAE30\uB294 \uD69F\uC218 ! \uC99D\uAC00 (\uC774\uBC88 \uD398\uC774\uC988\uB9CC)"
+    longExplain: "\uC774\uBC88 \uD398\uC774\uC988\uC5D0\uC11C\uB9CC \uD295\uAE30\uB294
+      \uD69F\uC218\uAC00 3\uD68C \uC99D\uAC00\uD569\uB2C8\uB2E4."
+    value: 3
     selectEvent:
       m_PersistentCalls:
         m_Calls:
@@ -8150,8 +8153,154 @@ MonoBehaviour:
     isCalled: 0
     maxCount: 0
     curCount: 0
-    explain: 
-    image: {fileID: 0}
+    sprite: {fileID: 0}
+    explain: "\uBAA8\uB4E0 \uCCB4\uB825 \uD68C\uBCF5"
+    longExplain: "\uCCB4\uB825\uC744 \uC804\uBD80 \uD68C\uBCF5\uD569\uB2C8\uB2E4."
+    value: 3
+    selectEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 285786837}
+          m_TargetAssemblyTypeName: HealthManager, Assembly-CSharp
+          m_MethodName: OnHealth
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - timeType: 1
+    isCalled: 0
+    maxCount: 3
+    curCount: 0
+    sprite: {fileID: 0}
+    explain: "\uC544\uC774\uD15C ! \uC81C\uACF5 \uD6C4 \uC2DC\uC791"
+    longExplain: "\uB9E4 \uD398\uC774\uC988\uB97C \uC2DC\uC791\uD560 \uB54C\uB9C8\uB2E4,
+      \uB9F5\uC5D0 \uC544\uC774\uD15C\uC744 \uC81C\uACF5\uD569\uB2C8\uB2E4."
+    value: 3
+    selectEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 285786837}
+          m_TargetAssemblyTypeName: HealthManager, Assembly-CSharp
+          m_MethodName: OnHealth
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - timeType: 1
+    isCalled: 0
+    maxCount: 3
+    curCount: 0
+    sprite: {fileID: 0}
+    explain: "!\uD68C\uB9CC\uD07C \uD295\uAE30\uB294 \uB3D9\uC548 \uBB34\uC801"
+    longExplain: "\uB9E4 \uD398\uC774\uC988\uB97C \uC2DC\uC791\uD560 \uB54C\uB9C8\uB2E4,
+      \uB9F5\uC5D0 \uC544\uC774\uD15C\uC744 \uC81C\uACF5\uD569\uB2C8\uB2E4."
+    value: 3
+    selectEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 285786837}
+          m_TargetAssemblyTypeName: HealthManager, Assembly-CSharp
+          m_MethodName: OnHealth
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - timeType: 1
+    isCalled: 0
+    maxCount: 2
+    curCount: 0
+    sprite: {fileID: 0}
+    explain: "!\uD655\uB960\uB85C \uC801 \uBC29\uC5B4\uB825 1 \uAC10\uC18C"
+    longExplain: "\uB9E4 \uD398\uC774\uC988\uB97C \uC2DC\uC791\uD560 \uB54C\uB9C8\uB2E4,
+      \uB9F5\uC5D0 \uC544\uC774\uD15C\uC744 \uC81C\uACF5\uD569\uB2C8\uB2E4."
+    value: 3
+    selectEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 285786837}
+          m_TargetAssemblyTypeName: HealthManager, Assembly-CSharp
+          m_MethodName: OnHealth
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - timeType: 1
+    isCalled: 0
+    maxCount: 5
+    curCount: 0
+    sprite: {fileID: 0}
+    explain: "!\uD655\uB960\uB85C \uC801 \uBC29\uC5B4\uB825 1 \uAC10\uC18C"
+    longExplain: "\uB9E4 \uD398\uC774\uC988\uB97C \uC2DC\uC791\uD560 \uB54C\uB9C8\uB2E4,
+      \uB9F5\uC5D0 \uC544\uC774\uD15C\uC744 \uC81C\uACF5\uD569\uB2C8\uB2E4."
+    value: 20
+    selectEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 285786837}
+          m_TargetAssemblyTypeName: HealthManager, Assembly-CSharp
+          m_MethodName: OnHealth
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - timeType: 1
+    isCalled: 0
+    maxCount: 5
+    curCount: 0
+    sprite: {fileID: 0}
+    explain: "\uC801 \uCC98\uCE58 \uC2DC !\uD655\uB960 \uACE8\uB4DC \uD68D\uB4DD"
+    longExplain: "\uB9E4 \uD398\uC774\uC988\uB97C \uC2DC\uC791\uD560 \uB54C\uB9C8\uB2E4,
+      \uB9F5\uC5D0 \uC544\uC774\uD15C\uC744 \uC81C\uACF5\uD569\uB2C8\uB2E4."
+    value: 3
+    selectEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 285786837}
+          m_TargetAssemblyTypeName: HealthManager, Assembly-CSharp
+          m_MethodName: OnHealth
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - timeType: 1
+    isCalled: 0
+    maxCount: 5
+    curCount: 0
+    sprite: {fileID: 0}
+    explain: "\uC801 \uCC98\uCE58 \uC2DC !\uD655\uB960 \uACE8\uB4DC \uD68D\uB4DD"
+    longExplain: "\uB9E4 \uD398\uC774\uC988\uB97C \uC2DC\uC791\uD560 \uB54C\uB9C8\uB2E4,
+      \uB9F5\uC5D0 \uC544\uC774\uD15C\uC744 \uC81C\uACF5\uD569\uB2C8\uB2E4."
+    value: 3
     selectEvent:
       m_PersistentCalls:
         m_Calls:
