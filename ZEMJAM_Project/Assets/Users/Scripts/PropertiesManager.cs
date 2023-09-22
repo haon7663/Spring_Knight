@@ -17,8 +17,11 @@ public struct Property
     [DrawIf("timeType", TimeType.COUNT)] public int curCount;
 
     [Space]
+    public Sprite sprite;
     public string explain;
-    public Image image;
+    public string longExplain;
+    [Space]
+    public float value;
     [Space]
     public UnityEvent selectEvent;
 }
@@ -30,7 +33,7 @@ public class PropertiesManager : MonoBehaviour
 
     public Property[] property;
 
-    public Property GetPropertyIndex()
+    public Property GetProperty()
     {
         int ran = 0;
         do
