@@ -18,7 +18,7 @@ public class PlayerSpriteRenderer : MonoBehaviour
     [SerializeField] Material whiteMaterial;
 
     [Header("AfterImage")]
-    [SerializeField] GameObject afterImagePrf;
+    public GameObject afterImagePrf;
 
     float hitTimer, afterTimer;
 
