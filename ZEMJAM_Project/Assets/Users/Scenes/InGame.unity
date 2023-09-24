@@ -1629,6 +1629,7 @@ GameObject:
   m_Component:
   - component: {fileID: 320723780}
   - component: {fileID: 320723779}
+  - component: {fileID: 320723781}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1681,6 +1682,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &320723781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320723778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5524df05934f38745ab6328f4d24eb89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characters:
+  - slashPrf: {fileID: 3096998744668621184, guid: fb4edbe3791a45043a2805ec1c7eea98, type: 3}
+    slashHitPrf: {fileID: 7977989136853014131, guid: 91dbe21dd65c899408f6a1d52f625149, type: 3}
+    afterImagePrf: {fileID: 6845692884496698445, guid: 8b7c8a0de8421b049a821350e6e203d0, type: 3}
+    animController: {fileID: 9100000, guid: b576f33dcc413b54cbfbeeb5dc8c6542, type: 2}
+  - slashPrf: {fileID: 3096998744668621184, guid: b263809b6cf319e4590f2eb81d59a468, type: 3}
+    slashHitPrf: {fileID: 7977989136853014131, guid: 91dbe21dd65c899408f6a1d52f625149, type: 3}
+    afterImagePrf: {fileID: 6845692884496698445, guid: eb72a154b246ad14ca20c58c5a53db62, type: 3}
+    animController: {fileID: 9100000, guid: 036068f5aaa5a0641bc83da4123ae678, type: 2}
+  m_Animator: {fileID: 1315343743}
+  m_Movement: {fileID: 1315343740}
+  m_PlayerSpriteRenderer: {fileID: 1315343748}
+  playerType: 1
 --- !u!1 &373284031
 GameObject:
   m_ObjectHideFlags: 0
@@ -15723,7 +15749,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.626
   m_Color: {r: 0.50010556, g: 0.47472405, b: 0.5943396, a: 1}
-  m_Intensity: 2
+  m_Intensity: 0.7
   m_LightVolumeIntensity: 0.29
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: a1dd2462
