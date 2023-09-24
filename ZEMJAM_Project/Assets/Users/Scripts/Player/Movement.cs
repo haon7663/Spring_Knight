@@ -26,8 +26,8 @@ public class Movement : MonoBehaviour
     public bool isAttacking;
     float attackTimer;
 
-    [SerializeField] GameObject fireSlash;
-    [SerializeField] GameObject fireHitEffect;
+    public GameObject fireSlash;
+    public GameObject fireHitEffect;
     [SerializeField] Transform playerFollow;
 
     Vector2 normalVelocity, lastVelocity;
