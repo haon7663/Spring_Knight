@@ -10,6 +10,7 @@ public class Movement : MonoBehaviour
 
     Rigidbody2D m_Rigidbody2D;
     SetAnimation m_SetAnimation;
+    PlayerState m_PlayerState;
     PlayerSpriteRenderer m_PlayerSpriteRenderer;
     Collison m_Collison;
     SetLight m_SetLight;
@@ -36,6 +37,7 @@ public class Movement : MonoBehaviour
         Time.timeScale = 1;
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_SetAnimation = GetComponent<SetAnimation>();
+        m_PlayerState = GetComponent<PlayerState>();
         m_PlayerSpriteRenderer = GetComponent<PlayerSpriteRenderer>();
         m_Collison = GetComponent<Collison>();
         m_SetLight = GetComponent<SetLight>();
@@ -66,6 +68,7 @@ public class Movement : MonoBehaviour
     {
         count = power;
         bouncedCount = 0;
+        HealthManager.Inst.OnFade(false);
 
         transform.rotation = Quaternion.Euler(0, 0, angle);
         SetNormalVelocity(-transform.right * 15);
@@ -95,7 +98,8 @@ public class Movement : MonoBehaviour
         {
             SetNormalVelocity(MoveReflect(collision));
             StartCoroutine(m_Collison.CapsuleAble());
-            ComboPlus();
+
+            AddCombo();
             count--;
         }
         else
@@ -130,7 +134,7 @@ public class Movement : MonoBehaviour
         return dir * Mathf.Max(speed, 0f);
     }
 
-    void ComboPlus()
+    void AddCombo()
     {
         SpriteRenderer combo = Instantiate(m_Combo, transform.position, Quaternion.identity).GetComponent<SpriteRenderer>();
 
@@ -138,6 +142,7 @@ public class Movement : MonoBehaviour
         combo.transform.position += new Vector3(transform.position.x > 0 ? -0.75f : 0.75f, transform.position.y > 0 ? -0.7f : 1f);
 
         bouncedCount++;
+        UIManager.Inst.AddCombo(bouncedCount);
     }
 
     public void SucceedAttack(Collision2D collision, int defence)
@@ -156,7 +161,7 @@ public class Movement : MonoBehaviour
         CinemachineShake.Instance.ShakeCamera(10 + defence, 0.25f + defence*0.02f);
         m_SetLight.SuddenLight(0.8f, 0.4f);
         collision.transform.GetComponent<EnemyDefence>().OnDamage(transform, saveVelocity);
-        ComboPlus();
+        AddCombo();
 
         StartCoroutine(m_Collison.CapsuleAble());
         SetNormalVelocity(reflectVelocity);
@@ -165,20 +170,20 @@ public class Movement : MonoBehaviour
     public void FailedAttack(Collision2D collision)
     {
         StartCoroutine(Hit(collision.transform));
-        StartCoroutine(m_Collison.CapsuleAble());
     }
 
     public void TakeMirror()
     {
         count = bouncedCount;
     }
-    public void InvItem()
-    {
-    }
     public IEnumerator Hit(Transform target)
     {
-        HealthManager.Inst.OnDamage();
+        if (m_PlayerState.isInvincible)
+            m_PlayerState.SetBarrier(false);
+        else
+            HealthManager.Inst.OnDamage();
         StartCoroutine(m_PlayerSpriteRenderer.GracePerioding());
+        StartCoroutine(m_Collison.CapsuleAble());
         CinemachineShake.Instance.ShakeCamera(15, 0.3f);
 
         m_SetAnimation.Hit(true);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,11 +38,11 @@ public class HealthManager : MonoBehaviour
     public void SetHealth(int maxhp)
     {
         this.maxhp = maxhp;
-        healthParents = new Image[maxhp];
-        healths = new Image[maxhp];
+        Array.Resize(ref healthParents, maxhp);
+        Array.Resize(ref healths, maxhp);
         for (int i = 0; i < maxhp; i++)
         {
-            var health = healths[i] == null ? Instantiate(healthPrefab, helathParent) : healths[i].GetComponentInParent<RectTransform>();
+            var health = healths[i] == null ? Instantiate(healthPrefab, helathParent) : healths[i].transform.parent.GetComponent<RectTransform>();
             health.localPosition = new Vector2(((maxhp-1) * -30) + (60 * i), 0);
             healthParents[i] = health.GetComponent<Image>();
             healths[i] = health.GetChild(0).GetComponent<Image>();

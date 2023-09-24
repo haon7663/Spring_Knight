@@ -26,6 +26,8 @@ public class EnemyDefence : MonoBehaviour
 
     void Start()
     {
+        GameManager.Inst.SpawnEvent();
+
         defenceBar = Instantiate(defenceParent, DefenceManager.Inst.defenceBundle);
 
         if (maxDefence == 0) defence = minDefence;
@@ -65,6 +67,7 @@ public class EnemyDefence : MonoBehaviour
 
         TileManager.Inst.TakeTile(index, false);
         SummonManager.Inst.RemoveEnemy(gameObject);
+        GameManager.Inst.KillEvent();
         Destroy(defenceBar.gameObject);
         if (TryGetComponent(out DemensionDestroyer demension))
             demension.PortalDestroy(0.15f);

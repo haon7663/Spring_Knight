@@ -9,22 +9,6 @@ using UnityEngine.SceneManagement;
 
 public class GoogleManager : MonoBehaviour
 {
-    public static GoogleManager Inst { get; set; }
-
-    void Awake()
-    {
-        var obj = FindObjectsOfType<GoogleManager>();
-        if (obj.Length == 1)
-        {
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        Inst = this;
-    }
-
     public Text LogText;
 
     private void Start()
@@ -71,10 +55,8 @@ public class GoogleManager : MonoBehaviour
         {
             string data = System.Text.Encoding.UTF8.GetString(LoadedData);
             LogText.text = data;
-
         }
         else LogText.text = "불러오기 실패";
-
     }
 
     public void SavedCloud()

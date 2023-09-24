@@ -8,14 +8,24 @@ public class PropertyData : MonoBehaviour
     public Text explainText;
     public Image spriteImage;
 
-    void Start()
-    {
-        Property property = PropertiesManager.Inst.GetProperty();
+    string longExplain;
+    public int index;
 
-        float value = property.value * (property.timeType == TimeType.COUNT ? property.curCount : 1);
+    public void Start()
+    {
+        var property = PropertiesManager.Inst.property[index];
+
+        float value = property.value * (property.timeType == TimeType.COUNT ? property.curCount + 1 : 1);
         string explain = property.explain.Replace("!", value.ToString());
+        longExplain = property.longExplain.Replace("!", value.ToString());
 
         explainText.text = explain;
         spriteImage.sprite = property.sprite;
+    }
+
+    public void ButtonDown()
+    {
+        UIManager.Inst.SetExplainPanel(longExplain);
+        PropertiesManager.Inst.SelectIndex(index);
     }
 }

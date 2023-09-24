@@ -41,21 +41,23 @@ public class SettingManager : MonoBehaviour
 
     void OnApplicationPause(bool pauseStatus)
     {
-        setting.SetActive(pauseStatus);
+        if(pauseStatus)
+            OnSetting(true);
     }
 
     #region ButtonSetting
-    public void OnSetting()
+    public void OnSetting(bool isActive)
     {
-        setting.SetActive(!setting.activeSelf);
-        if (!setting.activeSelf) Time.timeScale = saveTimeScale;
-        else if (setting.activeSelf)
+        setting.SetActive(isActive);
+        if (!isActive) Time.timeScale = saveTimeScale;
+        else if (isActive)
         {
             saveAngle = mainCamera.transform.eulerAngles;
             savePos = mainCamera.transform.position;
             saveTimeScale = Time.timeScale;
         }
-        GameManager.Inst.isSetting = setting.activeSelf;
+        GameManager.Inst.ChangeState(isActive ? GameState.PAUSE : GameState.PLAY);
+        GameManager.Inst.isSetting = isActive;
     }
     public void OnReGame()
     {

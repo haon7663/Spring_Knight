@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public enum GameMode { STAGE, INFINITE, GOLD }
 public enum GameState { LOADING, PAUSE, PLAY, DEATH }
@@ -27,8 +29,9 @@ public class GameManager : MonoBehaviour
     [Header("Stats")]
     public int curPaze;
     public int maxPaze;
-    public int maxHealth = 3;
+    public int manageHealth = 3;
     public int maxPower = 3;
+    public int managePower = 3;
     public int summonCount = 3;
     public float enemySummonCount;
 
@@ -39,6 +42,14 @@ public class GameManager : MonoBehaviour
     [Space]
     [Header("Score")]
     public int score;
+
+    [Space]
+    [Header("Property")]
+    public Property[] saveProperty;
+    public delegate void KillEnemyAction();
+    public static event KillEnemyAction KillEnemy;
+    public delegate void SpawnEnemyAction();
+    public static event SpawnEnemyAction SpawnEnemy;
 
     void Awake()
     {
@@ -110,15 +121,19 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
 
         m_PlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        m_PlayerController.maxPower = maxPower;
+        m_PlayerController.maxPower = managePower;
+        maxPower = managePower;
 
         HealthManager.Inst.SetHealth(3);
-        HealthManager.Inst.curhp = maxHealth;
-        HealthManager.Inst.OnHealth(1);
+        HealthManager.Inst.curhp = manageHealth;
 
-        UIManager.Inst.SetPowerGrid(maxPower);
         UIManager.Inst.SetPaze(curPaze, maxPaze);
+
         ChangeMode(m_GameMode);
+
+        if(isSummonItems)
+            for (int i = 0; i < summonItemValue; i++)
+                SummonManager.Inst.SummonItem();
 
         isSetting = false;
     }
@@ -158,10 +173,12 @@ public class GameManager : MonoBehaviour
     public void SetGame()
     {
         curPaze = 0;
-        maxPower = 3;
-        maxHealth = 3;
+        managePower = 3;
+        manageHealth = 3;
         enemySummonCount = 3;
         TileManager.Inst.tileSize = 7;
+
+        ResetProperty();
     }
     
     IEnumerator MoveScene()
@@ -171,15 +188,114 @@ public class GameManager : MonoBehaviour
         Fade.Inst.Fadein();
         yield return new WaitForSeconds(0.1f);
 
-        maxHealth = HealthManager.Inst.curhp;
+        manageHealth = HealthManager.Inst.curhp;
         TileManager.Inst.tileSize += 2;
         enemySummonCount += 0.75f;
-        maxPower += 1;
+        managePower += 1;
         summonCount = 3;
         curPaze++;
 
         SceneManager.LoadScene("InGame");
     }
+
+    #region PropertyEffects
+    bool isSummonItems;
+    int summonItemValue, killGoldPersent, decreaseDef, spawnDecDefPersent;
+
+    void ResetProperty()
+    {
+        isSummonItems = false;
+    }
+    public void OneTimePowerUp(int value)
+    {
+        maxPower = managePower + value;
+        m_PlayerController.maxPower += value;
+        Debug.Log(m_PlayerController.maxPower);
+    }
+    public void IncreaseMaxHealth()
+    {
+        manageHealth++;
+        HealthManager.Inst.SetHealth(manageHealth);
+        HealthManager.Inst.OnHealth(1);
+    }
+    public void IncreaseMaxPower()
+    {
+        managePower++;
+        maxPower = managePower;
+        m_PlayerController.maxPower = managePower;
+    }
+    public void SummonItem(int value)
+    {
+        isSummonItems = true;
+        summonItemValue += value;
+        SummonManager.Inst.SummonItem();
+    }
+
+    #region KillEvent
+    public void KillEvent()
+    {
+        KillEnemy?.Invoke();
+    }
+    public void AddKillGold(int persent)
+    {
+        if(KillEnemy != KillGold)
+        {
+            KillEnemy += KillGold;
+            Debug.Log("ADDKILLGOLD");
+        }
+        killGoldPersent += persent;
+    }
+    public void AddKillDecDef(int value)
+    {
+        if (KillEnemy != KillDecDef)
+        {
+            KillEnemy += KillDecDef;
+            Debug.Log("ADDDECDEF");
+        }
+        decreaseDef += value;
+    }
+    void KillGold()
+    {
+        var succes = Calculate(killGoldPersent);
+        if (succes)
+            Debug.Log("Gold");
+    }
+    void KillDecDef()
+    {
+        Debug.Log("DecreaseDef");
+    }
+    #endregion
+    #region SpawnEvent
+
+    public void SpawnEvent()
+    {
+        SpawnEnemy?.Invoke();
+    }
+    public void AddSpawnDecDef(int persent)
+    {
+        if (SpawnEnemy != SpawnDecDef)
+        {
+            SpawnEnemy += SpawnDecDef;
+            Debug.Log("ADDSPAWNDECDEF");
+        }
+        spawnDecDefPersent += persent;
+    }
+    void SpawnDecDef()
+    {
+        var succes = Calculate(spawnDecDefPersent);
+        if (succes)
+            Debug.Log("SpawnDecreaseDef");
+    }
+
+    #endregion
+
+    bool Calculate(int value)
+    {
+        float ran = Random.Range(0, 100f);
+        return ran <= value;
+    }
+
+    #endregion
 }
 
 internal static class YieldInstructionCache

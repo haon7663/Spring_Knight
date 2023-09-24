@@ -16,9 +16,11 @@ GameObject:
   - component: {fileID: 3444255831525154421}
   - component: {fileID: 5471844073875224027}
   - component: {fileID: 7138171382285509793}
-  - component: {fileID: 20568151805839507}
   - component: {fileID: 3546921733782344655}
   - component: {fileID: 5471844073875224026}
+  - component: {fileID: 20568151805839507}
+  - component: {fileID: 396614535160512031}
+  - component: {fileID: 5783606705429669121}
   m_Layer: 7
   m_Name: ElectricGolem
   m_TagString: Enemy
@@ -184,32 +186,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 1, a: 1}
   outlineSize: 1
---- !u!61 &20568151805839507
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3546921733782344653}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: f2bce878787cf254e852887358d9aee5, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.125, y: 3.125}
-    newSize: {x: 1, y: 2}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.7207303, y: 0.8470013}
-  m_EdgeRadius: 0
 --- !u!50 &3546921733782344655
 Rigidbody2D:
   serializedVersion: 4
@@ -252,3 +228,105 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!61 &20568151805839507
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3546921733782344653}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: f2bce878787cf254e852887358d9aee5, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 1
+  m_Offset: {x: -0.01575005, y: -0.2812091}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.125, y: 3.125}
+    newSize: {x: 1, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.7188873, y: 0.87531805}
+  m_EdgeRadius: 0
+--- !u!61 &396614535160512031
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3546921733782344653}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 1
+  m_Offset: {x: 0.000028073788, y: 0.46950695}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.125, y: 3.125}
+    newSize: {x: 1, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.6875495, y: 0.6261911}
+  m_EdgeRadius: 0
+--- !u!66 &5783606705429669121
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3546921733782344653}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths:
+  - m_Collider: {fileID: 396614535160512031}
+    m_ColliderPaths:
+    - - X: 3438028
+        Y: 7826025
+      - X: -3437466
+        Y: 7826025
+      - X: -3437466
+        Y: 1564114
+      - X: 3438028
+        Y: 1564114
+  - m_Collider: {fileID: 20568151805839507}
+    m_ColliderPaths:
+    - - X: 8436936
+        Y: 1564499
+      - X: -8751937
+        Y: 1564499
+      - X: -8751937
+        Y: -7188681
+      - X: 8436936
+        Y: -7188681
+  m_CompositePaths:
+    m_Paths:
+    - - {x: 0.8436643, y: -0.71886814}
+      - {x: 0.8436643, y: 0.1564499}
+      - {x: 0.3438028, y: 0.1564793}
+      - {x: 0.3437735, y: 0.7826025}
+      - {x: -0.3437466, y: 0.7825732}
+      - {x: -0.34377602, y: 0.1564499}
+      - {x: -0.8751937, y: 0.1564206}
+      - {x: -0.8751644, y: -0.71886814}
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.00005

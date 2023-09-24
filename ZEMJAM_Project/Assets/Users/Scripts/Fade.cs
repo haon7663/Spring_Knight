@@ -24,8 +24,11 @@ public class Fade : MonoBehaviour
 
         if (GameManager.Inst)
         {
-            GameManager.Inst.ChangeState(GameState.PAUSE);
-            UIManager.Inst.SetProperties(GameManager.Inst.curPaze != 0);
+            GameManager.Inst.ChangeState(GameState.PLAY);
+            if(GameManager.Inst.curPaze == 0)
+                UIManager.Inst.SetPowerGrid(GameManager.Inst.maxPower);
+            else
+                UIManager.Inst.SetProperties(true);
         }
     }
     public void Fadein(float time = 0.1f)

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -47,19 +48,18 @@ public class PlayerController : MonoBehaviour
     {
         var isTouch = (Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary));
 
-        if (m_Movement.count <= 0)
+        if (m_Movement.count <= 0 )
         {
             if (isTouch)
             {
                 var camZ = -Camera.main.transform.position.z;
-                HealthManager.Inst.OnFade(false);
 #if (UNITY_EDITOR)
                 inputTouchPos = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, camZ));
 #elif (UNITY_ANDROID)
                 inputTouchPos = mainCamera.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, camZ));
 #endif
 
-                if (!isTouchDown)
+                if (!isTouchDown && !EventSystem.current.IsPointerOverGameObject())
                 {
                     UIManager.Inst.SwapUI(true, 0.4f);
                     SetUIActive(true);
@@ -67,19 +67,34 @@ public class PlayerController : MonoBehaviour
                     startTouchPos = inputTouchPos;
                     isTouchDown = true;
                 }
+                else if(isTouchDown)
+                {
+                    SetDistance();
+                    SetJoyArrow();
 
-                SetDistance();
-                SetJoyArrow();
-
-                var isFlipX = m_Collison.onDown || m_Collison.onUp;
-                m_PlayerSpriteRenderer.SetVectorFlip(startTouchPos, endTouchPos, isFlipX);
+                    var isFlipX = m_Collison.onDown || m_Collison.onUp;
+                    m_PlayerSpriteRenderer.SetVectorFlip(startTouchPos, endTouchPos, isFlipX);
+                }
             }
-            if (Input.GetMouseButtonUp(0) || touch.phase == TouchPhase.Ended)
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                m_Movement.Dash(power, angle);
-                SetUIActive(false);
-                isTouchDown = false;
-                m_SetAnimation.Ready(false);
+                if (Input.GetMouseButtonUp(0) || touch.phase == TouchPhase.Ended)
+                {
+                    m_Movement.Dash(power, angle);
+                    SetUIActive(false);
+                    isTouchDown = false;
+                    m_SetAnimation.Ready(false);
+                }
+            }
+            else
+            {
+                if (Input.GetMouseButtonUp(0) || touch.phase == TouchPhase.Ended)
+                {
+                    UIManager.Inst.SwapUI(false, 0.4f);
+                    SetUIActive(false);
+                    isTouchDown = false;
+                    m_SetAnimation.Ready(false);
+                }
             }
         }
     }

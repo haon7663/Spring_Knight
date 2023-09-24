@@ -6,7 +6,7 @@ public class InvPotion : Item
 {
     public override void UseItem()
     {
-        Movement.Inst.InvItem();
+        PlayerState.Inst.SetBarrier(true);
         Destroy(gameObject);
     }
 }

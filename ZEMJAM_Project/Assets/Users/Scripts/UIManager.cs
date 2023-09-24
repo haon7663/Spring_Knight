@@ -38,9 +38,19 @@ public class UIManager : MonoBehaviour
     [Header("SetProperties")]
     [SerializeField] Image propertiesWindow;
     [SerializeField] RectTransform propertiesPanel;
-
-    RectTransform pazeRect, powerRect;
+    [SerializeField] RectTransform longExplainPanel;
+    [SerializeField] Text loneExplain;
     public bool onProperties;
+
+    [Space]
+    [Header("SetCombo")]
+    [SerializeField] Transform comboPanel;
+    [SerializeField] RectTransform comboPrefab;
+    [SerializeField] Vector2 comboStartPos;
+    [SerializeField] Vector2 comboOriginPos;
+
+    Text saveComboText;
+    RectTransform pazeRect, powerRect;
 
     void Start()
     {
@@ -90,6 +100,10 @@ public class UIManager : MonoBehaviour
             propertiesWindow.DOFade(0, 0.25f).SetUpdate(true);
             propertiesPanel.DOAnchorPosY(1600, 0.25f).SetUpdate(true);
         }
+    }
+    public void SetExplainPanel(string longExplain)
+    {
+        loneExplain.text = longExplain;
     }
 
     public void SetPaze(int curPaze, int maxPaze)
@@ -147,5 +161,22 @@ public class UIManager : MonoBehaviour
         powerRect.gameObject.SetActive(onPower);
         pazeRect.DOAnchorPosY(onPower ? 1000 : 800, time);
         powerRect.DOAnchorPosX(onPower ? 0 : 880, time).SetEase(Ease.OutExpo);
+    }
+
+    public void AddCombo(int value)
+    {
+        DeleteCombo(0.5f);
+        var combo = Instantiate(comboPrefab, comboPanel);
+        combo.anchoredPosition = comboStartPos;
+        combo.DOAnchorPos(comboOriginPos, 0.5f).SetEase(Ease.OutQuint);
+        saveComboText = combo.GetComponent<Text>();
+        saveComboText.text = value.ToString();
+        saveComboText.DOFade(1, 0.25f);
+    }
+    void DeleteCombo(float time)
+    {
+        if (saveComboText == null) return;
+        saveComboText.DOFade(0, time);
+        Destroy(saveComboText.gameObject, time);
     }
 }
