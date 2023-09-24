@@ -9,7 +9,6 @@ public class PlayerState : MonoBehaviour
 
     [SerializeField] GameObject barrier;
     public bool isInvincible;
-
     public void SetBarrier(bool isInvincible)
     {
         barrier.SetActive(isInvincible);
