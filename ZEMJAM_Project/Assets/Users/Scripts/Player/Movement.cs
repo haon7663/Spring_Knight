@@ -21,6 +21,7 @@ public class Movement : MonoBehaviour
     public int bouncedCount;
     public float count;
     public float multiSpeed = 1;
+    public float tileMultiSpeed = 1;
 
     public bool isIgnoreCollison;
     public bool isAttacking;
@@ -49,7 +50,7 @@ public class Movement : MonoBehaviour
 
         CinemachineManager.Inst.isJoom = count > 0;
 
-        lastVelocity = normalVelocity * multiSpeed;
+        lastVelocity = normalVelocity * multiSpeed * tileMultiSpeed;
         multiSpeed = Mathf.Lerp(multiSpeed, 1, Time.deltaTime);
 
         playerFollow.position = (Vector2)transform.position + m_Rigidbody2D.velocity * 0.15f;
@@ -73,7 +74,7 @@ public class Movement : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle);
         SetNormalVelocity(-transform.right * 15);
         transform.rotation = Quaternion.Euler(0, 0, 0);
-        SetMultiSpeed(1.75f);
+        SetMultiSpeed(2);
     }
 
     public void CrashEnemy(Collision2D collision)

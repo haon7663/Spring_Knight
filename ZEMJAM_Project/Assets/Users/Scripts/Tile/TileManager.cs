@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class TileManager : MonoBehaviour
 {
     public static TileManager Inst { get; private set; }
+    void Awake() => Inst = this;
 
     [Serializable]
     public struct TileMaps { public GameObject[] tileMaps; }
@@ -21,13 +22,23 @@ public class TileManager : MonoBehaviour
     public Tile[] tiles;
 
     public int tileSize;
-
-    void Awake() => Inst = this;
+    [SerializeField] Transform tileGrid;
+    [SerializeField] Transform cinemachineConfiner;
 
     void Start()
     {
+        var tilemap = stageTileMaps[GameManager.Inst.curStage].tileMaps[GameManager.Inst.curPaze];
+        GameObject tile = Instantiate(tilemap);
+        tile.transform.SetParent(tileGrid);
+
+        var tileIndex = int.Parse(tile.name.Substring(0, tile.name.IndexOf('-')));
+        tileSize = tileIndex;
+        float scale = tileIndex / 7f;
+        cinemachineConfiner.localScale = new Vector3(scale, scale, 1);
+        Movement.Inst.tileMultiSpeed = Mathf.Lerp(scale, 1, 0.25f);
+
         var sizeX = tileSize - 3;
-        var sizeY = sizeX*2;
+        var sizeY = sizeX * 2;
         tiles = new Tile[sizeX * sizeY];
 
         for (int i = 0; i < tiles.Length; i++)
@@ -39,22 +50,10 @@ public class TileManager : MonoBehaviour
 
             tiles[i].position = new Vector2(posX, posY);
         }
-
-        var tilemap = stageTileMaps[GameManager.Inst.curPaze].tileMaps;
-        Instantiate(tilemap[Random.Range(0, tilemap.Length)]);
     }
 
     public void TakeTile(int value, bool onTile)
     {
         tiles[value].onTile = onTile;
-    }
-
-    public int GetOnTileCount()
-    {
-        int value = 0;
-        for(int i = 0; i < tiles.Length; i++)
-            if (tiles[i].onTile)
-                value++;
-        return value;
     }
 }

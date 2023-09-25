@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     [Space]
     [Header("Stats")]
+    public int curStage;
     public int curPaze;
     public int maxPaze;
     public int manageHealth = 3;
@@ -175,8 +176,7 @@ public class GameManager : MonoBehaviour
         curPaze = 0;
         managePower = 3;
         manageHealth = 3;
-        enemySummonCount = 25;
-        TileManager.Inst.tileSize = 11;
+        enemySummonCount = 3;
 
         ResetProperty();
     }
@@ -189,7 +189,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         manageHealth = HealthManager.Inst.curhp;
-        TileManager.Inst.tileSize += 2;
         enemySummonCount += 0.75f;
         managePower += 1;
         summonCount = 3;
