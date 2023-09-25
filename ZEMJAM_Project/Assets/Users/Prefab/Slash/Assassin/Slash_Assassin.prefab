@@ -19431,7 +19431,6 @@ GameObject:
   - component: {fileID: 7876565789161892193}
   - component: {fileID: 7876565789161892192}
   - component: {fileID: 7876565789161893535}
-  - component: {fileID: 7827356214335515298}
   - component: {fileID: 5499189394882932946}
   m_Layer: 0
   m_Name: SlashSprite
@@ -19475,7 +19474,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9a09c6ea159d3214a94e42196c56e7e7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19528,22 +19527,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7827356214335515298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7876565789161893534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d6e8ce14b803354bbf9e653b59ad6fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyHit: {fileID: 6816747820137753440, guid: fb4edbe3791a45043a2805ec1c7eea98, type: 3}
-  particleTransform: []
-  spriteTransform:
-  - {fileID: 7876565789161892193}
 --- !u!114 &5499189394882932946
 MonoBehaviour:
   m_ObjectHideFlags: 0

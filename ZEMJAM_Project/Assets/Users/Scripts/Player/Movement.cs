@@ -129,6 +129,7 @@ public class Movement : MonoBehaviour
     Vector2 MoveReflect(Collision2D collision)
     {
         var speed = normalVelocity.magnitude;
+        Debug.Log(collision.contacts[0].normal);
         var dir = Vector2.Reflect(normalVelocity.normalized, collision.contacts[0].normal);
 
         return dir * Mathf.Max(speed, 0f);

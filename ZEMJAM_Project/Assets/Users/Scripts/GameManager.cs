@@ -175,8 +175,8 @@ public class GameManager : MonoBehaviour
         curPaze = 0;
         managePower = 3;
         manageHealth = 3;
-        enemySummonCount = 3;
-        TileManager.Inst.tileSize = 7;
+        enemySummonCount = 25;
+        TileManager.Inst.tileSize = 11;
 
         ResetProperty();
     }

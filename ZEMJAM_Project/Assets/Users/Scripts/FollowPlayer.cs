@@ -12,7 +12,7 @@ public class FollowPlayer : MonoBehaviour
     [SerializeField] bool isAfterImage;
     [SerializeField] SpriteRenderer m_SpriteRenderer;
     [SerializeField] GameObject afterImagePrf;
-    float afterTimer;
+    float afterTimer = 1;
 
     void Start()
     {
@@ -25,7 +25,7 @@ public class FollowPlayer : MonoBehaviour
 
         if (!isAfterImage) return;
         afterTimer += Time.deltaTime;
-        if (afterTimer > 0.05f)
+        if (afterTimer > 0.07f)
         {
             SummonAfterImage(m_SpriteRenderer);
             afterTimer = 0;

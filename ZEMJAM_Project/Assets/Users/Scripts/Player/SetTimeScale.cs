@@ -40,8 +40,8 @@ public class SetTimeScale : MonoBehaviour
         for (int i = 0; i < ray.Length; i++)
             if (Physics2D.Raycast(transform.position + ray[i], m_Rigidbody2D.velocity, 1, enemyLayer) && Movement.Inst.count > 0)
             {
-                Time.timeScale = 0.15f;
-                setTime = 0.15f;
+                Time.timeScale = 0.1f;
+                setTime = 0.1f;
             }
     }
 }
