@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerSpriteRenderer : MonoBehaviour
 {
     [Header("SpriteRenderers")]
     [SerializeField] SpriteRenderer m_SpriteRenderer;
-    [SerializeField] SpriteRenderer m_SpinSpriteRenderer;
 
     [Header("Components")]
     [SerializeField] Movement m_Movement;
@@ -72,6 +72,11 @@ public class PlayerSpriteRenderer : MonoBehaviour
         if(isFlipX)
             m_SpriteRenderer.flipX = selfTarget.x > target.x;
     }
+    public void SetColor(Color color, float time)
+    {
+        m_SpriteRenderer.DOColor(color, time);
+    }
+
     void SummonAfterImage(SpriteRenderer spriteRenderer)
     {
         SpriteRenderer afterImage = Instantiate(afterImagePrf, transform.position, Quaternion.identity).GetComponent<SpriteRenderer>();

@@ -27,11 +27,15 @@ public class Movement : MonoBehaviour
     public bool isAttacking;
     float attackTimer;
 
-    public GameObject fireSlash;
-    public GameObject fireHitEffect;
+    public GameObject slash;
+    public GameObject hitEffect;
+    public GameObject skill;
+
     [SerializeField] Transform playerFollow;
+    [SerializeField] LayerMask enemyLayer;
 
     Vector2 normalVelocity, lastVelocity;
+    bool isSpin;
 
     void Start()
     {
@@ -61,7 +65,7 @@ public class Movement : MonoBehaviour
 
     void LateUpdate()
     {
-        if(gameObject.layer == 3)
+        if (gameObject.layer == 3)
             m_Rigidbody2D.velocity = lastVelocity;
     }
 
@@ -87,6 +91,15 @@ public class Movement : MonoBehaviour
         }
 
         var enemy = collision.transform.GetComponent<EnemyDefence>();
+        if (collision.gameObject.TryGetComponent(out AssassinMark mark))
+        {
+            bool isAssassinate = mark.AssassinKill(collision.contacts[0].normal);
+            if (isAssassinate)
+            {
+                StartCoroutine(AssassinPenetrate(collision));
+                return;
+            }
+        }
         int totalDamage = enemy.AttemptAttack(bouncedCount + 1);
         if (totalDamage < 0)
             FailedAttack(collision);
@@ -95,7 +108,7 @@ public class Movement : MonoBehaviour
     }
     public void CrashWall(Collision2D collision)
     {
-        if(count > 1)
+        if (count > 1)
         {
             SetNormalVelocity(MoveReflect(collision));
             StartCoroutine(m_Collison.CapsuleAble());
@@ -107,8 +120,8 @@ public class Movement : MonoBehaviour
         {
             foreach (GameObject enemy in SummonManager.Inst.enemyList)
             {
-                if (enemy && enemy.GetComponent<EnemyDashSign>())
-                    enemy.GetComponent<EnemyDashSign>().AfterDash();
+                if (enemy.TryGetComponent(out EnemyDashSign enemyDashSign))
+                    enemyDashSign.AfterDash();
             }
             SetNormalVelocity(Vector2.zero);
             HealthManager.Inst.OnFade(true);
@@ -130,7 +143,7 @@ public class Movement : MonoBehaviour
     Vector2 MoveReflect(Collision2D collision)
     {
         var speed = normalVelocity.magnitude;
-        Debug.Log(collision.contacts[0].normal);
+
         var dir = Vector2.Reflect(normalVelocity.normalized, collision.contacts[0].normal);
 
         return dir * Mathf.Max(speed, 0f);
@@ -145,28 +158,65 @@ public class Movement : MonoBehaviour
 
         bouncedCount++;
         UIManager.Inst.AddCombo(bouncedCount);
+
+        if (bouncedCount >= 10 && skill && !isSpin)
+            StartCoroutine(SpinSlash());
     }
 
-    public void SucceedAttack(Collision2D collision, int defence)
+    IEnumerator SpinSlash()
+    {
+        isSpin = true;
+        GameObject spin = Instantiate(skill);
+
+        while (count > 0)
+        {
+            var hit = Physics2D.OverlapCircle(transform.position, 1.45f, enemyLayer);
+            if (hit)
+            {
+                Time.timeScale = 0.05f;
+                CinemachineShake.Instance.ShakeCamera(13, 0.3f);
+                m_SetLight.SuddenLight(1f, 0.4f);
+                hit.transform.GetComponent<EnemyDefence>().OnDamage(transform, normalVelocity);
+                Instantiate(hitEffect, hit.transform.position, Quaternion.Euler(0, 0, Random.Range(0, 359)));
+
+                AddCombo();
+            }
+
+            yield return YieldInstructionCache.WaitForFixedUpdate;
+        }
+
+        Destroy(spin);
+        isSpin = false;
+        yield return null;
+    }
+
+    public void SucceedAttack(Collision2D collision, int defence, bool isPenetrate = false)
+    {
+        Attack(collision, defence);
+
+        if (isPenetrate) return;
+        var reflectVelocity = MoveReflect(collision);
+        SetNormalVelocity(reflectVelocity);
+    }
+
+    void Attack(Collision2D collision, int defence)
     {
         var saveVelocity = normalVelocity;
-        var reflectVelocity = MoveReflect(collision);
         SetMultiSpeed(1.25f);
         m_PlayerSpriteRenderer.SetTransformFlip(collision.transform);
         Time.timeScale = 0.05f;
-        var slash = Instantiate(fireSlash, transform.position, Quaternion.identity).GetComponent<SlashParticle>();
+        var slash = Instantiate(this.slash, transform.position, Quaternion.identity).GetComponent<SlashParticle>();
         slash.SetParticle(collision.transform.position.x < transform.position.x, collision.transform);
-        Instantiate(fireHitEffect, collision.transform.position, Quaternion.Euler(0, 0, Random.Range(0, 359)));
+        Instantiate(hitEffect, collision.transform.position, Quaternion.Euler(0, 0, Random.Range(0, 359)));
 
         m_SetAnimation.AttackTrigger();
         attackTimer = 0.35f;
-        CinemachineShake.Instance.ShakeCamera(10 + defence, 0.25f + defence*0.02f);
+        CinemachineShake.Instance.ShakeCamera(10 + defence, 0.25f + defence * 0.02f);
         m_SetLight.SuddenLight(0.8f, 0.4f);
         collision.transform.GetComponent<EnemyDefence>().OnDamage(transform, saveVelocity);
         AddCombo();
 
         StartCoroutine(m_Collison.CapsuleAble());
-        SetNormalVelocity(reflectVelocity);
     }
 
     public void FailedAttack(Collision2D collision)
@@ -230,6 +280,37 @@ public class Movement : MonoBehaviour
 
         gameObject.layer = 3;
     }
+
+    bool isAssassinTrigger;
+    IEnumerator AssassinPenetrate(Collision2D collision)
+    {
+        AssassinMultiSlash multiSlash = Instantiate(skill, collision.transform.position, Quaternion.identity).GetComponent<AssassinMultiSlash>();
+        multiSlash.movement = this;
+
+        var saveVelocity = normalVelocity;
+        SetNormalVelocity(Vector2.zero);
+        gameObject.layer = 8;
+        m_PlayerSpriteRenderer.SetColor(new Color(0, 0, 0, 0), 0.1f);
+
+        var enemySprite = collision.transform.GetComponent<EnemySprite>();
+        for(float i = 0; i < 0.5f; i += Time.deltaTime)
+        {
+            if(isAssassinTrigger)
+            {
+                enemySprite.hitTimer = 0.04f;
+                CinemachineShake.Instance.ShakeCamera(8, 0.15f);
+                isAssassinTrigger = false;
+            }
+            yield return YieldInstructionCache.WaitForFixedUpdate;
+        }
+
+        SetNormalVelocity(saveVelocity);
+        gameObject.layer = 3;
+        m_PlayerSpriteRenderer.SetColor(new Color(1, 1, 1, 1), 0.2f);
+
+        SucceedAttack(collision, 8, true);
+    }
+    public void AssassinTrigger() => isAssassinTrigger = true;
 
     void SetNormalVelocity(Vector3 velocity)
     {

@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Inst { get; set; }
 
     public PlayerController m_PlayerController;
+    public Character m_Character;
 
     public GameMode m_GameMode;
     public GameState m_GameState;
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
     public int curPaze;
     public int maxPaze;
     public int manageHealth = 3;
+    public int maxHealth = 3;
     public int maxPower = 3;
     public int managePower = 3;
     public int summonCount = 3;
@@ -125,7 +127,7 @@ public class GameManager : MonoBehaviour
         m_PlayerController.maxPower = managePower;
         maxPower = managePower;
 
-        HealthManager.Inst.SetHealth(3);
+        HealthManager.Inst.SetHealth(maxHealth);
         HealthManager.Inst.curhp = manageHealth;
 
         UIManager.Inst.SetPaze(curPaze, maxPaze);
@@ -160,9 +162,13 @@ public class GameManager : MonoBehaviour
             else if (summonCount > 0)
             {
                 summonCount--;
+
+                var isAssassin = m_Character.playerType == Character.PlayerType.ASSASSIN;
                 for (int i = 0; i < (int)enemySummonCount; i++)
                 {
-                    SummonManager.Inst.SummonEnemy();
+                    var enemy = SummonManager.Inst.SummonEnemy();
+                    if (isAssassin && i == 0)
+                        enemy.AddComponent<AssassinMark>();
                 }
                 //SummonManager.Inst.SummonItem();
 
@@ -175,6 +181,7 @@ public class GameManager : MonoBehaviour
     {
         curPaze = 0;
         managePower = 3;
+        maxHealth = 3;
         manageHealth = 3;
         enemySummonCount = 3;
 
@@ -213,8 +220,8 @@ public class GameManager : MonoBehaviour
     }
     public void IncreaseMaxHealth()
     {
-        manageHealth++;
-        HealthManager.Inst.SetHealth(manageHealth);
+        maxHealth++;
+        HealthManager.Inst.SetHealth(maxHealth);
         HealthManager.Inst.OnHealth(1);
     }
     public void IncreaseMaxPower()

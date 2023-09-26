@@ -17,7 +17,8 @@ public class EnemySprite : MonoBehaviour
 
     public bool doFlip;
 
-    float hitTimer, rayTimer;
+    public float hitTimer;
+    float rayTimer;
 
     void Awake()
     {

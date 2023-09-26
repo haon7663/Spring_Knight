@@ -5,7 +5,6 @@ using UnityEngine;
 public class SetAnimation : MonoBehaviour
 {
     Animator m_Animator;
-    Animator m_SwordAnimator;
     Collison m_Collison;
     Movement m_Movement;
 
@@ -14,8 +13,6 @@ public class SetAnimation : MonoBehaviour
         m_Animator = GetComponent<Animator>();
         m_Collison = GetComponent<Collison>();
         m_Movement = GetComponent<Movement>();
-
-        m_SwordAnimator = transform.GetChild(0).GetComponent<Animator>();
     }
     void Update()
     {
@@ -24,7 +21,6 @@ public class SetAnimation : MonoBehaviour
         m_Animator.SetBool("onBottomWall", m_Collison.onDown);
         m_Animator.SetBool("onMove", m_Movement.count > 0);
         m_Animator.SetBool("isAttack", m_Movement.isAttacking);
-        m_SwordAnimator.SetBool("isAttack", m_Movement.isAttacking);
     }
 
     public void AttackTrigger()

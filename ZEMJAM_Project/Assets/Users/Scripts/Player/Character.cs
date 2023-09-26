@@ -9,10 +9,14 @@ public class Characters
     public GameObject slashPrf;
     public GameObject slashHitPrf;
     public GameObject afterImagePrf;
+    public GameObject skillObjPrf_1;
+    public GameObject skillObjPrf_2;
     public RuntimeAnimatorController animController;
 }
 public class Character : MonoBehaviour
 {
+    public static Character Inst;
+
     public Characters[] characters;
 
     [SerializeField] Animator m_Animator;
@@ -24,10 +28,13 @@ public class Character : MonoBehaviour
 
     void Awake()
     {
+        Inst = this;
+
         var charType = characters[(int)playerType];
         m_Animator.runtimeAnimatorController = charType.animController;
-        m_Movement.fireSlash = charType.slashPrf;
-        m_Movement.fireHitEffect = charType.slashHitPrf;
+        m_Movement.slash = charType.slashPrf;
+        m_Movement.hitEffect = charType.slashHitPrf;
         m_PlayerSpriteRenderer.afterImagePrf = charType.afterImagePrf;
+        m_Movement.skill = charType.skillObjPrf_1;
     }
 }

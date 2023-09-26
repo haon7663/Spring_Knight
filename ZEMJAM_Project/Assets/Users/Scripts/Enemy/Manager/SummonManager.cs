@@ -29,7 +29,7 @@ public class SummonManager : MonoBehaviour
     public Transform enemyBundle;
     public Transform itemBundle;
 
-    public void SummonEnemy()
+    public GameObject SummonEnemy()
     {
         var index = FindTileIndex();
         GameObject enemy = Instantiate(GetRandomEnemy(), TileManager.Inst.tiles[index].position, Quaternion.identity);
@@ -38,6 +38,8 @@ public class SummonManager : MonoBehaviour
         scriptBundle.defence.index = index;
 
         enemyList.Add(enemy);
+
+        return enemy;
     }
 
     public void SummonItem()

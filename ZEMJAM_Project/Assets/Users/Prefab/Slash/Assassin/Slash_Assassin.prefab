@@ -19542,3 +19542,4 @@ MonoBehaviour:
   isAfterImage: 1
   m_SpriteRenderer: {fileID: 7876565789161892192}
   afterImagePrf: {fileID: 6845692884496698445, guid: e266cd3c8fe5bec4ba534fbac6ffbe95, type: 3}
+  afterDelay: 0.07
