@@ -159,7 +159,8 @@ public class Movement : MonoBehaviour
         bouncedCount++;
         UIManager.Inst.AddCombo(bouncedCount);
 
-        if (bouncedCount >= 10 && skill && !isSpin)
+        var isRoyalKnight = Character.Inst.playerType == Character.PlayerType.ROYALKNIGHT;
+        if (isRoyalKnight && bouncedCount >= 10 && !isSpin)
             StartCoroutine(SpinSlash());
     }
 
