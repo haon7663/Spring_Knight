@@ -20,6 +20,7 @@ public class LobbyManager : MonoBehaviour
     [Header("Other")]
     [SerializeField] GameObject SetModeView;
     [SerializeField] GameObject SetStageView;
+    [SerializeField] GameObject DailyLoginView;
     [SerializeField] GameObject MissionView;
     [SerializeField] GameObject ShopView;
     [SerializeField] GameObject PlayerView;
@@ -61,6 +62,11 @@ public class LobbyManager : MonoBehaviour
         ModeActive(false);
     }
 
+
+    public void SetDailyLoginView(bool value)
+    {
+        DailyLoginView.SetActive(value);
+    }
     public void SetMissionView(bool value)
     {
         MissionView.SetActive(value);

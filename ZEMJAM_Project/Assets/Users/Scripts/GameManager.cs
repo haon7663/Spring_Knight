@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
         Inst = this;
         Time.timeScale = 1;
 
-        if (!isInGame) return;
+        if (SceneManager.GetActiveScene().name != "InGame") return;
 
         m_Character = GetComponent<Character>();
         m_PlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();

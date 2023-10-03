@@ -34,7 +34,7 @@ public class TileManager : MonoBehaviour
         var tileIndex = int.Parse(tile.name.Substring(0, tile.name.IndexOf('-')));
         tileSize = tileIndex;
         float scale = tileIndex / 7f;
-        cinemachineConfiner.localScale = new Vector3(scale, scale, 1);
+        cinemachineConfiner.localScale = new Vector3(scale + 0.05f, scale + 0.05f, 1);
         Movement.Inst.tileMultiSpeed = Mathf.Lerp(scale, 1, 0.25f);
 
         var sizeX = tileSize - 3;
