@@ -5,9 +5,10 @@ using UnityEngine.UI;
 
 public class PropertyData : MonoBehaviour
 {
-    public Text explainText;
     public Image spriteImage;
 
+    public TimeType timeType;
+    string propertyName;
     string longExplain;
     public int index;
 
@@ -16,16 +17,29 @@ public class PropertyData : MonoBehaviour
         var property = PropertiesManager.Inst.property[index];
 
         float value = property.value * (property.timeType == TimeType.COUNT ? property.curCount + 1 : 1);
-        string explain = property.explain.Replace("!", value.ToString());
+        timeType = property.timeType;
+        propertyName = property.explain.Replace("!", value.ToString());
         longExplain = property.longExplain.Replace("!", value.ToString());
-
-        explainText.text = explain;
         spriteImage.sprite = property.sprite;
     }
 
     public void ButtonDown()
     {
-        UIManager.Inst.SetExplainPanel(longExplain);
+        string disposition = GetDisposition(timeType);
+
+        UIManager.Inst.SetExplainPanel(propertyName, longExplain, disposition, spriteImage.sprite, PropertiesManager.Inst.GetFrame(index));
         PropertiesManager.Inst.SelectIndex(index);
+    }
+
+    string GetDisposition(TimeType timeType)
+    {
+        string result = timeType switch
+        {
+            TimeType.COUNT => "",
+            TimeType.INFINITE => "(ÈÖ¹ß¼º)",
+            TimeType.ONE => "(ÀÏÈ¸¼º)",
+            _ => "",
+        };
+        return result;
     }
 }

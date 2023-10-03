@@ -29,7 +29,6 @@ public class AssassinMark : MonoBehaviour
 
     public bool AssassinKill(Vector2 value)
     {
-        Debug.Log("value: " + value + "mark: " + randomMark);
         return randomMark == value;
     }
 

@@ -17,8 +17,11 @@ public class GameManager : MonoBehaviour
     public GameMode m_GameMode;
     public GameState m_GameState;
 
+    public bool isInGame;
     public bool isLoadScene;
     public bool isSetting;
+
+    public int gold;
 
     [Space]
     [Header("State")]
@@ -49,9 +52,10 @@ public class GameManager : MonoBehaviour
     [Space]
     [Header("Property")]
     public Property[] saveProperty;
+    public List<Sprite> selectedPropertySprite;
     public delegate void KillEnemyAction();
     public static event KillEnemyAction KillEnemy;
-    public delegate void SpawnEnemyAction();
+    public delegate void SpawnEnemyAction(EnemyDefence enemy);
     public static event SpawnEnemyAction SpawnEnemy;
 
     void Awake()
@@ -123,16 +127,21 @@ public class GameManager : MonoBehaviour
         Inst = this;
         Time.timeScale = 1;
 
+        if (!isInGame) return;
+
+        m_Character = GetComponent<Character>();
         m_PlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         m_PlayerController.maxPower = managePower;
         maxPower = managePower;
+        maxPaze = TileManager.Inst.stageTileMaps[curStage].tileMaps.Length;
 
         HealthManager.Inst.SetHealth(maxHealth);
         HealthManager.Inst.curhp = manageHealth;
+        HealthManager.Inst.OnHealth(0);
 
         UIManager.Inst.SetPaze(curPaze, maxPaze);
 
-        ChangeMode(m_GameMode);
+        ChangeMode(GameMode.INFINITE);
 
         if(isSummonItems)
             for (int i = 0; i < summonItemValue; i++)
@@ -147,6 +156,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (!isInGame) return;
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
@@ -156,6 +167,11 @@ public class GameManager : MonoBehaviour
         {
             if (summonCount <= 0 && !isLoadScene)
             {
+                if(curPaze == maxPaze - 1)
+                {
+                    StartCoroutine(UIManager.Inst.ShowResultPanel(true));
+                    return;
+                }
                 isLoadScene = true;
                 StartCoroutine(MoveScene());
             }
@@ -163,7 +179,7 @@ public class GameManager : MonoBehaviour
             {
                 summonCount--;
 
-                var isAssassin = m_Character.playerType == Character.PlayerType.ASSASSIN;
+                var isAssassin = m_Character.playerType == PlayerType.ASSASSIN;
                 for (int i = 0; i < (int)enemySummonCount; i++)
                 {
                     var enemy = SummonManager.Inst.SummonEnemy();
@@ -193,7 +209,7 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.LOADING);
         yield return new WaitForSeconds(1);
         Fade.Inst.Fadein();
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
 
         manageHealth = HealthManager.Inst.curhp;
         enemySummonCount += 0.75f;
@@ -262,8 +278,7 @@ public class GameManager : MonoBehaviour
     }
     void KillGold()
     {
-        var succes = Calculate(killGoldPersent);
-        if (succes)
+        if (Calculate(killGoldPersent))
             Debug.Log("Gold");
     }
     void KillDecDef()
@@ -273,9 +288,9 @@ public class GameManager : MonoBehaviour
     #endregion
     #region SpawnEvent
 
-    public void SpawnEvent()
+    public void SpawnEvent(EnemyDefence enemy)
     {
-        SpawnEnemy?.Invoke();
+        SpawnEnemy?.Invoke(enemy);
     }
     public void AddSpawnDecDef(int persent)
     {
@@ -286,11 +301,12 @@ public class GameManager : MonoBehaviour
         }
         spawnDecDefPersent += persent;
     }
-    void SpawnDecDef()
+    void SpawnDecDef(EnemyDefence enemy)
     {
-        var succes = Calculate(spawnDecDefPersent);
-        if (succes)
-            Debug.Log("SpawnDecreaseDef");
+        if (Calculate(spawnDecDefPersent))
+        {
+            enemy.SetDefence(-1);
+        }
     }
 
     #endregion

@@ -1,27 +1,60 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SoundManager : MonoBehaviour
 {
-    public AudioMixer audioMixer;
+    private static SoundManager inst = null;
 
-    public Slider BgmSlider;
-    public Slider SfxSlider;
+    private void Awake()
+    {
+        if (null == inst)
+        {
+            inst = this;
+            DontDestroyOnLoad(inst);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
-    void Start()
+    public static SoundManager Inst
     {
-        SetBgmVolme();
-        SetSFXVolme();
+        get
+        {
+            if (null == inst)
+            {
+                return null;
+            }
+
+            return inst;
+        }
     }
-    public void SetBgmVolme()
+
+    public AudioMixer masterMixer;
+
+    public void AudioControl(string name, Slider slider)
     {
-        audioMixer.SetFloat("BGM", Mathf.Log10(BgmSlider.value) * 20);
+        var sound = slider.value;
+
+        print(sound);
+        if (sound == -40f)
+        {
+            masterMixer.SetFloat(name, -80);
+        }
+        else
+        {
+            masterMixer.SetFloat(name, sound);
+        }
     }
-    public void SetSFXVolme()
+
+    public void ToggleAudioVolume()
     {
-        audioMixer.SetFloat("SFX", Mathf.Log10(SfxSlider.value) * 20);
+        AudioListener.volume = AudioListener.volume == 0 ? 1 : 0;
     }
 }

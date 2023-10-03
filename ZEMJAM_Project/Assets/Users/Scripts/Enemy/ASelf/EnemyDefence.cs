@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class EnemyDefence : MonoBehaviour
 {
@@ -26,28 +27,43 @@ public class EnemyDefence : MonoBehaviour
 
     void Start()
     {
-        GameManager.Inst.SpawnEvent();
-
         defenceBar = Instantiate(defenceParent, DefenceManager.Inst.defenceBundle);
 
         if (maxDefence == 0) defence = minDefence;
         else defence = Random.Range(minDefence, maxDefence + 1);
+
         SetDefence();
     }
 
-    public void SetDefence()
+    public void SetDefence(int changeDef = 0)
     {
+        defence += changeDef;
+        if (defence < 1)
+        {
+            changeDef = 0;
+            defence = 1;
+        }
         var def = defence - 1;
         var perDef = def > 4 ? 4 : def;
         for (int i = 0; i < perDef; i++)
         {
             defences[i] = defenceBar.GetChild(i).gameObject;
             if (!defences[i].activeSelf) defences[i].SetActive(true);
+            defences[i].GetComponent<Image>().enabled = true;
 
             var setPosition = DefenceManager.Inst.GetDefPosition(i, def) * 20 + new Vector2(0, defPositionY);
             if(perDef == 4)
                 defences[i].GetComponent<Image>().sprite = DefenceManager.Inst.GetDefSprite(defence - i - 2);
-            defences[i].GetComponent<RectTransform>().localPosition = setPosition;
+            defences[i].GetComponent<RectTransform>().DOLocalMove(setPosition, 0.2f);
+        }
+        if (changeDef < 0)
+        {
+            for (int i = 0; i < -changeDef; i++)
+            {
+                var perDefIPer = (def + i) % 4;
+                defences[perDefIPer].GetComponentInChildren<ParticleSystem>().Play();
+                if(def + i < 4) defences[perDefIPer].GetComponent<Image>().enabled = false;
+            }
         }
     }
     void LateUpdate()
@@ -68,6 +84,8 @@ public class EnemyDefence : MonoBehaviour
         TileManager.Inst.TakeTile(index, false);
         SummonManager.Inst.RemoveEnemy(gameObject);
         GameManager.Inst.KillEvent();
+        MissionManager.Inst.DestroyEnemy(m_EnemyBundle.enemyRace, m_EnemyBundle.enemyClass);
+
         Destroy(defenceBar.gameObject);
         if (TryGetComponent(out DemensionDestroyer demension))
             demension.PortalDestroy(0.15f);

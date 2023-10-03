@@ -24,11 +24,11 @@ public class CinemachineManager : MonoBehaviour
     void Start()
     {
         tileSize = TileManager.Inst.tileSize;
-        realCineSize = tileSize;
+        realCineSize = tileSize -0.01f;
         cinevirtual.m_Lens.OrthographicSize = realCineSize;
         cinevirtual.Follow = tile;
-        joomSize = tileSize * 0.85f;
-        deathSize = tileSize * 0.7f;
+        joomSize = 6.99f;
+        deathSize = 5;
     }
 
     void LateUpdate()

@@ -127,6 +127,7 @@ MonoBehaviour:
   whiteMaterial: {fileID: 2100000, guid: b85327a6ec4a4da4ab1898277ed7180c, type: 2}
   rayMaterial: {fileID: 2100000, guid: b59910d3569c5f848a65e9c538f51fbb, type: 2}
   doFlip: 1
+  hitTimer: 0
 --- !u!114 &6824758075528564574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5124,7 +5125,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2103521503
   m_SortingLayer: 1
-  m_SortingOrder: 100
+  m_SortingOrder: 250
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -9936,7 +9937,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2103521503
   m_SortingLayer: 1
-  m_SortingOrder: 100
+  m_SortingOrder: 250
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0

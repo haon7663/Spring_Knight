@@ -9,12 +9,6 @@ public class FollowPlayer : MonoBehaviour
 {
     Transform player;
 
-    [SerializeField] bool isAfterImage;
-    [SerializeField] SpriteRenderer m_SpriteRenderer;
-    [SerializeField] GameObject afterImagePrf;
-    [SerializeField] float afterDelay;
-    float afterTimer = 1;
-
     void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
@@ -23,20 +17,5 @@ public class FollowPlayer : MonoBehaviour
     void LateUpdate()
     {
         transform.position = player.position;
-
-        if (!isAfterImage) return;
-        afterTimer += Time.deltaTime;
-        if (afterTimer > afterDelay)
-        {
-            SummonAfterImage(m_SpriteRenderer);
-            afterTimer = 0;
-        }
-    }
-
-    void SummonAfterImage(SpriteRenderer spriteRenderer)
-    {
-        SpriteRenderer afterImage = Instantiate(afterImagePrf, transform.position, Quaternion.identity).GetComponent<SpriteRenderer>();
-        afterImage.sprite = spriteRenderer.sprite;
-        afterImage.transform.localScale = transform.localScale;
     }
 }

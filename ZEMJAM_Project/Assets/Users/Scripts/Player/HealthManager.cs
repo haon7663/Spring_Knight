@@ -25,12 +25,6 @@ public class HealthManager : MonoBehaviour
     [SerializeField] Sprite disabledHeart;
     [SerializeField] Sprite abledHeart;
 
-    Camera mainCamera;
-    void Start()
-    {
-        mainCamera = Camera.main;
-    }
-
     void LateUpdate()
     {
         helathParent.position = (player.position + new Vector3(0, player.position.y > 4.3f ? -1 : 1));
@@ -50,6 +44,9 @@ public class HealthManager : MonoBehaviour
     }
     public void OnFade(bool isFadeIn)
     {
+        if (healths.Length == 0)
+            SetHealth(maxhp);
+
         Sequence sequence = DOTween.Sequence();
 
         for (int i = 0; i < maxhp; i++)

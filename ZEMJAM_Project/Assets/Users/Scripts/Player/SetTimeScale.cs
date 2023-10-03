@@ -9,8 +9,10 @@ public class SetTimeScale : MonoBehaviour
 
     [SerializeField] LayerMask enemyLayer;
 
+    public bool isRigidTime = true;
     [SerializeField] float defaultTimeScale;
-    float setTime;
+    [SerializeField] float rigidTimeScale;
+    public float setTime;
 
     void Start()
     {
@@ -26,6 +28,8 @@ public class SetTimeScale : MonoBehaviour
             return;
         }
 
+        if (!isRigidTime) return;
+
         setTime = defaultTimeScale;
         SetRigidTime();
 
@@ -40,8 +44,8 @@ public class SetTimeScale : MonoBehaviour
         for (int i = 0; i < ray.Length; i++)
             if (Physics2D.Raycast(transform.position + ray[i], m_Rigidbody2D.velocity, 1, enemyLayer) && Movement.Inst.count > 0)
             {
-                Time.timeScale = 0.1f;
-                setTime = 0.1f;
+                Time.timeScale = rigidTimeScale;
+                setTime = rigidTimeScale;
             }
     }
 }

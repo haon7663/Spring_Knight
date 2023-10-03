@@ -12,6 +12,7 @@ public class Movement : MonoBehaviour
     SetAnimation m_SetAnimation;
     PlayerState m_PlayerState;
     PlayerSpriteRenderer m_PlayerSpriteRenderer;
+    SetTimeScale m_SetTimeScale;
     Collison m_Collison;
     SetLight m_SetLight;
 
@@ -25,7 +26,7 @@ public class Movement : MonoBehaviour
 
     public bool isIgnoreCollison;
     public bool isAttacking;
-    float attackTimer;
+    float attackTimer, avoidTimer, saveAvoid;
 
     public GameObject slash;
     public GameObject hitEffect;
@@ -44,6 +45,7 @@ public class Movement : MonoBehaviour
         m_SetAnimation = GetComponent<SetAnimation>();
         m_PlayerState = GetComponent<PlayerState>();
         m_PlayerSpriteRenderer = GetComponent<PlayerSpriteRenderer>();
+        m_SetTimeScale = GetComponent<SetTimeScale>();
         m_Collison = GetComponent<Collison>();
         m_SetLight = GetComponent<SetLight>();
     }
@@ -61,6 +63,7 @@ public class Movement : MonoBehaviour
 
         isAttacking = attackTimer > 0;
         attackTimer -= Time.deltaTime;
+        avoidTimer += Time.deltaTime;
     }
 
     void LateUpdate()
@@ -78,11 +81,15 @@ public class Movement : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle);
         SetNormalVelocity(-transform.right * 15);
         transform.rotation = Quaternion.Euler(0, 0, 0);
-        SetMultiSpeed(2);
+        SetMultiSpeed(1.5f);
     }
 
     public void CrashEnemy(Collision2D collision)
     {
+        if(saveAvoid == avoidTimer)
+            return;
+        saveAvoid = avoidTimer;
+
         attackTimer = 0;
         if (count == 0)
         {
@@ -159,7 +166,7 @@ public class Movement : MonoBehaviour
         bouncedCount++;
         UIManager.Inst.AddCombo(bouncedCount);
 
-        var isRoyalKnight = Character.Inst.playerType == Character.PlayerType.ROYALKNIGHT;
+        var isRoyalKnight = Character.Inst.playerType == PlayerType.ROYALKNIGHT;
         if (isRoyalKnight && bouncedCount >= 10 && !isSpin)
             StartCoroutine(SpinSlash());
     }
@@ -175,7 +182,7 @@ public class Movement : MonoBehaviour
             if (hit)
             {
                 Time.timeScale = 0.05f;
-                CinemachineShake.Instance.ShakeCamera(13, 0.3f);
+                CinemachineShake.Inst.ShakeCamera(13, 0.3f);
                 m_SetLight.SuddenLight(1f, 0.4f);
                 hit.transform.GetComponent<EnemyDefence>().OnDamage(transform, normalVelocity);
                 Instantiate(hitEffect, hit.transform.position, Quaternion.Euler(0, 0, Random.Range(0, 359)));
@@ -193,31 +200,36 @@ public class Movement : MonoBehaviour
 
     public void SucceedAttack(Collision2D collision, int defence, bool isPenetrate = false)
     {
-        Attack(collision, defence);
+        StartCoroutine(Attack(collision, defence));
 
         if (isPenetrate) return;
         var reflectVelocity = MoveReflect(collision);
         SetNormalVelocity(reflectVelocity);
     }
 
-    void Attack(Collision2D collision, int defence)
+    IEnumerator Attack(Collision2D collision, int defence)
     {
         var saveVelocity = normalVelocity;
         SetMultiSpeed(1.25f);
         m_PlayerSpriteRenderer.SetTransformFlip(collision.transform);
-        Time.timeScale = 0.05f;
         var slash = Instantiate(this.slash, transform.position, Quaternion.identity).GetComponent<SlashParticle>();
         slash.SetParticle(collision.transform.position.x < transform.position.x, collision.transform);
         Instantiate(hitEffect, collision.transform.position, Quaternion.Euler(0, 0, Random.Range(0, 359)));
 
         m_SetAnimation.AttackTrigger();
         attackTimer = 0.35f;
-        CinemachineShake.Instance.ShakeCamera(10 + defence, 0.25f + defence * 0.02f);
+        CinemachineShake.Inst.ShakeCamera(10 + defence, 0.25f + defence * 0.02f);
         m_SetLight.SuddenLight(0.8f, 0.4f);
         collision.transform.GetComponent<EnemyDefence>().OnDamage(transform, saveVelocity);
         AddCombo();
 
-        StartCoroutine(m_Collison.CapsuleAble());
+        m_SetTimeScale.isRigidTime = false;
+        m_SetTimeScale.setTime = 0.01f;
+        Time.timeScale = 0.01f;
+        yield return new WaitForSecondsRealtime(0.2f);
+        m_SetTimeScale.setTime = 0.2f;
+        Time.timeScale = 0.2f;
+        m_SetTimeScale.isRigidTime = true;
     }
 
     public void FailedAttack(Collision2D collision)
@@ -237,7 +249,7 @@ public class Movement : MonoBehaviour
             HealthManager.Inst.OnDamage();
         StartCoroutine(m_PlayerSpriteRenderer.GracePerioding());
         StartCoroutine(m_Collison.CapsuleAble());
-        CinemachineShake.Instance.ShakeCamera(15, 0.3f);
+        CinemachineShake.Inst.ShakeCamera(15, 0.3f);
 
         m_SetAnimation.Hit(true);
 
@@ -254,7 +266,7 @@ public class Movement : MonoBehaviour
         if (HealthManager.Inst.curhp > 0)
             m_SetAnimation.Hit(false);
         else
-            StartCoroutine(m_SetAnimation.Death());
+            m_SetAnimation.Death();
     }
     public IEnumerator Bounced(Transform target)
     {
@@ -294,16 +306,23 @@ public class Movement : MonoBehaviour
         m_PlayerSpriteRenderer.SetColor(new Color(0, 0, 0, 0), 0.1f);
 
         var enemySprite = collision.transform.GetComponent<EnemySprite>();
-        for(float i = 0; i < 0.5f; i += Time.deltaTime)
+
+        m_SetTimeScale.isRigidTime = false;
+        m_SetTimeScale.setTime = 1;
+        Time.timeScale = 1;
+
+        for (float i = 0; i < 0.5f; i += Time.deltaTime)
         {
             if(isAssassinTrigger)
             {
                 enemySprite.hitTimer = 0.04f;
-                CinemachineShake.Instance.ShakeCamera(8, 0.15f);
+                CinemachineShake.Inst.ShakeCamera(8, 0.075f);
                 isAssassinTrigger = false;
             }
             yield return YieldInstructionCache.WaitForFixedUpdate;
         }
+
+        m_SetTimeScale.isRigidTime = true;
 
         SetNormalVelocity(saveVelocity);
         gameObject.layer = 3;
@@ -326,6 +345,6 @@ public class Movement : MonoBehaviour
 
     public void Death()
     {
-        SceneManager.LoadScene("Death");
+        StartCoroutine(UIManager.Inst.ShowResultPanel(false));
     }
 }

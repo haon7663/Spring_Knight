@@ -41,12 +41,10 @@ public class SetAnimation : MonoBehaviour
     {
         m_Animator.SetBool("isHit", isHit);
     }
-    public IEnumerator Death()
+    public void Death()
     {
         m_Animator.SetBool("isDeath", true);
         m_Animator.SetTrigger("death");
-        yield return YieldInstructionCache.WaitForSeconds(1f);
-        Fade.Inst.Fadein();
-        Invoke(nameof(m_Movement.Death), 0.2f);
+        m_Movement.Death();
     }
 }

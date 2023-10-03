@@ -35,9 +35,12 @@ public class PropertiesManager : MonoBehaviour
     public Property[] property;
 
     [Space]
+    [SerializeField] RectTransform[] propertieTransforms;
     [SerializeField] RectTransform propertyData;
     [SerializeField] Transform selectPanel;
-    [SerializeField] int propertyCount;
+    [SerializeField] Sprite frame_One;
+    [SerializeField] Sprite frame_Count;
+    [SerializeField] Sprite frame_Inf;
 
     [Space]
     [SerializeField] SelectProperty m_SelectProperty;
@@ -47,11 +50,11 @@ public class PropertiesManager : MonoBehaviour
         if(GameManager.Inst.saveProperty.Length != 0) property = GameManager.Inst.saveProperty;
         for (int i = 0; i < property.Length; i++)
             property[i].isCalled = false;
-        for(int i = 0; i < propertyCount; i++)
+        for(int i = 0; i < 3; i++)
         {
-            RectTransform data = Instantiate(propertyData, selectPanel);
+            RectTransform data = Instantiate(propertyData, propertieTransforms[i]);
             data.GetComponent<PropertyData>().index = GetPropertyIndex();
-            data.anchoredPosition = new Vector2(0, 190 - (510/ propertyCount) * i);
+            data.anchoredPosition = Vector2.zero;
         }
     }
     public int GetPropertyIndex()
@@ -83,9 +86,24 @@ public class PropertiesManager : MonoBehaviour
                 result = false;
                 break;
         }
+        if (!result && isChange)
+        {
+            GameManager.Inst.selectedPropertySprite.Add(property[ran].sprite);
+        }
 
         GameManager.Inst.saveProperty = property;
         return result;
+    }
+
+    public Sprite GetFrame(int index)
+    {
+        Sprite sprite = property[index].timeType switch
+        {
+            TimeType.ONE => frame_One,
+            TimeType.COUNT => frame_Count,
+            _ => frame_Inf,
+        };
+        return sprite;
     }
     public void SelectIndex(int index)
     {

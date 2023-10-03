@@ -22,6 +22,9 @@ public class Collison : MonoBehaviour
     public float collisionRadius = 0.25f;
     public Vector2 bottomOffset, rightOffset, leftOffset, topOffset;
 
+    float timer = 0;
+    int hitCount = 0;
+
     private void Update()
     {
         onUp = Physics2D.OverlapCircle((Vector2)transform.position + topOffset, collisionRadius, groundLayer);
@@ -30,6 +33,7 @@ public class Collison : MonoBehaviour
         onLeft = Physics2D.OverlapCircle((Vector2)transform.position + leftOffset, collisionRadius, groundLayer);
 
         onCollision = onUp || onDown || onRight || onLeft;
+        timer += Time.deltaTime;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -37,7 +41,11 @@ public class Collison : MonoBehaviour
         if (Movement.Inst.isIgnoreCollison || GameManager.Inst.onDeath) return;
 
         if (collision.transform.CompareTag("Enemy"))
+        {
+            Debug.Log(collision + " / Time: " + timer + " / Hit: " + hitCount++);
+            StartCoroutine(CapsuleAble());
             Movement.Inst.CrashEnemy(collision);
+        }
 
         else if (collision.transform.CompareTag("Wall"))
             Movement.Inst.CrashWall(collision);
@@ -46,13 +54,13 @@ public class Collison : MonoBehaviour
             StartCoroutine(Movement.Inst.Hit(collision.transform));
     }
 
-    void OnCollisionStay2D(Collision2D collision)
+    /*void OnCollisionStay2D(Collision2D collision)
     {
         if (Movement.Inst.isIgnoreCollison || GameManager.Inst.onDeath) return;
 
         if (collision.transform.CompareTag("Enemy"))
             Movement.Inst.CrashEnemy(collision);
-    }
+    }*/
 
     void OnDrawGizmos()
     {

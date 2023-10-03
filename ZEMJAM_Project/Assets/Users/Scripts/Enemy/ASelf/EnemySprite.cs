@@ -73,6 +73,8 @@ public class EnemySprite : MonoBehaviour
         }
         m_SpriteRenderer.color = new Color(1, 1, 1, 1f);
         gameObject.layer = 7;
+
+        GameManager.Inst.SpawnEvent(m_EnemyBundle.defence);
         yield return null;
     }
 

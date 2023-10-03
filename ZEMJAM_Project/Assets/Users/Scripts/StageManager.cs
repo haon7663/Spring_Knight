@@ -13,7 +13,7 @@ public class StageManager : MonoBehaviour
     IEnumerator MoveScene()
     {
         Fade.Inst.Fadein();
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene("Faze");
     }
 }

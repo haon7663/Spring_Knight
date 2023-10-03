@@ -109,6 +109,8 @@ MonoBehaviour:
   rigid: {fileID: 763462062243674508}
   defence: {fileID: 8171057419170355337}
   sprite: {fileID: 4208373255508080282}
+  enemyRace: 2
+  enemyClass: 1
 --- !u!114 &4208373255508080282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,6 +127,7 @@ MonoBehaviour:
   whiteMaterial: {fileID: 2100000, guid: b85327a6ec4a4da4ab1898277ed7180c, type: 2}
   rayMaterial: {fileID: 2100000, guid: b59910d3569c5f848a65e9c538f51fbb, type: 2}
   doFlip: 1
+  hitTimer: 0
 --- !u!114 &8171057419170355337
 MonoBehaviour:
   m_ObjectHideFlags: 0

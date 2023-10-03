@@ -12,14 +12,12 @@ public class PlayerSpriteRenderer : MonoBehaviour
     [SerializeField] Movement m_Movement;
     [SerializeField] Collison m_Collison;
     [SerializeField] Rigidbody2D m_Rigidbody2D;
+    [SerializeField] SummonAfter m_SummonAfter;
 
     [Header("Materials")]
     [SerializeField] Material defaultMaterial;
     [SerializeField] Material whiteMaterial;
-
-    [Header("AfterImage")]
-    public GameObject afterImagePrf;
-
+ 
     float hitTimer, afterTimer;
 
     void Update()
@@ -39,7 +37,7 @@ public class PlayerSpriteRenderer : MonoBehaviour
             {
                 if (bounceCount > 4)
                 {
-                    SummonAfterImage(m_SpriteRenderer);
+                    m_SummonAfter.SummonAfterImage();
                     afterTimer = 0;
                 }
             }
@@ -75,13 +73,6 @@ public class PlayerSpriteRenderer : MonoBehaviour
     public void SetColor(Color color, float time)
     {
         m_SpriteRenderer.DOColor(color, time);
-    }
-
-    void SummonAfterImage(SpriteRenderer spriteRenderer)
-    {
-        SpriteRenderer afterImage = Instantiate(afterImagePrf, transform.position, Quaternion.identity).GetComponent<SpriteRenderer>();
-        afterImage.sprite = spriteRenderer.sprite;
-        afterImage.flipX = spriteRenderer.flipX;
     }
     void SetMaterial()
     {

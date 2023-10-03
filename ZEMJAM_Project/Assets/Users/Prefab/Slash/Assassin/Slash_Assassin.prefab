@@ -19432,6 +19432,7 @@ GameObject:
   - component: {fileID: 7876565789161892192}
   - component: {fileID: 7876565789161893535}
   - component: {fileID: 5499189394882932946}
+  - component: {fileID: 1786258280843943648}
   m_Layer: 0
   m_Name: SlashSprite
   m_TagString: Untagged
@@ -19539,7 +19540,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f35221a65c024e14fad0767d924c66f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAfterImage: 1
+--- !u!114 &1786258280843943648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7876565789161893534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e15b3aa1dd8a4446be29700e3b1ae84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playOnUpdate: 1
   m_SpriteRenderer: {fileID: 7876565789161892192}
   afterImagePrf: {fileID: 6845692884496698445, guid: e266cd3c8fe5bec4ba534fbac6ffbe95, type: 3}
-  afterDelay: 0.07
+  afterDelay: 0.1

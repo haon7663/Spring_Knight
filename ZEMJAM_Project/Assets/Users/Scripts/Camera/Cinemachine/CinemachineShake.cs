@@ -5,28 +5,58 @@ using Cinemachine;
 
 public class CinemachineShake : MonoBehaviour
 {
-    public static CinemachineShake Instance { get; private set; }
+    public static CinemachineShake Inst { get; private set; }
 
     CinemachineVirtualCamera cinemachineVirtualCamera;
     float shakeIntensity;
     float shakeTimer;
 
-    private Camera MainCamera;
+    Camera mainCamera;
     CinemachineBasicMultiChannelPerlin cinemachineBasicMultiChannelPerlin;
+
+    public float mulTime;
+    public float mulIntensity;
 
     private void Awake()
     {
-        Instance = this;
+        Inst = this;
         cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
         cinemachineBasicMultiChannelPerlin = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        MainCamera = Camera.main;
-        MainCamera.transform.rotation = Quaternion.Euler(0, 0, 0);
+        mainCamera = Camera.main;
+        mainCamera.transform.rotation = Quaternion.Euler(0, 0, 0);
+    }
+
+    public void SetShake(int index)
+    {
+        switch(index)
+        {
+            case 0:
+                mulTime = 0.6f;
+                mulIntensity = 0.5f;
+                break;
+            case 1:
+                mulTime = 0.8f;
+                mulIntensity = 0.75f;
+                break;
+            case 2:
+                mulTime = 1f;
+                mulIntensity = 1f;
+                break;
+            case 3:
+                mulTime = 1.2f;
+                mulIntensity = 1.4f;
+                break;
+            default:
+                mulTime = 1f;
+                mulIntensity = 1f;
+                break;
+        }
     }
 
     public void ShakeCamera(float intensity, float time)
     {
-        shakeIntensity = intensity;
-        shakeTimer = time;
+        shakeIntensity = intensity * mulIntensity;
+        shakeTimer = time * mulTime;
     }
     private void Update()
     {
@@ -37,9 +67,9 @@ public class CinemachineShake : MonoBehaviour
             if (shakeTimer <= 0f)
             {
                 cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0f;
-                MainCamera.transform.rotation = Quaternion.Euler(0, 0, 0);
+                mainCamera.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
         }
-        else MainCamera.transform.rotation = Quaternion.Euler(0, 0, 0);
+        else mainCamera.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 }

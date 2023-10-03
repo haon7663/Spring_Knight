@@ -18,21 +18,21 @@ public class Fade : MonoBehaviour
 
     IEnumerator Fadeout()
     {
-        m_Image.enabled = true; 
-        m_Image.DOFade(0, 0.1f);
-        yield return YieldInstructionCache.WaitForSeconds(0.1f);
-
+        m_Image.enabled = true;
+        m_Image.DOFade(0, 1f).SetUpdate(true);
         if (GameManager.Inst)
         {
-            GameManager.Inst.ChangeState(GameState.PLAY);
-            if(GameManager.Inst.curPaze == 0)
+            if (GameManager.Inst.curPaze == 0)
                 UIManager.Inst.SetPowerGrid(GameManager.Inst.maxPower);
             else
                 UIManager.Inst.SetProperties(true);
+
+            yield return YieldInstructionCache.WaitForSeconds(0.2f);
+            GameManager.Inst.ChangeState(GameState.PLAY);
         }
     }
-    public void Fadein(float time = 0.1f)
+    public void Fadein(float time = 0.25f)
     {
-        m_Image.DOFade(1, time);
+        m_Image.DOFade(1, time).SetUpdate(true);
     }
 }

@@ -109,6 +109,7 @@ MonoBehaviour:
   rigid: {fileID: 3259653393102852605}
   defence: {fileID: 2881822804465229031}
   sprite: {fileID: 6823087277341454988}
+  enemyRace: 1
 --- !u!114 &6823087277341454988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,6 +126,7 @@ MonoBehaviour:
   whiteMaterial: {fileID: 2100000, guid: b85327a6ec4a4da4ab1898277ed7180c, type: 2}
   rayMaterial: {fileID: 2100000, guid: b59910d3569c5f848a65e9c538f51fbb, type: 2}
   doFlip: 0
+  hitTimer: 0
 --- !u!114 &2881822804465229031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,7 +139,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfd71c11da0af654bba64b340fc61fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  index: 0
   defence: 0
+  defPositionY: 0
   minDefence: 5
   maxDefence: 6
   defenceParent: {fileID: 1517254607135314592, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
@@ -154,6 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a42dc6ebca7d52d40a73f82a8b857dc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startPos: {x: 0, y: 0}
 --- !u!114 &3990714536910659905
 MonoBehaviour:
   m_ObjectHideFlags: 0

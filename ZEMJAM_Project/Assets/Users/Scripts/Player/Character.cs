@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerType { ROYALKNIGHT, ASSASSIN }
+
 [Serializable]
 public class Characters
 {
@@ -21,9 +23,9 @@ public class Character : MonoBehaviour
 
     [SerializeField] Animator m_Animator;
     [SerializeField] Movement m_Movement;
+    [SerializeField] SummonAfter m_SummonAfter;
     [SerializeField] PlayerSpriteRenderer m_PlayerSpriteRenderer;
 
-    public enum PlayerType { ROYALKNIGHT, ASSASSIN }
     public PlayerType playerType;
 
     void Awake()
@@ -34,7 +36,7 @@ public class Character : MonoBehaviour
         m_Animator.runtimeAnimatorController = charType.animController;
         m_Movement.slash = charType.slashPrf;
         m_Movement.hitEffect = charType.slashHitPrf;
-        m_PlayerSpriteRenderer.afterImagePrf = charType.afterImagePrf;
+        m_SummonAfter.afterImagePrf = charType.afterImagePrf;
         m_Movement.skill = charType.skillObjPrf_1;
     }
 }

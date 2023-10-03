@@ -9,6 +9,13 @@ public class UIManager : MonoBehaviour
     public static UIManager Inst { get; private set; }
     void Awake() => Inst = this;
 
+    [Header("Result")]
+    [SerializeField] Image resultGray;
+    [SerializeField] Transform resultPanel;
+    [SerializeField] Text resultSituationText;
+    [SerializeField] Transform resultPropertyContent;
+    [SerializeField] Image selectedProperty;
+
     [Header("SetPaze")]
     [SerializeField] Transform pazeBar;
     [SerializeField] Image pazeFilled;
@@ -32,14 +39,23 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject timeBundle;
     [SerializeField] Image timeFilled;
     [SerializeField] Text timeText;
-    float timer;
+    [SerializeField] Material whiteMaterial;
+    [SerializeField] Material defaultMaterial;
+    [SerializeField] float flashTime;
+    float timer, flashTimer;
 
     [Space]
     [Header("SetProperties")]
     [SerializeField] Image propertiesWindow;
     [SerializeField] RectTransform propertiesPanel;
     [SerializeField] RectTransform longExplainPanel;
-    [SerializeField] Text loneExplain;
+    [SerializeField] Text propertyName;
+    [SerializeField] Text longExplain;
+    [SerializeField] Text dispostion;
+    [SerializeField] Image selectedImage;
+    [SerializeField] Image frameImage;
+    [SerializeField] Transform propertyContent;
+    [SerializeField] Transform selectedPropertyPrf;
     public bool onProperties;
 
     [Space]
@@ -70,7 +86,13 @@ public class UIManager : MonoBehaviour
 
         scoreText.text = GameManager.Inst.score.ToString();
         timeFilled.fillAmount = timer / GameManager.Inst.maxTimer;
+        if (flashTimer > flashTime && timer < 10)
+        {
+            flashTimer = 0;
+            timeFilled.material = timeFilled.material == defaultMaterial ? whiteMaterial : defaultMaterial;
+        }
         timeText.text = timer.ToString("F1") + "sec";
+        flashTimer += Time.deltaTime;
         timer -= Time.deltaTime;
     }
 
@@ -84,26 +106,58 @@ public class UIManager : MonoBehaviour
         scoreText.gameObject.SetActive(true);
     }
 
+    public IEnumerator ShowResultPanel(bool isClear)
+    {
+        resultSituationText.text = isClear ? "클리어" : "게임오버";
+        var sprites = GameManager.Inst.selectedPropertySprite;
+        for (int i = 0; i < sprites.Count; i++)
+        {
+            Image property = Instantiate(selectedProperty, resultPropertyContent.GetChild(Mathf.FloorToInt(i / 3)));
+            property.sprite = sprites[i];
+        }
+
+        yield return YieldInstructionCache.WaitForSeconds(1);
+
+        GameManager.Inst.ChangeState(GameState.PAUSE);
+
+        resultGray.gameObject.SetActive(true);
+
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(resultGray.DOFade(0.75f, 0.5f)).SetUpdate(true);
+        sequence.Append(resultPanel.DOScaleX(1, 0.25f)).SetUpdate(true);
+    }
     public void SetProperties(bool onProperties)
     {
         this.onProperties = onProperties;
+        Sequence sequence = DOTween.Sequence();
         if (onProperties)
         {
             GameManager.Inst.ChangeState(GameState.PAUSE);
-            propertiesPanel.anchoredPosition = new Vector2(0, 1600);
-            propertiesWindow.DOFade(0.7f, 0.25f).SetUpdate(true);
-            propertiesPanel.DOAnchorPosY(0, 0.25f).SetUpdate(true);
+            sequence.Append(propertiesWindow.DOFade(0.7f, 0.25f).SetUpdate(true)).SetUpdate(true);
+            propertiesPanel.localScale = new Vector2(0, 1);
+            sequence.Append(propertiesPanel.DOScaleX(1, 0.25f).SetUpdate(true)).SetUpdate(true);
+
+            var sprites = GameManager.Inst.selectedPropertySprite;
+            for (int i = 0; i < sprites.Count; i++)
+            {
+                Image property = Instantiate(selectedPropertyPrf, propertyContent).GetChild(0).GetComponent<Image>();
+                property.sprite = sprites[i];
+            }
         }
         else
         {
             GameManager.Inst.ChangeState(GameState.PLAY);
-            propertiesWindow.DOFade(0, 0.25f).SetUpdate(true);
-            propertiesPanel.DOAnchorPosY(1600, 0.25f).SetUpdate(true);
+            sequence.Append(propertiesPanel.DOScaleX(0, 0.15f).SetUpdate(true)).SetUpdate(true);
+            sequence.Append(propertiesWindow.DOFade(0, 0.25f).SetUpdate(true)).SetUpdate(true);
         }
     }
-    public void SetExplainPanel(string longExplain)
+    public void SetExplainPanel(string propertyName, string longExplain, string dispostion, Sprite sprite, Sprite frameSprite)
     {
-        loneExplain.text = longExplain;
+        this.propertyName.text = propertyName;
+        this.longExplain.text = longExplain;
+        this.dispostion.text = dispostion;
+        selectedImage.sprite = sprite;
+        frameImage.sprite = frameSprite;
     }
 
     public void SetPaze(int curPaze, int maxPaze)
