@@ -16,11 +16,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] Transform resultPropertyContent;
     [SerializeField] Image selectedProperty;
 
-    [Header("SetPaze")]
-    [SerializeField] Transform pazeBar;
-    [SerializeField] Image pazeFilled;
-    [SerializeField] RectTransform pazeGrid;
-    [SerializeField] RectTransform pazePlayer;
+    [Space]
+    [Header("SetPhase")]
+    [SerializeField] Transform phaseBar;
+    [SerializeField] Image phaseFilled;
+    [SerializeField] RectTransform phaseGrid;
+    [SerializeField] RectTransform phasePlayer;
+    [SerializeField] GameObject openPhase;
+    [SerializeField] Text openPhaseText;
 
     [Space]
     [Header("SetPower")]
@@ -71,9 +74,12 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        pazeRect = pazeBar.transform.parent.GetComponent<RectTransform>();
+        pazeRect = phaseBar.transform.parent.GetComponent<RectTransform>();
         powerRect = powerBar.transform.parent.GetComponent<RectTransform>();
         SwapUI(false, 0.4f);
+
+        openPhase.SetActive(true);
+        openPhaseText.text = "PHASE " + (GameManager.Inst.curPhase + 1).ToString();
     }
 
     void Update()
@@ -116,7 +122,7 @@ public class UIManager : MonoBehaviour
         sequence.Join(scoreText.transform.DOScale(Vector2.one * 1.25f, time));
         sequence.Join(scoreText.DOColor(new Color(1, 1 - scoreAccent, 0, 1), time/1.5f));
         sequence.Append(scoreText.transform.DOScale(Vector2.one * 1, time/2));
-        sequence.Join(scoreText.DOColor(new Color(1, 1, 0, 1), time));
+        sequence.Join(scoreText.DOColor(Color.white, time));
     }
 
     public IEnumerator ShowResultPanel(bool isClear)
@@ -185,15 +191,15 @@ public class UIManager : MonoBehaviour
         float pazeCount = maxPaze - 1;
         for(int i = 1; i <= pazeCount; i++)
         {
-            RectTransform grid = Instantiate(pazeGrid, pazeBar);
+            RectTransform grid = Instantiate(phaseGrid, phaseBar);
             grid.anchoredPosition = new Vector3(i * (700 / (pazeCount+1)), 0);
         }
 
-        pazeFilled.fillAmount = (curPaze) / (float)maxPaze;
-        pazePlayer.anchoredPosition = new Vector2(58 + (curPaze - 1) * (700 / (pazeCount + 1)), pazePlayer.anchoredPosition.y);
+        phaseFilled.fillAmount = (curPaze) / (float)maxPaze;
+        phasePlayer.anchoredPosition = new Vector2(58 + (curPaze - 1) * (700 / (pazeCount + 1)), phasePlayer.anchoredPosition.y);
 
-        pazeFilled.DOFillAmount((curPaze+1) / (float)maxPaze, 0.75f);
-        pazePlayer.DOAnchorPosX(58 + curPaze * (700 / (pazeCount + 1)), 0.75f);
+        phaseFilled.DOFillAmount((curPaze+1) / (float)maxPaze, 0.75f);
+        phasePlayer.DOAnchorPosX(58 + curPaze * (700 / (pazeCount + 1)), 0.75f);
     }
 
     public void SetPowerGrid(int maxPower)

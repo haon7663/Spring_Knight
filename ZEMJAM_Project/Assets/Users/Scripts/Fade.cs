@@ -22,7 +22,7 @@ public class Fade : MonoBehaviour
         m_Image.DOFade(0, 1f).SetUpdate(true);
         if (GameManager.Inst)
         {
-            if (GameManager.Inst.curPaze == 0)
+            if (GameManager.Inst.curPhase == 0)
                 UIManager.Inst.SetPowerGrid(GameManager.Inst.maxPower);
             else
                 UIManager.Inst.SetProperties(true);

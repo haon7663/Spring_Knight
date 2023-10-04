@@ -64,7 +64,7 @@ public class SummonManager : MonoBehaviour
 
     public GameObject GetRandomEnemy()
      {
-        var enemy = stagePersents[GameManager.Inst.curPaze].enemyPersents;
+        var enemy = stagePersents[GameManager.Inst.curPhase].enemyPersents;
 
         GameObject summon = null;
         int ran = Random.Range(0, 100);

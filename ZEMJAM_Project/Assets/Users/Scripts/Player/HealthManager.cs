@@ -72,6 +72,7 @@ public class HealthManager : MonoBehaviour
     public void OnHealth(int health = 0)
     {
         ManageHealth(health);
+        Debug.Log("체력 " + health + " 회복");
     }
 
     void ManageHealth(int value)

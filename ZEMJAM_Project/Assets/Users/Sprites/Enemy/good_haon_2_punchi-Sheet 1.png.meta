@@ -67,7 +67,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -113,6 +113,18 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -131,8 +143,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 769367b83d3044646af85847aad65dfd
-      internalID: 1048585660
+      spriteID: 98baee3623b2022468e2fd51f381c3fc
+      internalID: -263556282
       vertices: []
       indices: 
       edges: []
@@ -152,8 +164,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f6e16754f7669714ab925cd585e1880a
-      internalID: 413433670
+      spriteID: 88506f16d61ca31438e32c876c958052
+      internalID: -1025416420
       vertices: []
       indices: 
       edges: []
@@ -173,8 +185,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1a83ac263cbc0db46ae8b047dc251555
-      internalID: -1973532995
+      spriteID: 0c474923f7224d642829b941b6ff49ab
+      internalID: 1862445078
       vertices: []
       indices: 
       edges: []
@@ -194,8 +206,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 700fd164b022bb145bb7d185dbe46eb1
-      internalID: 1679853788
+      spriteID: 58b84ab3870d4a444988e3762c3630b0
+      internalID: -936539777
       vertices: []
       indices: 
       edges: []
@@ -215,8 +227,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 103402b3201dc5b458355a2a6cd97124
-      internalID: -1916513208
+      spriteID: f4089104b414cc24188d389761ce7f79
+      internalID: -1401003261
       vertices: []
       indices: 
       edges: []
@@ -236,8 +248,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d4ae1116c410f224ab2d21ef3deb402a
-      internalID: 11756620
+      spriteID: 04a5f31c52ee8a54cab3c41abd2e1132
+      internalID: -1626949902
       vertices: []
       indices: 
       edges: []
@@ -257,8 +269,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e94c0755f82486e4bbcc96722b4b80bc
-      internalID: 933885636
+      spriteID: c491fe12cc6bf5741b56a2be8fbab22e
+      internalID: 739612821
       vertices: []
       indices: 
       edges: []
@@ -278,8 +290,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3bd36ac58a00a664f93cd769dcb5dad1
-      internalID: -873204751
+      spriteID: 68c6ea2bfe4081248a634aeffffbfb21
+      internalID: -1680019010
       vertices: []
       indices: 
       edges: []
@@ -299,8 +311,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e105dcf716acc9646ac01f33880ba21d
-      internalID: -956583439
+      spriteID: 56ef8d288748b4340be107358cef5b3e
+      internalID: -1216598791
       vertices: []
       indices: 
       edges: []
@@ -320,8 +332,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 305c9c527eb34084b944ef6ec59d57bb
-      internalID: -557947453
+      spriteID: dfc721755821caa4fa2fc3fc643e5e06
+      internalID: -1591915679
       vertices: []
       indices: 
       edges: []
@@ -341,8 +353,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 10c41ba22c256fe4c8be0b7085ea5170
-      internalID: 630217499
+      spriteID: 93ef1151b8abf6a4683942ac7e1e41b4
+      internalID: 2039610551
       vertices: []
       indices: 
       edges: []
@@ -362,8 +374,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e9f151b2b362fa94e8eadb6917ca86f0
-      internalID: 1406786010
+      spriteID: 71747c85b7cad7b45adc1c81e5a05daa
+      internalID: -1859013265
       vertices: []
       indices: 
       edges: []
@@ -383,8 +395,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 88e30afb75f5e904b9ceee383833c191
-      internalID: 206189579
+      spriteID: 59a53a4f02db8e043b7c50e1f32402a3
+      internalID: 42160841
       vertices: []
       indices: 
       edges: []
@@ -404,8 +416,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d918f22a7882fa040a1dfeb37b63a4a6
-      internalID: 1947376185
+      spriteID: fec5840a87868e84b99082986c2593f6
+      internalID: -263115534
       vertices: []
       indices: 
       edges: []
@@ -425,8 +437,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b866aade07e514e46973d971ecd80cb7
-      internalID: 1772835311
+      spriteID: 783e7c9b880e63846a0d8de08c71b1fa
+      internalID: -1281493995
       vertices: []
       indices: 
       edges: []
@@ -442,21 +454,21 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      good_haon_2_punchi-Sheet 1_0: 1048585660
-      good_haon_2_punchi-Sheet 1_1: 413433670
-      good_haon_2_punchi-Sheet 1_10: 630217499
-      good_haon_2_punchi-Sheet 1_11: 1406786010
-      good_haon_2_punchi-Sheet 1_12: 206189579
-      good_haon_2_punchi-Sheet 1_13: 1947376185
-      good_haon_2_punchi-Sheet 1_14: 1772835311
-      good_haon_2_punchi-Sheet 1_2: -1973532995
-      good_haon_2_punchi-Sheet 1_3: 1679853788
-      good_haon_2_punchi-Sheet 1_4: -1916513208
-      good_haon_2_punchi-Sheet 1_5: 11756620
-      good_haon_2_punchi-Sheet 1_6: 933885636
-      good_haon_2_punchi-Sheet 1_7: -873204751
-      good_haon_2_punchi-Sheet 1_8: -956583439
-      good_haon_2_punchi-Sheet 1_9: -557947453
+      good_haon_2_punchi-Sheet 1_0: -263556282
+      good_haon_2_punchi-Sheet 1_1: -1025416420
+      good_haon_2_punchi-Sheet 1_10: 2039610551
+      good_haon_2_punchi-Sheet 1_11: -1859013265
+      good_haon_2_punchi-Sheet 1_12: 42160841
+      good_haon_2_punchi-Sheet 1_13: -263115534
+      good_haon_2_punchi-Sheet 1_14: -1281493995
+      good_haon_2_punchi-Sheet 1_2: 1862445078
+      good_haon_2_punchi-Sheet 1_3: -936539777
+      good_haon_2_punchi-Sheet 1_4: -1401003261
+      good_haon_2_punchi-Sheet 1_5: -1626949902
+      good_haon_2_punchi-Sheet 1_6: 739612821
+      good_haon_2_punchi-Sheet 1_7: -1680019010
+      good_haon_2_punchi-Sheet 1_8: -1216598791
+      good_haon_2_punchi-Sheet 1_9: -1591915679
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -33,8 +33,8 @@ public class GameManager : MonoBehaviour
     [Space]
     [Header("Stats")]
     public int curStage;
-    public int curPaze;
-    public int maxPaze;
+    public int curPhase;
+    public int maxPhase;
     public int manageHealth = 3;
     public int maxHealth = 3;
     public int maxPower = 3;
@@ -134,15 +134,15 @@ public class GameManager : MonoBehaviour
         m_PlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         m_PlayerController.maxPower = managePower;
         maxPower = managePower;
-        maxPaze = TileManager.Inst.stageTileMaps[curStage].tileMaps.Length;
+        maxPhase = TileManager.Inst.stageTileMaps[curStage].tileMaps.Length;
 
         HealthManager.Inst.SetHealth(maxHealth);
         HealthManager.Inst.curhp = manageHealth;
         HealthManager.Inst.OnHealth(0);
 
-        UIManager.Inst.SetPaze(curPaze, maxPaze);
+        UIManager.Inst.SetPaze(curPhase, maxPhase);
 
-        ChangeMode(GameMode.INFINITE);
+        ChangeMode(m_GameMode);
 
         if(isSummonItems)
             for (int i = 0; i < summonItemValue; i++)
@@ -168,7 +168,7 @@ public class GameManager : MonoBehaviour
         {
             if (summonCount <= 0 && !isLoadScene)
             {
-                if(curPaze == maxPaze - 1)
+                if(curPhase == maxPhase - 1)
                 {
                     StartCoroutine(UIManager.Inst.ShowResultPanel(true));
                     return;
@@ -196,7 +196,7 @@ public class GameManager : MonoBehaviour
 
     public void SetGame()
     {
-        curPaze = 0;
+        curPhase = 0;
         managePower = 3;
         maxHealth = 3;
         manageHealth = 3;
@@ -216,7 +216,7 @@ public class GameManager : MonoBehaviour
         enemySummonCount += 0.75f;
         managePower += 1;
         summonCount = 3;
-        curPaze++;
+        curPhase++;
 
         SceneManager.LoadScene("InGame");
     }

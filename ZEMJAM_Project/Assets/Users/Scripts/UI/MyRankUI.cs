@@ -15,7 +15,7 @@ public class MyRankUI : MonoBehaviour
     {
         var saveData = SaveManager.Inst.saveData;
         nameText.text = saveData.id;
-        scoreText.text = saveData.maxScore.ToString();
+        scoreText.text = saveData.maxScore.ToString() + "Á¡";
         levelText.text = "Lv."+saveData.level.ToString();
     }
 }

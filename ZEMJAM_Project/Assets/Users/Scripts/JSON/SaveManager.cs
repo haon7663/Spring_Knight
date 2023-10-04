@@ -27,11 +27,10 @@ public class SaveManager : MonoBehaviour
         public int cameraShakeSize = 2;
 
         [Space]
-        public int randSeed;
         public string id = "";
         public int maxScore;
         public int level;
-
+        [Space]
         public int clearedTheme;
         public int clearedStage;
         public int gold;
@@ -90,7 +89,6 @@ public class SaveManager : MonoBehaviour
         {
             // saveData 변수를 새로 작성
             saveData = new Data();
-            saveData.randSeed = Random.Range(-2147483642, 2147483642);
             // Load 메서드 종료
             return;
         }

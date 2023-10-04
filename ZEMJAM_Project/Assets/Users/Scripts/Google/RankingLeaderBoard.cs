@@ -66,7 +66,6 @@ public class RankingLeaderBoard : MonoBehaviour
         {
             TextLoad();
         }
-        if (Time.timeScale != 0.0f) Time.timeScale = 0.0f;
     }
     public void DataSave()
     {
@@ -134,7 +133,7 @@ public class RankingLeaderBoard : MonoBehaviour
         {
             if (strLen <= i) return;
             otherRanks[i].rankText.text = i.ToString() + "À§";
-            otherRanks[i].scoreText.text = strScores[i].ToString();
+            otherRanks[i].scoreText.text = strScores[i].ToString() + "Á¡";
             otherRanks[i].nameText.text = strIds[i];
             otherRanks[i].levelText.text = strLevs[i];
         }
