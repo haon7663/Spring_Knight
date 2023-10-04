@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
     [Space]
     [Header("SetScore")]
     [SerializeField] Text scoreText;
+    float showScore, scoreAccent;
 
     [Space]
     [Header("SetTimer")]
@@ -84,7 +85,7 @@ public class UIManager : MonoBehaviour
 
         if (timeFilled.gameObject.activeSelf && !GameManager.Inst.onPlay) return;
 
-        scoreText.text = GameManager.Inst.score.ToString();
+        scoreText.text = ((int)showScore).ToString();
         timeFilled.fillAmount = timer / GameManager.Inst.maxTimer;
         if (flashTimer > flashTime && timer < 10)
         {
@@ -94,6 +95,7 @@ public class UIManager : MonoBehaviour
         timeText.text = timer.ToString("F1") + "sec";
         flashTimer += Time.deltaTime;
         timer -= Time.deltaTime;
+        scoreAccent -= Time.deltaTime / 2.5f;
     }
 
     public void OpenTimer(float time)
@@ -105,6 +107,17 @@ public class UIManager : MonoBehaviour
     {
         scoreText.gameObject.SetActive(true);
     }
+    public void SetScore(float time)
+    {
+        scoreAccent += 0.6f;
+        if (scoreAccent > 1) scoreAccent = 1;
+        Sequence sequence = DOTween.Sequence();
+        sequence.Join(DOTween.To(() => showScore, x => showScore = x, GameManager.Inst.score, time));
+        sequence.Join(scoreText.transform.DOScale(Vector2.one * 1.25f, time));
+        sequence.Join(scoreText.DOColor(new Color(1, 1 - scoreAccent, 0, 1), time/1.5f));
+        sequence.Append(scoreText.transform.DOScale(Vector2.one * 1, time/2));
+        sequence.Join(scoreText.DOColor(new Color(1, 1, 0, 1), time));
+    }
 
     public IEnumerator ShowResultPanel(bool isClear)
     {
@@ -114,6 +127,13 @@ public class UIManager : MonoBehaviour
         {
             Image property = Instantiate(selectedProperty, resultPropertyContent.GetChild(Mathf.FloorToInt(i / 3)));
             property.sprite = sprites[i];
+        }
+
+        if(GameMode.INFINITE == GameManager.Inst.m_GameMode)
+        {
+            var saveData = SaveManager.Inst.saveData;
+            if (GameManager.Inst.score > saveData.maxScore)
+                SaveManager.Inst.saveData.maxScore = (int)GameManager.Inst.score;
         }
 
         yield return YieldInstructionCache.WaitForSeconds(1);

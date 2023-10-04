@@ -22,6 +22,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] GameObject SetStageView;
     [SerializeField] GameObject DailyLoginView;
     [SerializeField] GameObject MissionView;
+    [SerializeField] GameObject RankingView;
     [SerializeField] GameObject ShopView;
     [SerializeField] GameObject PlayerView;
 
@@ -71,16 +72,21 @@ public class LobbyManager : MonoBehaviour
     {
         MissionView.SetActive(value);
     }
+    public void SetRankingView(bool value)
+    {
+        RankingView.SetActive(value);
+    }
 
 
     public void GameStart()
     {
         Fade.Inst.Fadein();
-        StartCoroutine(LoadScene("Ingame", 0.5f));
+        StartCoroutine(LoadScene("InGame", 0.5f));
     }
     IEnumerator LoadScene(string scnenName, float delay)
     {
-        yield return YieldInstructionCache.WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime(delay);
+        Debug.Log("GameStart");
         SceneManager.LoadScene(scnenName);
     }
 }

@@ -8,9 +8,15 @@ public class MissionManager : MonoBehaviour
     void Awake() => Inst = this;
 
     [SerializeField] ScrollviewTest svTest;
+    [SerializeField] WriteMission writeMission;
 
     void Start()
     {
+        if (SaveManager.Inst.saveData.missionDatas.Length == 0)
+        {
+            SaveManager.Inst.saveData.missionDatas = writeMission.missionDatas;
+        }
+
         DateTime connectDate = DateTime.ParseExact(SaveManager.Inst.saveData.connectedDate, "yyyy-MM-dd", null);
         DateTime currentDate = DateTime.Now.Date;
         int result = DateTime.Compare(connectDate, currentDate);

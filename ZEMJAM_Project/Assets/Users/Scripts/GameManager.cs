@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -47,7 +48,7 @@ public class GameManager : MonoBehaviour
 
     [Space]
     [Header("Score")]
-    public int score;
+    public float score;
 
     [Space]
     [Header("Property")]
@@ -218,6 +219,12 @@ public class GameManager : MonoBehaviour
         curPaze++;
 
         SceneManager.LoadScene("InGame");
+    }
+
+    public void AddScore(float value)
+    {
+        score += value;
+        UIManager.Inst.SetScore(0.25f);
     }
 
     #region PropertyEffects
