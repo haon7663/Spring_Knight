@@ -18,7 +18,6 @@ public class EnemyDefence : MonoBehaviour
 
     RectTransform defenceBar;
     GameObject[] defences = new GameObject[8];
-
     void Awake()
     {
         if (TryGetComponent(out EnemyBundle bundle))
@@ -79,13 +78,21 @@ public class EnemyDefence : MonoBehaviour
 
     public void OnDamage(Transform target, Vector3 velocity)
     {
+        if (TryGetComponent(out EnemyNonDestroy nonDestroy))
+        {
+            bool isDeath = nonDestroy.AfterDamaged();
+            StartCoroutine(m_EnemyBundle.sprite.GracePeriod());
+            m_EnemyBundle.sprite.hitTimer = 0.1f;
+            if (!isDeath) return;
+        }
+
         if (GetComponent<EnemyDestroy>()) GetComponent<EnemyDestroy>().AfterDestroy();
 
         TileManager.Inst.TakeTile(index, false);
         SummonManager.Inst.RemoveEnemy(gameObject);
         GameManager.Inst.KillEvent();
         MissionManager.Inst.DestroyEnemy(m_EnemyBundle.enemyRace, m_EnemyBundle.enemyClass);
-        GameManager.Inst.AddScore(14);
+        GameManager.Inst.AddScore(14, true);
 
         Destroy(defenceBar.gameObject);
         if (TryGetComponent(out DemensionDestroyer demension))

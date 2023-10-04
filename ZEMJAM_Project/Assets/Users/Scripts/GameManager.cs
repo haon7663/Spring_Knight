@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
     [Space]
     [Header("Score")]
     public float score;
+    public int killCount;
 
     [Space]
     [Header("Property")]
@@ -64,7 +65,7 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         var obj = FindObjectsOfType<GameManager>();
-        if (obj.Length == 1)
+        if (obj.Length == 1 && SceneManager.GetActiveScene().name == "InGame")
         {
             DontDestroyOnLoad(gameObject);
             SetGame();
@@ -140,7 +141,7 @@ public class GameManager : MonoBehaviour
         HealthManager.Inst.curhp = manageHealth;
         HealthManager.Inst.OnHealth(0);
 
-        UIManager.Inst.SetPaze(curPhase, maxPhase);
+        UIManager.Inst.SetPhase(curPhase, maxPhase);
 
         ChangeMode(m_GameMode);
 
@@ -201,6 +202,7 @@ public class GameManager : MonoBehaviour
         maxHealth = 3;
         manageHealth = 3;
         enemySummonCount = 3;
+        selectedPropertySprite = new List<Sprite>();
 
         ResetProperty();
     }
@@ -221,10 +223,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("InGame");
     }
 
-    public void AddScore(float value)
+    public void AddScore(float value, bool isKill)
     {
         score += value;
         UIManager.Inst.SetScore(0.25f);
+        if (isKill) killCount++;
     }
 
     #region PropertyEffects

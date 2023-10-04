@@ -9,12 +9,16 @@ public class UIManager : MonoBehaviour
     public static UIManager Inst { get; private set; }
     void Awake() => Inst = this;
 
-    [Header("Result")]
+    [Header("SetResult")]
     [SerializeField] Image resultGray;
     [SerializeField] Transform resultPanel;
     [SerializeField] Text resultSituationText;
     [SerializeField] Transform resultPropertyContent;
     [SerializeField] Image selectedProperty;
+    [SerializeField] Text resultScoreText;
+    [SerializeField] Text resultMaxScoreText;
+    [SerializeField] Text resultKillScoreText;
+    [SerializeField] ContentSizeFitter resultCsf;
 
     [Space]
     [Header("SetPhase")]
@@ -127,22 +131,31 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator ShowResultPanel(bool isClear)
     {
-        resultSituationText.text = isClear ? "클리어" : "게임오버";
+        resultSituationText.text = "게임오버";
         var sprites = GameManager.Inst.selectedPropertySprite;
         for (int i = 0; i < sprites.Count; i++)
         {
-            Image property = Instantiate(selectedProperty, resultPropertyContent.GetChild(Mathf.FloorToInt(i / 3)));
+            Image property = Instantiate(selectedProperty, resultPropertyContent.GetChild(Mathf.FloorToInt(i / 3)), false);
             property.sprite = sprites[i];
         }
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)resultCsf.transform);
 
-        if(GameMode.INFINITE == GameManager.Inst.m_GameMode)
+        if (GameMode.INFINITE == GameManager.Inst.m_GameMode)
         {
             var saveData = SaveManager.Inst.saveData;
             if (GameManager.Inst.score > saveData.maxScore)
+            {
                 SaveManager.Inst.saveData.maxScore = (int)GameManager.Inst.score;
+            }
+            resultScoreText.text = GameManager.Inst.score.ToString();
+            resultMaxScoreText.text = SaveManager.Inst.saveData.maxScore.ToString();
+            resultKillScoreText.text = GameManager.Inst.killCount.ToString();
         }
 
-        yield return YieldInstructionCache.WaitForSeconds(1);
+        for(float i = 0; i < 1; i+= Time.deltaTime)
+        {
+            yield return YieldInstructionCache.WaitForFixedUpdate;
+        }
 
         GameManager.Inst.ChangeState(GameState.PAUSE);
 
@@ -151,6 +164,7 @@ public class UIManager : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
         sequence.Append(resultGray.DOFade(0.75f, 0.5f)).SetUpdate(true);
         sequence.Append(resultPanel.DOScaleX(1, 0.25f)).SetUpdate(true);
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)resultCsf.transform);
     }
     public void SetProperties(bool onProperties)
     {
@@ -186,7 +200,7 @@ public class UIManager : MonoBehaviour
         frameImage.sprite = frameSprite;
     }
 
-    public void SetPaze(int curPaze, int maxPaze)
+    public void SetPhase(int curPaze, int maxPaze)
     {
         float pazeCount = maxPaze - 1;
         for(int i = 1; i <= pazeCount; i++)
@@ -200,6 +214,7 @@ public class UIManager : MonoBehaviour
 
         phaseFilled.DOFillAmount((curPaze+1) / (float)maxPaze, 0.75f);
         phasePlayer.DOAnchorPosX(58 + curPaze * (700 / (pazeCount + 1)), 0.75f);
+
     }
 
     public void SetPowerGrid(int maxPower)

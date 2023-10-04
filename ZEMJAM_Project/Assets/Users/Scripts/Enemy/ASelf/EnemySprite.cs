@@ -63,7 +63,7 @@ public class EnemySprite : MonoBehaviour
         rayTimer = Time.deltaTime;
     }
 
-    IEnumerator GracePeriod()
+    public IEnumerator GracePeriod()
     {
         gameObject.layer = 9;
         for (int i = 0; i < 5; i++)
