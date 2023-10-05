@@ -14,7 +14,7 @@ public class PropertyData : MonoBehaviour
 
     public void Start()
     {
-        var property = PropertiesManager.Inst.property[index];
+        var property = PropertiesManager.Inst.properties[index];
 
         float value = property.value * (property.timeType == TimeType.COUNT ? property.curCount + 1 : 1);
         timeType = property.timeType;

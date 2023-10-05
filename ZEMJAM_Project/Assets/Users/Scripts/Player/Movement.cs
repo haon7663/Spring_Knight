@@ -32,7 +32,6 @@ public class Movement : MonoBehaviour
     public GameObject hitEffect;
     public GameObject skill;
 
-    [SerializeField] Transform playerFollow;
     [SerializeField] LayerMask enemyLayer;
 
     Vector2 normalVelocity, lastVelocity;
@@ -58,8 +57,6 @@ public class Movement : MonoBehaviour
 
         lastVelocity = normalVelocity * multiSpeed * tileMultiSpeed;
         multiSpeed = Mathf.Lerp(multiSpeed, 1, Time.deltaTime);
-
-        playerFollow.position = (Vector2)transform.position + m_Rigidbody2D.velocity * 0.15f;
 
         isAttacking = attackTimer > 0;
         attackTimer -= Time.deltaTime;

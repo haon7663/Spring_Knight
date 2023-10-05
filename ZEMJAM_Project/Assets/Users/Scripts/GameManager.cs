@@ -202,17 +202,25 @@ public class GameManager : MonoBehaviour
         maxHealth = 3;
         manageHealth = 3;
         enemySummonCount = 3;
+        saveProperty = new Property[0];
         selectedPropertySprite = new List<Sprite>();
 
         ResetProperty();
+    }
+
+    public void ResetLoad(string sceneName)
+    {
+        Destroy(gameObject);
+        SceneManager.LoadScene(sceneName);
     }
     
     IEnumerator MoveScene()
     {
         ChangeState(GameState.LOADING);
-        yield return new WaitForSeconds(1);
+        Time.timeScale = 0.15f;
+        yield return new WaitForSecondsRealtime(1);
         Fade.Inst.Fadein();
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSecondsRealtime(0.3f);
 
         manageHealth = HealthManager.Inst.curhp;
         enemySummonCount += 0.75f;
@@ -237,6 +245,10 @@ public class GameManager : MonoBehaviour
     void ResetProperty()
     {
         isSummonItems = false;
+        summonItemValue = 0;
+        killGoldPersent = 0;
+        decreaseDef = 0;
+        spawnDecDefPersent = 0;
     }
     public void OneTimePowerUp(int value)
     {

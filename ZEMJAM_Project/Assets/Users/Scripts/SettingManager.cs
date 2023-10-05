@@ -83,12 +83,12 @@ public class SettingManager : MonoBehaviour
     public void OnReGame()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("InGame");
+        GameManager.Inst.ResetLoad("InGame");
     }
     public void OnMain()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("Lobby");
+        GameManager.Inst.ResetLoad("Lobby");
     }
     public void OnSoundSetting(bool onSound)
     {

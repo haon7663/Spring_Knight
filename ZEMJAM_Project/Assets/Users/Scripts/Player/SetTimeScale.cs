@@ -22,9 +22,10 @@ public class SetTimeScale : MonoBehaviour
 
     void LateUpdate()
     {
-        if (GameManager.Inst.onPause)
+        if (!GameManager.Inst.onPlay && !GameManager.Inst.onDeath)
         {
-            Time.timeScale = 0;
+            if(GameManager.Inst.onPause)
+                Time.timeScale = 0;
             return;
         }
 
@@ -44,7 +45,7 @@ public class SetTimeScale : MonoBehaviour
         for (int i = 0; i < ray.Length; i++)
             if (Physics2D.Raycast(transform.position + ray[i], m_Rigidbody2D.velocity, 1, enemyLayer) && Movement.Inst.count > 0)
             {
-                Time.timeScale = rigidTimeScale;
+               Time.timeScale = rigidTimeScale;
                 setTime = rigidTimeScale;
             }
     }

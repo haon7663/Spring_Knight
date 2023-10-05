@@ -32,7 +32,7 @@ public class PropertiesManager : MonoBehaviour
     public static PropertiesManager Inst;
     void Awake() => Inst = this;
 
-    public Property[] property;
+    public Property[] properties;
 
     [Space]
     [SerializeField] RectTransform[] propertieTransforms;
@@ -47,9 +47,12 @@ public class PropertiesManager : MonoBehaviour
 
     public void Start()
     {
-        if(GameManager.Inst.saveProperty.Length != 0) property = GameManager.Inst.saveProperty;
-        for (int i = 0; i < property.Length; i++)
-            property[i].isCalled = false;
+        if (GameManager.Inst.saveProperty.Length != 0)
+            properties = GameManager.Inst.saveProperty;
+        else
+            GameManager.Inst.saveProperty = properties;
+        for (int i = 0; i < properties.Length; i++)
+            properties[i].isCalled = false;
         for(int i = 0; i < 3; i++)
         {
             RectTransform data = Instantiate(propertyData, propertieTransforms[i]);
@@ -62,25 +65,25 @@ public class PropertiesManager : MonoBehaviour
         int ran = 0;
         do
         {
-            ran = Random.Range(0, property.Length);
-        } while (GetUsetype(ran) || property[ran].isCalled);
+            ran = Random.Range(0, properties.Length);
+        } while (GetUsetype(ran) || properties[ran].isCalled);
 
-        property[ran].isCalled = true;
+        properties[ran].isCalled = true;
         return ran;
     }
     public bool GetUsetype(int ran, bool isChange = false)
     {
         bool result;
 
-        switch (property[ran].timeType)
+        switch (properties[ran].timeType)
         {
             case TimeType.ONE:
-                result = property[ran].isUsed;
-                if (!result && isChange) property[ran].isUsed = true;
+                result = properties[ran].isUsed;
+                if (!result && isChange) properties[ran].isUsed = true;
                 break;
             case TimeType.COUNT:
-                result = property[ran].curCount >= property[ran].maxCount;
-                if(!result && isChange) property[ran].curCount++;
+                result = properties[ran].curCount >= properties[ran].maxCount;
+                if(!result && isChange) properties[ran].curCount++;
                 break;
             default:
                 result = false;
@@ -88,16 +91,16 @@ public class PropertiesManager : MonoBehaviour
         }
         if (!result && isChange)
         {
-            GameManager.Inst.selectedPropertySprite.Add(property[ran].sprite);
+            GameManager.Inst.selectedPropertySprite.Add(properties[ran].sprite);
         }
 
-        GameManager.Inst.saveProperty = property;
+        GameManager.Inst.saveProperty = properties;
         return result;
     }
 
     public Sprite GetFrame(int index)
     {
-        Sprite sprite = property[index].timeType switch
+        Sprite sprite = properties[index].timeType switch
         {
             TimeType.ONE => frame_One,
             TimeType.COUNT => frame_Count,

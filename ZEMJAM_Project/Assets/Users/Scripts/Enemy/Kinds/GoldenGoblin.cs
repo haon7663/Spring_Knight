@@ -19,7 +19,7 @@ public class GoldenGoblin : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if (timer > 20 && !isCalled)
+        if (timer > 12.5f && !isCalled)
         {
             isCalled = true;
             CancelInvoke("RandomMovePosition");

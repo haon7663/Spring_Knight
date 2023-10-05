@@ -12,7 +12,6 @@ public class CinemachineManager : MonoBehaviour
     public CinemachineVirtualCamera cinevirtual;
 
     public Transform player;
-    public Transform playerFollow;
     public Transform tile;
 
     public bool isJoom;
@@ -39,6 +38,6 @@ public class CinemachineManager : MonoBehaviour
         realCineSize = Mathf.Lerp(realCineSize, cinemacineSize, Time.deltaTime * 4);
         cinevirtual.m_Lens.OrthographicSize = realCineSize;
 
-        cinevirtual.Follow = GameManager.Inst.onDeath ? player : isJoom ? playerFollow : tile;
+        cinevirtual.Follow = GameManager.Inst.onDeath || isJoom ? player : tile;
     }
 }
