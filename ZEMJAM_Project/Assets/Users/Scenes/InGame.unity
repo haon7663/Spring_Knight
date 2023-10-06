@@ -802,7 +802,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageTileMaps:
   - tileMaps:
-    - tileMap: {fileID: 888760872740873919, guid: 1c303fc66db61af4495189b03e8559bf, type: 3}
+    - tileMap: {fileID: 1578871387288248973, guid: 03438f82f52c0ea4eae5923ce7994b2d, type: 3}
       obstacleCount: 0
     - tileMap: {fileID: 1578871387288248973, guid: 03438f82f52c0ea4eae5923ce7994b2d, type: 3}
       obstacleCount: 1
@@ -1894,7 +1894,7 @@ MonoBehaviour:
   m_Movement: {fileID: 1315343740}
   m_SummonAfter: {fileID: 1315343754}
   m_PlayerSpriteRenderer: {fileID: 1315343748}
-  playerType: 0
+  playerType: 1
 --- !u!1 &331844314
 GameObject:
   m_ObjectHideFlags: 0
@@ -4250,7 +4250,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -3276925.5, y: 0}
+  m_AnchoredPosition: {x: -4015363.5, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &726293554
@@ -13475,8 +13475,8 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.626
-  m_Color: {r: 0.61486703, g: 0.58508366, b: 0.7169812, a: 1}
-  m_Intensity: 0.8
+  m_Color: {r: 0.8129891, g: 0.7570903, b: 0.8301887, a: 1}
+  m_Intensity: 0.72
   m_LightVolumeIntensity: 0.29
   m_LightVolumeIntensityEnabled: 0
   m_ApplyToSortingLayers: a1dd2462
