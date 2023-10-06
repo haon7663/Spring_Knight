@@ -93,6 +93,7 @@ public class EnemyDefence : MonoBehaviour
         GameManager.Inst.KillEvent();
         MissionManager.Inst.DestroyEnemy(m_EnemyBundle.enemyRace, m_EnemyBundle.enemyClass);
         GameManager.Inst.AddScore(14, true);
+        GameManager.Inst.AddGold(5);
 
         Destroy(defenceBar.gameObject);
         if (TryGetComponent(out DemensionDestroyer demension))

@@ -3156,7 +3156,7 @@ GameObject:
   - component: {fileID: 212539493}
   - component: {fileID: 212539492}
   m_Layer: 5
-  m_Name: Image
+  m_Name: LevelFilled
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7593,6 +7593,8 @@ MonoBehaviour:
   RankingView: {fileID: 1630224669}
   ShopView: {fileID: 0}
   PlayerView: {fileID: 0}
+  GoldText: {fileID: 1620754486}
+  LevelFilled: {fileID: 212539492}
 --- !u!1 &565579048
 GameObject:
   m_ObjectHideFlags: 0
@@ -9234,7 +9236,7 @@ GameObject:
   - component: {fileID: 731958003}
   - component: {fileID: 731958002}
   m_Layer: 5
-  m_Name: Text (Legacy) (1)
+  m_Name: LevelText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12997,6 +12999,8 @@ MonoBehaviour:
     id: 
     maxScore: 0
     level: 0
+    curExp: 0
+    maxExp: 0
     clearedTheme: 0
     clearedStage: 0
     gold: 0
@@ -13174,7 +13178,7 @@ GameObject:
   - component: {fileID: 1025044487}
   - component: {fileID: 1025044486}
   m_Layer: 5
-  m_Name: Image
+  m_Name: LevelFilled_Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18901,7 +18905,7 @@ GameObject:
   - component: {fileID: 1476605899}
   - component: {fileID: 1476605898}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Level_Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21424,7 +21428,7 @@ GameObject:
   - component: {fileID: 1620754487}
   - component: {fileID: 1620754486}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: MoneyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21472,10 +21476,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 26b7221abdb9e1c42af7ec74985eb119, type: 3}
-    m_FontSize: 40
+    m_FontSize: 32
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 4
+    m_MinSize: 3
     m_MaxSize: 60
     m_Alignment: 5
     m_AlignByGeometry: 0

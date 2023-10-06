@@ -52,6 +52,10 @@ public class GameManager : MonoBehaviour
     public int killCount;
 
     [Space]
+    [Header("Gold")]
+    public int goldCount;
+
+    [Space]
     [Header("Property")]
     public Property[] saveProperty;
     public List<Sprite> selectedPropertySprite;
@@ -236,6 +240,12 @@ public class GameManager : MonoBehaviour
         score += value;
         UIManager.Inst.SetScore(0.25f);
         if (isKill) killCount++;
+    }
+
+    public void AddGold(int gold)
+    {
+        goldCount += gold;
+        SaveManager.Inst.saveData.gold += gold;
     }
 
     #region PropertyEffects

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class LobbyManager : MonoBehaviour
 {
@@ -26,6 +27,19 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] GameObject ShopView;
     [SerializeField] GameObject PlayerView;
 
+    [Space]
+    [Header("Value")]
+    [SerializeField] Text GoldText;
+    [SerializeField] Image LevelFilled;
+
+
+
+    void Update()
+    {
+        var saveData = SaveManager.Inst.saveData;
+        GoldText.text = string.Format("{0:#,###}", saveData.gold);
+        LevelFilled.fillAmount = saveData.curExp / saveData.maxExp;
+    }
     void ResetModeView()
     {
         StageModeView.SetActive(false);

@@ -30,6 +30,9 @@ public class SaveManager : MonoBehaviour
         public string id = "";
         public int maxScore;
         public int level;
+        public float curExp;
+        public float maxExp;
+
         [Space]
         public int clearedTheme;
         public int clearedStage;

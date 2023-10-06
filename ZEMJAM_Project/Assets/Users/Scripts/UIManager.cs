@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Text resultScoreText;
     [SerializeField] Text resultMaxScoreText;
     [SerializeField] Text resultKillScoreText;
+    [SerializeField] Text resultGoldText;
     [SerializeField] ContentSizeFitter resultCsf;
 
     [Space]
@@ -140,6 +141,8 @@ public class UIManager : MonoBehaviour
         }
         LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)resultCsf.transform);
 
+
+        GameManager.Inst.AddGold(GameManager.Inst.goldCount * (GameManager.Inst.curPhase / 2));
         if (GameMode.INFINITE == GameManager.Inst.m_GameMode)
         {
             var saveData = SaveManager.Inst.saveData;
@@ -150,6 +153,7 @@ public class UIManager : MonoBehaviour
             resultScoreText.text = GameManager.Inst.score.ToString();
             resultMaxScoreText.text = SaveManager.Inst.saveData.maxScore.ToString();
             resultKillScoreText.text = GameManager.Inst.killCount.ToString();
+            resultGoldText.text = "x" + GameManager.Inst.goldCount.ToString();
         }
 
         for(float i = 0; i < 1; i+= Time.deltaTime)

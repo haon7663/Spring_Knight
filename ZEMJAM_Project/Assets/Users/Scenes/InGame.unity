@@ -457,6 +457,8 @@ MonoBehaviour:
     id: 
     maxScore: 0
     level: 0
+    curExp: 0
+    maxExp: 0
     clearedTheme: 0
     clearedStage: 0
     gold: 0
@@ -1461,7 +1463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1848,6 +1850,7 @@ MonoBehaviour:
   maxTimer: 45
   score: 0
   killCount: 0
+  goldCount: 0
   saveProperty: []
   selectedPropertySprite: []
 --- !u!4 &320723780
@@ -3353,7 +3356,7 @@ SpriteRenderer:
   m_SortingLayerID: -103020875
   m_SortingLayer: 3
   m_SortingOrder: 5
-  m_Sprite: {fileID: 21300000, guid: 639f1218d0089da41b3e5aa664a66d41, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8d1e8d698df2cc84b878d83f66a9278b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3401,6 +3404,7 @@ MonoBehaviour:
   resultScoreText: {fileID: 830209394}
   resultMaxScoreText: {fileID: 2023432221}
   resultKillScoreText: {fileID: 471970925}
+  resultGoldText: {fileID: 899980149}
   resultCsf: {fileID: 1881339260}
   phaseBar: {fileID: 2073888013}
   phaseFilled: {fileID: 455518363}
@@ -4250,7 +4254,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -4015363.5, y: 0}
+  m_AnchoredPosition: {x: -4137472.5, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &726293554
@@ -15331,7 +15335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
