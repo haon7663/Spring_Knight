@@ -90,6 +90,7 @@ public class UIManager : MonoBehaviour
 
         openPhase.SetActive(true);
         openPhaseText.text = "PHASE " + (GameManager.Inst.curPhase + 1).ToString();
+        scoreText.text = ((int)GameManager.Inst.score).ToString();
     }
 
     void Update()

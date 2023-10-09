@@ -38,13 +38,12 @@ public class UIListItem : MonoBehaviour
         var rewardAmount = data.rewardAmount.ToString();
 
         Debug.Log(rewardAmount);
-        if (data.missionType == MissionType.GOLD)
+        if (data.prizeType == PrizeType.GOLD)
             rewardText.text = $"+ {rewardAmount}골드";
-        else if (data.missionType == MissionType.CHEST)
+        else if (data.prizeType == PrizeType.CHEST)
             rewardText.text = $"1단계 특성상자 {rewardAmount}개";
-        else if (data.missionType == MissionType.CHEST2)
+        else if (data.prizeType == PrizeType.CHEST2)
             rewardText.text = $"2단계 특성상자 {rewardAmount}개";
-
 
         var chargeAmount = data.curProgress / data.maxProgress;
         var maxCharge = data.curProgress >= data.maxProgress;
@@ -67,10 +66,11 @@ public class UIListItem : MonoBehaviour
     {
         var saveData = SaveManager.Inst.saveData;
         var data = saveData.missionDatas[id];
-        if (data.missionType == MissionType.GOLD)
+        if (data.prizeType == PrizeType.GOLD)
             saveData.gold += data.rewardAmount;
 
-        if(data.missionRotation == MissionRotation.DAILY)
+        LobbyManager.Inst.OpenItemActive(data.rewardAmount, data.prizeType);
+        if (data.missionRotation == MissionRotation.DAILY)
         {
             data.isReceived = true;
             selectedGray.enabled = true;

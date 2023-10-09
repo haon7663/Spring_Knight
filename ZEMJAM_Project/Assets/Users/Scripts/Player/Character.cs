@@ -32,6 +32,7 @@ public class Character : MonoBehaviour
     {
         Inst = this;
 
+        playerType = SaveManager.Inst.saveData.playerType;
         var charType = characters[(int)playerType];
         m_Animator.runtimeAnimatorController = charType.animController;
         m_Movement.slash = charType.slashPrf;

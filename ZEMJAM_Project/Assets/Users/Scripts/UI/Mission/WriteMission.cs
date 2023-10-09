@@ -1,6 +1,4 @@
 using UnityEngine;
-
-public enum MissionType { GOLD, CHEST, CHEST2 }
 public enum MissionRotation { DAILY, WEEKLY, INFINITE }
 
 [System.Serializable]
@@ -8,7 +6,7 @@ public class MissionData
 {
     public string missionName;
     public string missionExplain;
-    public MissionType missionType;
+    public PrizeType prizeType;
 
     [Space]
     public int id;

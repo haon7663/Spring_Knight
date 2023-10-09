@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class DailyPrize : MonoBehaviour
 {
-    [SerializeField] DailyLogin dailyLogin;
+    [SerializeField] PrizeDatas dailyLogin;
     Button button;
 
     [Space]
@@ -68,6 +68,8 @@ public class DailyPrize : MonoBehaviour
                 saveData.chest += prizeAmount[i];
             else if (prizeType[i] == PrizeType.CHEST2)
                 saveData.chest2 += prizeAmount[i];
+
+            LobbyManager.Inst.OpenItemActive(prizeAmount[i], prizeType[i]);
         }
 
         saveData.dailyCount++;
@@ -76,6 +78,7 @@ public class DailyPrize : MonoBehaviour
         enableImage.enabled = false;
         dailyText.text = "수령 완료";
         SetAbled();
+
 
         SaveManager.Inst.Save();
     }

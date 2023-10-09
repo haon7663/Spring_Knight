@@ -35,14 +35,23 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] GameObject DailyLoginView;
     [SerializeField] GameObject MissionView;
     [SerializeField] GameObject RankingView;
-    [SerializeField] GameObject ShopView;
-    [SerializeField] GameObject PlayerView;
 
     [Space]
-    [Header("MenuButtons")]
+    [Header("ItemGain")]
+    [SerializeField] PrizeDatas prizeDatas;
+    [SerializeField] GameObject ItemGainView;
+    [SerializeField] Transform ItemGainContent;
+    [SerializeField] GainPrizeInfo ItemPrefab;
+    List<GameObject> gainItem = new List<GameObject>();
+
+    [Space]
+    [Header("Menus")]
     [SerializeField] OnOffButton CharacterMenuButton;
     [SerializeField] OnOffButton HomeMenuButton;
     [SerializeField] OnOffButton ShopMenuButton;
+    [SerializeField] GameObject CharacterMenu;
+    [SerializeField] GameObject HomeMenu;
+    [SerializeField] GameObject ShopMenu;
 
     [Space]
     [Header("Value")]
@@ -53,6 +62,8 @@ public class LobbyManager : MonoBehaviour
     {
         Time.timeScale = 1;
         SetHomeView(true);
+        SetCharacterView(false);
+        SetShopView(false);
     }
 
     void Update()
@@ -74,6 +85,20 @@ public class LobbyManager : MonoBehaviour
     public void StageActive(bool value)
     {
         SetStageView.SetActive(value);
+    }
+    public void OpenItemActive(int amounts, PrizeType prizeTypes)
+    {
+        ItemGainView.SetActive(true);
+        GainPrizeInfo gainPrize = Instantiate(ItemPrefab, ItemGainContent);
+        gainPrize.itemImage.sprite = prizeDatas.GetItemSprite(prizeTypes);
+        gainPrize.amountText.text = "x" + amounts.ToString();
+        gainItem.Add(gainPrize.gameObject);
+    }
+    public void CloseItemActive()
+    {
+        foreach(GameObject item in gainItem)
+            Destroy(item);
+        ItemGainView.SetActive(false);
     }
     public void SetStageModeView(string view)
     {
@@ -100,6 +125,7 @@ public class LobbyManager : MonoBehaviour
 
     public void SetCharacterView(bool value)
     {
+        CharacterMenu.SetActive(value);
         if (value) //ON
         {
             CharacterMenuButton.Button.sprite = CharacterMenuButton.SpriteOn;
@@ -113,6 +139,7 @@ public class LobbyManager : MonoBehaviour
     }
     public void SetHomeView(bool value)
     {
+        HomeMenu.SetActive(value);
         if (value) //ON
         {
             HomeMenuButton.Button.sprite = HomeMenuButton.SpriteOn;
@@ -126,6 +153,7 @@ public class LobbyManager : MonoBehaviour
     }
     public void SetShopView(bool value)
     {
+        ShopMenu.SetActive(value);
         if (value) //ON
         {
             ShopMenuButton.Button.sprite = ShopMenuButton.SpriteOn;
@@ -151,7 +179,6 @@ public class LobbyManager : MonoBehaviour
     {
         RankingView.SetActive(value);
     }
-
 
     public void GameStart()
     {

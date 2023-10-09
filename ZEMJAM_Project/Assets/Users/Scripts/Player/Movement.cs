@@ -168,7 +168,7 @@ public class Movement : MonoBehaviour
     {
         if (collision.transform.CompareTag("Item"))
         {
-            collision.GetComponent<Item>().UseItem();
+            collision.GetComponent<PrizeInformation>().UseItem();
         }
     }
 
@@ -200,6 +200,7 @@ public class Movement : MonoBehaviour
     {
         isSpin = true;
         GameObject spin = Instantiate(skill);
+        m_SetAnimation.Spin(true);
 
         while (count > 0)
         {
@@ -218,6 +219,7 @@ public class Movement : MonoBehaviour
             yield return YieldInstructionCache.WaitForFixedUpdate;
         }
 
+        m_SetAnimation.Spin(false);
         Destroy(spin);
         isSpin = false;
         yield return null;

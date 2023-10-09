@@ -20,6 +20,8 @@ public class SaveManager : MonoBehaviour
     [Serializable]
     public class Data
     {
+        public PlayerType playerType;
+
         public float[] volume = { -20, -20, -20 };
         public bool playSoundToggle;
         public bool cameraFollowToggle;

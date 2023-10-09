@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fruit : Item
+public class Fruit : PrizeInformation
 {
     public int m_Count;
     public bool isCalled;
-
+    
     public override void UseItem()
     {
         if (isCalled) return;
@@ -17,6 +17,9 @@ public class Fruit : Item
         {
             animator.SetTrigger("use");
             isCalled = true;
+
+            if (TryGetComponent(out AudioSource audioSource))
+                audioSource.Play();
         }
         else
             Destroy(gameObject);

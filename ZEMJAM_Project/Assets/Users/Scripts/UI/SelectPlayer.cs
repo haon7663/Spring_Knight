@@ -23,6 +23,9 @@ public class SelectPlayer : MonoBehaviour
         public float speed;
     }
 
+    [SerializeField] GameObject statusFrame;
+    [SerializeField] GameObject skillFrame;
+
     [SerializeField] Animator playerStand;
     [SerializeField] Text playerName;
     [SerializeField] Text playerExplain;
@@ -36,19 +39,25 @@ public class SelectPlayer : MonoBehaviour
 
     void Start()
     {
-        ChangePlayer((int)playerType);
+        ChangePlayer((int)SaveManager.Inst.saveData.playerType);
     }
     public void ChangePlayer(int index)
     {
         playerType = (PlayerType)index;
+        SaveManager.Inst.saveData.playerType = playerType;
+        SaveManager.Inst.Save();
 
         var info = playerInfos[index];
         playerStand.runtimeAnimatorController = info.idleAnimator;
         playerName.text = info.name;
+        playerExplain.text = info.explain;
+        skillName.text = info.skillName;
+        skillExplain.text = info.skillExplain;
     }
 
     public void SetStatus(bool value)
     {
+        statusFrame.SetActive(value);
         if (value) //ON
         {
             statusButton.Button.sprite = statusButton.SpriteOn;
@@ -62,6 +71,7 @@ public class SelectPlayer : MonoBehaviour
     }
     public void SetSkill(bool value)
     {
+        skillFrame.SetActive(value);
         if (value) //ON
         {
             explainButton.Button.sprite = explainButton.SpriteOn;

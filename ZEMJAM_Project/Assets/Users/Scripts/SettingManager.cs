@@ -18,6 +18,7 @@ public class SettingManager : MonoBehaviour
     [SerializeField] Transform propertyContent;
     [SerializeField] GameObject selectedProperty;
     [SerializeField] ContentSizeFitter csf;
+    [SerializeField] Text scoreText;
 
     [Space]
     [Header("PlayerSetting")]
@@ -36,7 +37,7 @@ public class SettingManager : MonoBehaviour
     {
         mainCamera = Camera.main;
 
-        setting.GetComponent<SettingController>().UIInitializing();
+        GetComponent<SettingController>().UIInitializing();
         CinemachineShake.Inst.SetShake(cameraShakeSize);
     }
     void LateUpdate()
@@ -68,6 +69,7 @@ public class SettingManager : MonoBehaviour
             saveTimeScale = Time.timeScale;
 
             var sprites = GameManager.Inst.selectedPropertySprite;
+            scoreText.text = GameManager.Inst.score.ToString();
             for (int i = savePropertyCount; i < sprites.Count; i++)
             {
                 GameObject property = Instantiate(selectedProperty);

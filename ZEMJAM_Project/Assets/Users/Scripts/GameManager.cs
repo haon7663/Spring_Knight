@@ -147,7 +147,7 @@ public class GameManager : MonoBehaviour
         ChangeMode(m_GameMode);
         if (m_GameMode == GameMode.TUTORIAL) tutorialManager.gameObject.SetActive(true);
 
-        m_Character = GetComponent<Character>();
+        m_Character = Character.Inst;
         m_PlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         m_PlayerController.maxPower = managePower;
         maxPower = managePower;

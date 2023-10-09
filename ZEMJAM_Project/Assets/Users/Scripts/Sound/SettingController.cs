@@ -58,9 +58,9 @@ public class SettingController : MonoBehaviour
         {
             SaveManager.Inst.saveData.volume[i] = slider[i].value;
         }
-        SaveManager.Inst.saveData.playSoundToggle = audioVolumeToggle.isOn;
-        SaveManager.Inst.saveData.cameraFollowToggle = onCameraFollowToggle.isOn;
-        SaveManager.Inst.saveData.vibrationToggle = onVibrationToggle.isOn;
+        SaveManager.Inst.saveData.playSoundToggle = false;
+        SaveManager.Inst.saveData.cameraFollowToggle = true;
+        SaveManager.Inst.saveData.vibrationToggle = false;
         SaveManager.Inst.Save();
     }
 
