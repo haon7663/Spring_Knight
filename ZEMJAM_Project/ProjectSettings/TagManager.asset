@@ -45,6 +45,9 @@ TagManager:
   - 
   - SlashParticleCollider
   m_SortingLayers:
+  - name: Back
+    uniqueID: 4162983843
+    locked: 0
   - name: Ground
     uniqueID: 1646583201
     locked: 0
@@ -59,6 +62,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 4191946421
+    locked: 0
+  - name: Boss
+    uniqueID: 377825465
     locked: 0
   - name: Effect
     uniqueID: 964337031

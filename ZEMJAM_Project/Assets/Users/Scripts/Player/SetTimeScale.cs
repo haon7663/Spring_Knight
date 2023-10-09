@@ -10,6 +10,7 @@ public class SetTimeScale : MonoBehaviour
     [SerializeField] LayerMask enemyLayer;
 
     public bool isRigidTime = true;
+    public bool isBossTime = false;
     [SerializeField] float defaultTimeScale;
     [SerializeField] float rigidTimeScale;
     public float setTime;
@@ -29,7 +30,7 @@ public class SetTimeScale : MonoBehaviour
             return;
         }
 
-        if (!isRigidTime) return;
+        if (!isRigidTime || isBossTime) return;
 
         setTime = defaultTimeScale;
         SetRigidTime();

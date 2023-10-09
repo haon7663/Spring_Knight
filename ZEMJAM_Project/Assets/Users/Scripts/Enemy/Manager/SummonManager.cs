@@ -22,13 +22,14 @@ public class SummonManager : MonoBehaviour
         public EnemyPersent[] enemyPersents;
     }
     public SpawnPersent[] stagePersents;
+    public GameObject armoredGoblin;
+    public GameObject armoredStone;
 
     public List<GameObject> enemyList;
     public GameObject[] itemPrfs;
 
     public Transform enemyBundle;
     public Transform itemBundle;
-
     public GameObject SummonEnemy()
     {
         var index = FindTileIndex();
@@ -42,11 +43,44 @@ public class SummonManager : MonoBehaviour
         return enemy;
     }
 
+    public GameObject SummonArmoredGoblin()
+    {
+        GameObject enemy = Instantiate(armoredGoblin, Vector3.zero, Quaternion.identity);
+        enemy.transform.SetParent(enemyBundle);
+        var scriptBundle = enemy.GetComponent<EnemyBundle>();
+        scriptBundle.defence.index = 100;
+
+        ArmoredStone stone = Instantiate(armoredStone, Vector3.zero, Quaternion.identity).GetComponent<ArmoredStone>();
+        stone.armoredGoblin = enemy.GetComponent<ArmoredGoblin>();
+        enemy.GetComponent<ArmoredGoblin>().m_StoneAnimator = stone.GetComponent<Animator>();
+
+        enemyList.Add(enemy);
+
+        for(int i = 0; i < 20; i++)
+        {
+            TileManager.Inst.TakeTile(90+i, true);
+        }
+
+        return enemy;
+    }
+
     public void SummonItem()
     {
         var index = FindTileIndex();
         GameObject item = Instantiate(GetRandomItem(), TileManager.Inst.tiles[index].position, Quaternion.identity);
         item.transform.SetParent(itemBundle);
+    }
+
+    public GameObject SummonReservedEnemy(GameObject prefab, int index)
+    {
+        GameObject enemy = Instantiate(prefab, TileManager.Inst.tiles[index].position, Quaternion.identity);
+        enemy.transform.SetParent(enemyBundle);
+        var scriptBundle = enemy.GetComponent<EnemyBundle>();
+        scriptBundle.defence.index = index;
+
+        enemyList.Add(enemy);
+
+        return enemy;
     }
 
     public int FindTileIndex(bool isTakeTile = true)
@@ -62,8 +96,26 @@ public class SummonManager : MonoBehaviour
         return preIndex;
     }
 
+    public GameObject GetNearbyEnemy(Transform self)
+    {
+        float minDistance = 10000;
+        GameObject result = null;
+        for (int i = 0; i < enemyList.Count; i++)
+        {
+            var offset = self.position - enemyList[i].transform.position;
+            var sqrLen = offset.sqrMagnitude;
+            if (sqrLen < minDistance)
+            {
+                minDistance = sqrLen;
+                result = enemyList[i];
+            }
+        }
+
+        return result;
+    }
+
     public GameObject GetRandomEnemy()
-     {
+    {
         var enemy = stagePersents[GameManager.Inst.curPhase].enemyPersents;
 
         GameObject summon = null;
@@ -71,20 +123,20 @@ public class SummonManager : MonoBehaviour
         int temp = 0;
 
         for (int i = 0; i < enemy.Length; i++)
-         {
-             if (temp + enemy[i].persent > ran)
-             {
-                 summon = enemy[i].prefab;
-                 break;
-             }
-             else
-             {
-                 temp += enemy[i].persent;
-             }
-         }
+        {
+            if (temp + enemy[i].persent > ran)
+            {
+                summon = enemy[i].prefab;
+                break;
+            }
+            else
+            {
+                temp += enemy[i].persent;
+            }
+        }
 
-         return summon;
-     }
+        return summon;
+    }
 
     public GameObject GetRandomItem()
     {

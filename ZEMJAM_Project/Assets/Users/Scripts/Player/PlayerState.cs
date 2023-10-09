@@ -8,10 +8,32 @@ public class PlayerState : MonoBehaviour
     void Awake() => Inst = this;
 
     [SerializeField] GameObject barrier;
+
+    [Header("Reality")]
     public bool isInvincible;
-    public void SetBarrier(bool isInvincible)
+    [Header("Inner")]
+    public bool onItem;
+    public bool onBegin;
+    public void SetItem(bool value)
     {
-        barrier.SetActive(isInvincible);
+        onItem = value;
+        ActiveBarrier();
+    }
+    public void SetBegin(bool value)
+    {
+        onBegin = value;
+        ActiveBarrier();
+    }
+    public void DisableBarrier()
+    {
+        onItem = false;
+        onBegin = false;
+        ActiveBarrier();
+    }
+    void ActiveBarrier()
+    {
+        var isInvincible = onItem || onBegin;
         this.isInvincible = isInvincible;
+        barrier.SetActive(isInvincible);
     }
 }

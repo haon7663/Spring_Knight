@@ -80,7 +80,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2103521503
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 925a42ce46e12244dad3633c3089a4f3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -90,7 +90,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &323858480955127569
@@ -109,6 +109,7 @@ MonoBehaviour:
   defence: {fileID: 6574170674519425452}
   sprite: {fileID: 9025786150749837051}
   enemyRace: 2
+  enemyClass: 0
 --- !u!114 &9025786150749837051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,6 +126,7 @@ MonoBehaviour:
   whiteMaterial: {fileID: 2100000, guid: b85327a6ec4a4da4ab1898277ed7180c, type: 2}
   rayMaterial: {fileID: 2100000, guid: b59910d3569c5f848a65e9c538f51fbb, type: 2}
   doFlip: 1
+  doReverse: 0
   hitTimer: 0
 --- !u!114 &6574170674519425452
 MonoBehaviour:
@@ -227,9 +229,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 7254800682099514183, guid: 2f0c093a1be66784db1902a353197cc7, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 6d22e2245afd75c44a7630d6199e8a44, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f30604b42e87d094b8ffa98bc561c375, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.221
   m_Pitch: 1
   Loop: 0
   Mute: 0

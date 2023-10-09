@@ -42,7 +42,6 @@ public class Collison : MonoBehaviour
 
         if (collision.transform.CompareTag("Enemy"))
         {
-            Debug.Log(collision + " / Time: " + timer + " / Hit: " + hitCount++);
             StartCoroutine(CapsuleAble());
             Movement.Inst.CrashEnemy(collision);
         }
@@ -51,7 +50,9 @@ public class Collison : MonoBehaviour
             Movement.Inst.CrashWall(collision);
 
         else if (collision.transform.CompareTag("Damage"))
-            StartCoroutine(Movement.Inst.Hit(collision.transform));
+        {
+            StartCoroutine(Movement.Inst.Hit(collision));
+        }
     }
 
     /*void OnCollisionStay2D(Collision2D collision)

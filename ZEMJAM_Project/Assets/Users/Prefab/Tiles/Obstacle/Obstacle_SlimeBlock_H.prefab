@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8703053015736610475}
   - component: {fileID: 8703053015736610476}
-  - component: {fileID: 8703053015736610477}
+  - component: {fileID: 4601050854221580763}
   m_Layer: 10
   m_Name: Obstacle_SlimeBlock_H
   m_TagString: Damage
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &8703053015736610477
+--- !u!60 &4601050854221580763
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,10 +98,10 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.5, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 1, y: 0.5}
     oldSize: {x: 1, y: 2}
     newSize: {x: 1, y: 2}
     adaptiveTilingThreshold: 0.5
@@ -111,6 +111,6 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0.5, y: 0.90625}
-      - {x: -0.125, y: 0.90625}
-      - {x: -0.125, y: -0.90625}
+      - {x: 0.15625, y: 0.90625}
+      - {x: 0.15625, y: -0.90625}
       - {x: 0.5, y: -0.90625}

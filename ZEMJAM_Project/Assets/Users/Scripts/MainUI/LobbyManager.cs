@@ -4,6 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+
+[Serializable]
+public struct OnOffButton
+{
+    public Image Button;
+    public Text ButtonText;
+    public Sprite SpriteOn;
+    public Sprite SpriteOff;
+    public Color TextOn;
+    public Color TextOff;
+}
 public class LobbyManager : MonoBehaviour
 {
     public static LobbyManager Inst;
@@ -28,11 +39,21 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] GameObject PlayerView;
 
     [Space]
+    [Header("MenuButtons")]
+    [SerializeField] OnOffButton CharacterMenuButton;
+    [SerializeField] OnOffButton HomeMenuButton;
+    [SerializeField] OnOffButton ShopMenuButton;
+
+    [Space]
     [Header("Value")]
     [SerializeField] Text GoldText;
     [SerializeField] Image LevelFilled;
 
-
+    void Start()
+    {
+        Time.timeScale = 1;
+        SetHomeView(true);
+    }
 
     void Update()
     {
@@ -75,6 +96,46 @@ public class LobbyManager : MonoBehaviour
         }
 
         ModeActive(false);
+    }
+
+    public void SetCharacterView(bool value)
+    {
+        if (value) //ON
+        {
+            CharacterMenuButton.Button.sprite = CharacterMenuButton.SpriteOn;
+            CharacterMenuButton.ButtonText.color = CharacterMenuButton.TextOn;
+        }
+        else
+        {
+            CharacterMenuButton.Button.sprite = CharacterMenuButton.SpriteOff;
+            CharacterMenuButton.ButtonText.color = CharacterMenuButton.TextOff;
+        }
+    }
+    public void SetHomeView(bool value)
+    {
+        if (value) //ON
+        {
+            HomeMenuButton.Button.sprite = HomeMenuButton.SpriteOn;
+            HomeMenuButton.ButtonText.color = HomeMenuButton.TextOn;
+        }
+        else
+        {
+            HomeMenuButton.Button.sprite = HomeMenuButton.SpriteOff;
+            HomeMenuButton.ButtonText.color = HomeMenuButton.TextOff;
+        }
+    }
+    public void SetShopView(bool value)
+    {
+        if (value) //ON
+        {
+            ShopMenuButton.Button.sprite = ShopMenuButton.SpriteOn;
+            ShopMenuButton.ButtonText.color = ShopMenuButton.TextOn;
+        }
+        else
+        {
+            ShopMenuButton.Button.sprite = ShopMenuButton.SpriteOff;
+            ShopMenuButton.ButtonText.color = ShopMenuButton.TextOff;
+        }
     }
 
 

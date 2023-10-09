@@ -7,6 +7,7 @@ using DG.Tweening;
 public class EnemyDefence : MonoBehaviour
 {
     EnemyBundle m_EnemyBundle;
+    AudioSource m_AudioSource;
 
     public int index;
     public int defence;
@@ -18,10 +19,13 @@ public class EnemyDefence : MonoBehaviour
 
     RectTransform defenceBar;
     GameObject[] defences = new GameObject[8];
+
     void Awake()
     {
         if (TryGetComponent(out EnemyBundle bundle))
             m_EnemyBundle = bundle;
+        if (TryGetComponent(out AudioSource audioSource))
+            m_AudioSource = audioSource;
     }
 
     void Start()
@@ -90,10 +94,15 @@ public class EnemyDefence : MonoBehaviour
 
         TileManager.Inst.TakeTile(index, false);
         SummonManager.Inst.RemoveEnemy(gameObject);
-        GameManager.Inst.KillEvent();
+        GameManager.Inst.KillEvent(this);
         MissionManager.Inst.DestroyEnemy(m_EnemyBundle.enemyRace, m_EnemyBundle.enemyClass);
         GameManager.Inst.AddScore(14, true);
         GameManager.Inst.AddGold(5);
+        m_AudioSource.Play();
+        print("Sound");
+
+        if (TutorialManager.Inst)
+            TutorialManager.Inst.enemyTrigger = true;
 
         Destroy(defenceBar.gameObject);
         if (TryGetComponent(out DemensionDestroyer demension))

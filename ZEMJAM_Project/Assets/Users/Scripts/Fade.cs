@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class Fade : MonoBehaviour
 {
@@ -11,12 +12,13 @@ public class Fade : MonoBehaviour
 
     [SerializeField] Image m_Image;
 
-    private void Start()
+    void Start()
     {
-        StartCoroutine(Fadeout());
+        m_Image.enabled = true;
+        if (SceneManager.GetActiveScene().name != "InGame")
+            StartCoroutine(Fadeout());
     }
-
-    IEnumerator Fadeout()
+    public IEnumerator Fadeout()
     {
         m_Image.enabled = true;
         m_Image.DOFade(0, 1f).SetUpdate(true);

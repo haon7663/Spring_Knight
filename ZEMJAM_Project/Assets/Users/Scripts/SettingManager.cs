@@ -51,7 +51,7 @@ public class SettingManager : MonoBehaviour
 
     void OnApplicationPause(bool pauseStatus)
     {
-        if(pauseStatus)
+        if(pauseStatus && GameManager.Inst.m_GameState == GameState.PLAY)
             OnSetting(true);
     }
 

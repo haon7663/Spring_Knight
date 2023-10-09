@@ -6,8 +6,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
-public enum GameMode { STAGE, INFINITE, GOLD }
-public enum GameState { LOADING, PAUSE, PLAY, DEATH }
+public enum GameMode { STAGE, INFINITE, GOLD, TUTORIAL }
+public enum GameState { LOADING, PAUSE, PLAY, DEATH, PRODUCTION }
 public class GameManager : MonoBehaviour
 {
     public static GameManager Inst { get; set; }
@@ -59,10 +59,12 @@ public class GameManager : MonoBehaviour
     [Header("Property")]
     public Property[] saveProperty;
     public List<Sprite> selectedPropertySprite;
-    public delegate void KillEnemyAction();
+    public delegate void KillEnemyAction(EnemyDefence enemy);
     public static event KillEnemyAction KillEnemy;
     public delegate void SpawnEnemyAction(EnemyDefence enemy);
     public static event SpawnEnemyAction SpawnEnemy;
+
+    [SerializeField] GameObject tutorialManager;
 
     void Awake()
     {
@@ -99,6 +101,8 @@ public class GameManager : MonoBehaviour
                 break;
             case GameMode.GOLD:
                 break;
+            case GameMode.TUTORIAL:
+                break;
         }
     }
     public void ChangeState(GameState gameState)
@@ -126,6 +130,11 @@ public class GameManager : MonoBehaviour
                 onPlay = false;
                 onPause = false;
                 break;
+            case GameState.PRODUCTION:
+                Time.timeScale = 1;
+                onPlay = false;
+                onPause = false;
+                break;
         }
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -134,6 +143,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
 
         if (SceneManager.GetActiveScene().name != "InGame") return;
+
+        ChangeMode(m_GameMode);
+        if (m_GameMode == GameMode.TUTORIAL) tutorialManager.gameObject.SetActive(true);
 
         m_Character = GetComponent<Character>();
         m_PlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -146,8 +158,6 @@ public class GameManager : MonoBehaviour
         HealthManager.Inst.OnHealth(0);
 
         UIManager.Inst.SetPhase(curPhase, maxPhase);
-
-        ChangeMode(m_GameMode);
 
         if(isSummonItems)
             for (int i = 0; i < summonItemValue; i++)
@@ -164,12 +174,12 @@ public class GameManager : MonoBehaviour
     {
         if (!isInGame) return;
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && m_GameState == GameState.PLAY)
         {
             Application.Quit();
         }
 
-        if (SummonManager.Inst.enemyList.Count <= 0)
+        if (SummonManager.Inst.enemyList.Count <= 0 && m_GameMode != GameMode.TUTORIAL)
         {
             if (summonCount <= 0 && !isLoadScene)
             {
@@ -186,11 +196,31 @@ public class GameManager : MonoBehaviour
                 summonCount--;
 
                 var isAssassin = m_Character.playerType == PlayerType.ASSASSIN;
-                for (int i = 0; i < (int)enemySummonCount; i++)
+
+                if(m_GameMode == GameMode.GOLD)
                 {
-                    var enemy = SummonManager.Inst.SummonEnemy();
-                    if (isAssassin && i == 0)
-                        enemy.AddComponent<AssassinMark>();
+                    for (int i = 0; i < 10; i++)
+                    {
+                        var enemy = SummonManager.Inst.SummonEnemy();
+                        if (isAssassin && (i == 0 || i == 1))
+                            enemy.AddComponent<AssassinMark>();
+                    }
+                }
+                else
+                {
+                    if(curPhase >= 8 && curPhase % 2 == 0)
+                    {
+                        var enemy = SummonManager.Inst.SummonArmoredGoblin();
+                        if (isAssassin)
+                            enemy.AddComponent<AssassinMark>();
+                    }
+
+                    for (int i = 0; i < (int)enemySummonCount; i++)
+                    {
+                        var enemy = SummonManager.Inst.SummonEnemy();
+                        if (isAssassin && i == 0)
+                            enemy.AddComponent<AssassinMark>();
+                    }
                 }
                 //SummonManager.Inst.SummonItem();
 
@@ -222,6 +252,7 @@ public class GameManager : MonoBehaviour
     {
         ChangeState(GameState.LOADING);
         Time.timeScale = 0.15f;
+        Movement.Inst.gameObject.layer = 8;
         yield return new WaitForSecondsRealtime(1);
         Fade.Inst.Fadein();
         yield return new WaitForSecondsRealtime(0.3f);
@@ -250,15 +281,20 @@ public class GameManager : MonoBehaviour
 
     #region PropertyEffects
     bool isSummonItems;
-    int summonItemValue, killGoldPersent, decreaseDef, spawnDecDefPersent;
+    int summonItemValue, killGoldPersent, decreaseDefPersent, spawnDecDefPersent, maxBeginInvinsible;
+    [HideInInspector]
+    public int beginInvinsible;
 
     void ResetProperty()
     {
         isSummonItems = false;
         summonItemValue = 0;
         killGoldPersent = 0;
-        decreaseDef = 0;
+        decreaseDefPersent = 0;
         spawnDecDefPersent = 0;
+
+        KillEnemy = null;
+        SpawnEnemy = null;
     }
     public void OneTimePowerUp(int value)
     {
@@ -266,6 +302,10 @@ public class GameManager : MonoBehaviour
         m_PlayerController.maxPower += value;
         Debug.Log(m_PlayerController.maxPower);
     }
+    public void Health(int value)
+    {
+        HealthManager.Inst.OnHealth(value);
+    }    
     public void IncreaseMaxHealth()
     {
         maxHealth++;
@@ -278,17 +318,28 @@ public class GameManager : MonoBehaviour
         maxPower = managePower;
         m_PlayerController.maxPower = managePower;
     }
+    public void IncreaseBeginInv()
+    {
+        maxBeginInvinsible++;
+    }
+    public bool SetBeginInv(bool value)
+    {
+        if(value)
+            beginInvinsible = maxBeginInvinsible;
+        else
+            beginInvinsible--;
+        return beginInvinsible > 0;
+    }
     public void SummonItem(int value)
     {
         isSummonItems = true;
         summonItemValue += value;
         SummonManager.Inst.SummonItem();
     }
-
     #region KillEvent
-    public void KillEvent()
+    public void KillEvent(EnemyDefence enemy)
     {
-        KillEnemy?.Invoke();
+        KillEnemy?.Invoke(enemy);
     }
     public void AddKillGold(int persent)
     {
@@ -306,16 +357,18 @@ public class GameManager : MonoBehaviour
             KillEnemy += KillDecDef;
             Debug.Log("ADDDECDEF");
         }
-        decreaseDef += value;
+        decreaseDefPersent += value;
     }
-    void KillGold()
+    void KillGold(EnemyDefence enemy)
     {
         if (Calculate(killGoldPersent))
             Debug.Log("Gold");
     }
-    void KillDecDef()
+    void KillDecDef(EnemyDefence enemy)
     {
-        Debug.Log("DecreaseDef");
+        GameObject nearEnemy = SummonManager.Inst.GetNearbyEnemy(enemy.transform);
+        if (nearEnemy && Calculate(decreaseDefPersent))
+            nearEnemy.GetComponent<EnemyDefence>().SetDefence(-1);
     }
     #endregion
     #region SpawnEvent

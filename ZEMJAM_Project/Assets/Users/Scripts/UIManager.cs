@@ -65,6 +65,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] Image frameImage;
     [SerializeField] Transform propertyContent;
     [SerializeField] Transform selectedPropertyPrf;
+
+    [SerializeField] Image[] propertyFrames;
+    [SerializeField] Sprite propertySelected;
+    [SerializeField] Sprite propertyDeSelected;
+    [SerializeField] GameObject disabledProperty;
     public bool onProperties;
 
     [Space]
@@ -97,16 +102,20 @@ public class UIManager : MonoBehaviour
         if (timeFilled.gameObject.activeSelf && !GameManager.Inst.onPlay) return;
 
         scoreText.text = ((int)showScore).ToString();
-        timeFilled.fillAmount = timer / GameManager.Inst.maxTimer;
-        if (flashTimer > flashTime && timer < 10)
-        {
-            flashTimer = 0;
-            timeFilled.material = timeFilled.material == defaultMaterial ? whiteMaterial : defaultMaterial;
-        }
-        timeText.text = timer.ToString("F1") + "sec";
-        flashTimer += Time.deltaTime;
-        timer -= Time.deltaTime;
         scoreAccent -= Time.deltaTime / 2.5f;
+
+        if (timeBundle.activeSelf)
+        {
+            timeFilled.fillAmount = timer / GameManager.Inst.maxTimer;
+            if (flashTimer > flashTime && timer < 10)
+            {
+                flashTimer = 0;
+                timeFilled.material = timeFilled.material == defaultMaterial ? whiteMaterial : defaultMaterial;
+            }
+            timeText.text = timer.ToString("F1") + "sec";
+            flashTimer += Time.deltaTime;
+            timer -= Time.deltaTime;
+        }
     }
 
     public void OpenTimer(float time)
@@ -132,7 +141,7 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator ShowResultPanel(bool isClear)
     {
-        resultSituationText.text = "게임오버";
+        resultSituationText.text = isClear ? "클리어" : "게임오버";
         var sprites = GameManager.Inst.selectedPropertySprite;
         for (int i = 0; i < sprites.Count; i++)
         {
@@ -143,20 +152,17 @@ public class UIManager : MonoBehaviour
 
 
         GameManager.Inst.AddGold(GameManager.Inst.goldCount * (GameManager.Inst.curPhase / 2));
-        if (GameMode.INFINITE == GameManager.Inst.m_GameMode)
+        var saveData = SaveManager.Inst.saveData;
+        if (GameManager.Inst.score > saveData.maxScore)
         {
-            var saveData = SaveManager.Inst.saveData;
-            if (GameManager.Inst.score > saveData.maxScore)
-            {
-                SaveManager.Inst.saveData.maxScore = (int)GameManager.Inst.score;
-            }
-            resultScoreText.text = GameManager.Inst.score.ToString();
-            resultMaxScoreText.text = SaveManager.Inst.saveData.maxScore.ToString();
-            resultKillScoreText.text = GameManager.Inst.killCount.ToString();
-            resultGoldText.text = "x" + GameManager.Inst.goldCount.ToString();
+            SaveManager.Inst.saveData.maxScore = (int)GameManager.Inst.score;
         }
+        resultScoreText.text = GameManager.Inst.score.ToString();
+        resultMaxScoreText.text = SaveManager.Inst.saveData.maxScore.ToString();
+        resultKillScoreText.text = GameManager.Inst.killCount.ToString();
+        resultGoldText.text = "x" + GameManager.Inst.goldCount.ToString();
 
-        for(float i = 0; i < 1; i+= Time.deltaTime)
+        for (float i = 0; i < 1; i+= Time.deltaTime)
         {
             yield return YieldInstructionCache.WaitForFixedUpdate;
         }
@@ -185,8 +191,10 @@ public class UIManager : MonoBehaviour
             for (int i = 0; i < sprites.Count; i++)
             {
                 Image property = Instantiate(selectedPropertyPrf, propertyContent).GetChild(0).GetComponent<Image>();
+                propertyFrames[i].sprite = propertyDeSelected;
                 property.sprite = sprites[i];
             }
+            disabledProperty.SetActive(true);
         }
         else
         {
@@ -195,13 +203,18 @@ public class UIManager : MonoBehaviour
             sequence.Append(propertiesWindow.DOFade(0, 0.25f).SetUpdate(true)).SetUpdate(true);
         }
     }
-    public void SetExplainPanel(string propertyName, string longExplain, string dispostion, Sprite sprite, Sprite frameSprite)
+    public void SetExplainPanel(string propertyName, string longExplain, string dispostion, Sprite sprite, Sprite frameSprite, int countIndex)
     {
         this.propertyName.text = propertyName;
         this.longExplain.text = longExplain;
         this.dispostion.text = dispostion;
         selectedImage.sprite = sprite;
         frameImage.sprite = frameSprite;
+        for(int i = 0; i < propertyFrames.Length; i++)
+        {
+            propertyFrames[i].sprite = countIndex == i ? propertySelected : propertyDeSelected;
+        }
+        disabledProperty.SetActive(false);
     }
 
     public void SetPhase(int curPaze, int maxPaze)
@@ -272,7 +285,7 @@ public class UIManager : MonoBehaviour
         saveComboText.text = value.ToString();
         saveComboText.DOFade(1, 0.25f);
     }
-    void DeleteCombo(float time)
+    public void DeleteCombo(float time)
     {
         if (saveComboText == null) return;
         saveComboText.DOFade(0, time);

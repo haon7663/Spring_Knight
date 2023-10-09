@@ -56,7 +56,9 @@ public class PropertiesManager : MonoBehaviour
         for(int i = 0; i < 3; i++)
         {
             RectTransform data = Instantiate(propertyData, propertieTransforms[i]);
-            data.GetComponent<PropertyData>().index = GetPropertyIndex();
+            var countData = data.GetComponent<PropertyData>();
+            countData.index = GetPropertyIndex();
+            countData.countIndex = i;
             data.anchoredPosition = Vector2.zero;
         }
     }

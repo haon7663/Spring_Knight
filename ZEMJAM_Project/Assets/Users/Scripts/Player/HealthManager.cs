@@ -75,7 +75,7 @@ public class HealthManager : MonoBehaviour
         Debug.Log("체력 " + health + " 회복");
     }
 
-    void ManageHealth(int value)
+    public void ManageHealth(int value)
     {
         curhp += value;
         if (curhp > maxhp) curhp = maxhp;

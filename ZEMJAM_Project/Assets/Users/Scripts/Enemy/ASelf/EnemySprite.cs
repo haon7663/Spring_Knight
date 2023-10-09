@@ -16,6 +16,7 @@ public class EnemySprite : MonoBehaviour
     [SerializeField] Material rayMaterial;
 
     public bool doFlip;
+    public bool doReverse;
 
     public float hitTimer;
     float rayTimer;
@@ -41,7 +42,11 @@ public class EnemySprite : MonoBehaviour
     void LateUpdate()
     {
         if(doFlip)
+        {
             m_SpriteRenderer.flipX = playerTransform.position.x - transform.position.x > 0;
+            if (doReverse)
+                m_SpriteRenderer.flipX = !m_SpriteRenderer.flipX;
+        }
 
         SetMaterial();
     }

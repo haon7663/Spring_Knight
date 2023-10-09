@@ -12,7 +12,7 @@ public class Movement : MonoBehaviour
     SetAnimation m_SetAnimation;
     PlayerState m_PlayerState;
     PlayerSpriteRenderer m_PlayerSpriteRenderer;
-    SetTimeScale m_SetTimeScale;
+    [HideInInspector] public SetTimeScale m_SetTimeScale;
     Collison m_Collison;
     SetLight m_SetLight;
 
@@ -47,6 +47,18 @@ public class Movement : MonoBehaviour
         m_SetTimeScale = GetComponent<SetTimeScale>();
         m_Collison = GetComponent<Collison>();
         m_SetLight = GetComponent<SetLight>();
+
+        StartCoroutine(StartDrop());
+    }
+
+    IEnumerator StartDrop()
+    {
+        while(!m_Collison.onCollision)
+        {
+            transform.Translate(Vector3.down * Time.deltaTime * 40);
+            yield return YieldInstructionCache.WaitForFixedUpdate;
+        }
+        StartCoroutine(Fade.Inst.Fadeout());
     }
 
     void Update()
@@ -79,6 +91,9 @@ public class Movement : MonoBehaviour
         SetNormalVelocity(-transform.right * 15);
         transform.rotation = Quaternion.Euler(0, 0, 0);
         SetMultiSpeed(1.5f);
+        m_PlayerState.SetBegin(GameManager.Inst.SetBeginInv(true));
+
+        if (TutorialManager.Inst) TutorialManager.Inst.dragTrigger = true;
     }
 
     public void CrashEnemy(Collision2D collision)
@@ -109,6 +124,8 @@ public class Movement : MonoBehaviour
             FailedAttack(collision);
         else
             SucceedAttack(collision, enemy.defence);
+
+        m_PlayerState.SetBegin(GameManager.Inst.SetBeginInv(false));
     }
     public void CrashWall(Collision2D collision)
     {
@@ -119,6 +136,8 @@ public class Movement : MonoBehaviour
 
             AddCombo();
             count--;
+
+            if (TutorialManager.Inst) TutorialManager.Inst.bounceTrigger = true;
         }
         else
         {
@@ -130,10 +149,19 @@ public class Movement : MonoBehaviour
             SetNormalVelocity(Vector2.zero);
             HealthManager.Inst.OnFade(true);
             UIManager.Inst.SwapUI(false, 0.4f);
+            UIManager.Inst.DeleteCombo(1.2f);
 
             count = 0;
         }
         UIManager.Inst.SetPower(count);
+        m_PlayerState.SetBegin(GameManager.Inst.SetBeginInv(false));
+    }
+    public void DefenceCrashEnemy(Collision2D collision)
+    {
+        SetNormalVelocity(MoveReflect(collision));
+        StartCoroutine(m_Collison.CapsuleAble());
+        AddCombo();
+        count--;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -231,19 +259,69 @@ public class Movement : MonoBehaviour
 
     public void FailedAttack(Collision2D collision)
     {
-        StartCoroutine(Hit(collision.transform));
+        StartCoroutine(Hit(collision));
     }
 
     public void TakeMirror()
     {
         count = bouncedCount;
     }
-    public IEnumerator Hit(Transform target)
+    public IEnumerator Hit(Collision2D collision)
+    {
+        if (m_PlayerState.onBegin)
+        {
+            DefenceCrashEnemy(collision);
+            yield break;
+        }
+        if (m_PlayerState.onItem)
+        {
+            StartCoroutine(m_PlayerSpriteRenderer.GracePerioding());
+            StartCoroutine(m_Collison.CapsuleAble());
+            CinemachineShake.Inst.ShakeCamera(15, 0.3f);
+            m_SetAnimation.Hit(true);
+            UIManager.Inst.SetPower(0);
+            m_PlayerState.SetItem(false);
+            yield return StartCoroutine(Bounced(collision.transform));
+            yield break;
+        }
+
+        HealthManager.Inst.OnDamage();
+        StartCoroutine(m_PlayerSpriteRenderer.GracePerioding());
+        StartCoroutine(m_Collison.CapsuleAble());
+        CinemachineShake.Inst.ShakeCamera(15, 0.3f);
+
+        m_SetAnimation.Hit(true);
+
+        Time.timeScale = 0.15f;
+        if (HealthManager.Inst.curhp <= 0)
+        {
+            Time.timeScale = 0.035f;
+            GameManager.Inst.ChangeState(GameState.DEATH);
+        }
+        UIManager.Inst.SetPower(0);
+
+        yield return StartCoroutine(Bounced(collision.transform));
+
+        if (HealthManager.Inst.curhp > 0)
+            m_SetAnimation.Hit(false);
+        else
+            m_SetAnimation.Death();
+    }
+    public IEnumerator TrasnformHit(Transform target)
     {
         if (m_PlayerState.isInvincible)
-            m_PlayerState.SetBarrier(false);
-        else
-            HealthManager.Inst.OnDamage();
+        {
+            StartCoroutine(m_PlayerSpriteRenderer.GracePerioding());
+            StartCoroutine(m_Collison.CapsuleAble());
+            CinemachineShake.Inst.ShakeCamera(15, 0.3f);
+            m_SetAnimation.Hit(true);
+            UIManager.Inst.SetPower(0);
+            m_PlayerState.DisableBarrier();
+            yield return StartCoroutine(Bounced(target));
+            yield break;
+        }
+
+        HealthManager.Inst.OnDamage();
         StartCoroutine(m_PlayerSpriteRenderer.GracePerioding());
         StartCoroutine(m_Collison.CapsuleAble());
         CinemachineShake.Inst.ShakeCamera(15, 0.3f);
@@ -270,13 +348,18 @@ public class Movement : MonoBehaviour
         count = 0;
         gameObject.layer = 8;
 
-        isIgnoreCollison = HealthManager.Inst.curhp <= 0;
+        m_SetAnimation.Hit(true);
+        isIgnoreCollison = true;
         m_PlayerSpriteRenderer.SetTransformFlip(target);
         m_Rigidbody2D.velocity = Vector2.zero;
         m_Rigidbody2D.AddForce(new Vector2(target.position.x - transform.position.x > 0 ? -0.5f : 0.5f, 1), ForceMode2D.Impulse);
         normalVelocity = m_Rigidbody2D.velocity;
         m_Rigidbody2D.gravityScale = 5;
 
+        for(float i = 0; i < 0.3f; i+= Time.deltaTime)
+        {
+            yield return YieldInstructionCache.WaitForFixedUpdate;
+        }
         if (HealthManager.Inst.curhp <= 0)
             while (!m_Collison.onDown)
                 yield return YieldInstructionCache.WaitForFixedUpdate;
@@ -287,6 +370,8 @@ public class Movement : MonoBehaviour
         m_Rigidbody2D.gravityScale = 0;
         lastVelocity = Vector2.zero;
         SetNormalVelocity(Vector2.zero);
+        m_SetAnimation.Hit(false);
+        isIgnoreCollison = HealthManager.Inst.curhp <= 0;
 
         gameObject.layer = 3;
     }

@@ -27,7 +27,6 @@ public class TileManager : MonoBehaviour
 
     public int tileSize;
     [SerializeField] Transform tileGrid;
-    [SerializeField] Transform cinemachineConfiner;
     [SerializeField] GameObject obstacle_SlimeBlock;
 
     void Start()
@@ -38,11 +37,10 @@ public class TileManager : MonoBehaviour
 
         var tileIndex = int.Parse(tile.name.Substring(0, tile.name.IndexOf('-')));
         tileSize = tileIndex;
-        float scale = tileIndex / 7f;
-        cinemachineConfiner.localScale = new Vector3(scale + 0.05f, scale + 0.05f, 1);
+        float scale = tileIndex / 8f;
         Movement.Inst.tileMultiSpeed = Mathf.Lerp(scale, 1, 0.5f);
 
-        var sizeX = tileSize - 3;
+        var sizeX = tileSize - 2;
         var sizeY = sizeX * 2;
         tiles = new Tile[sizeX * sizeY];
 
@@ -59,7 +57,7 @@ public class TileManager : MonoBehaviour
         for (int i = 0; i < tileWithobstacle.obstacleCount; i++)
         {
             var mOp = Random.Range(0, 2) == 0 ? -1 : 1;
-            var spawnPos = new Vector2(mOp * (float)tileSize / 2, Random.Range(-(tileSize - 2), tileSize - 1));
+            var spawnPos = new Vector2(mOp * ((float)tileSize) / 2, Random.Range(-(tileSize - 2), tileSize - 1));
             GameObject obstacle = Instantiate(obstacle_SlimeBlock, spawnPos, Quaternion.identity);
             obstacle.transform.localScale = new Vector2(mOp, 1);
         }

@@ -42,7 +42,6 @@ public class SoundManager : MonoBehaviour
     {
         var sound = slider.value;
 
-        print(sound);
         if (sound == -40f)
         {
             masterMixer.SetFloat(name, -80);

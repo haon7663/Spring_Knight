@@ -37,7 +37,7 @@ Transform:
   m_GameObject: {fileID: 3651061669766633004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2103521503
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: c0a372e79db2b064abca897fec15bc9d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -110,6 +110,8 @@ MonoBehaviour:
   rigid: {fileID: -4254828905846509599}
   defence: {fileID: 7144284616150764426}
   sprite: {fileID: -3884775671396274804}
+  enemyRace: 0
+  enemyClass: 0
 --- !u!114 &-3884775671396274804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,6 +128,8 @@ MonoBehaviour:
   whiteMaterial: {fileID: 2100000, guid: b85327a6ec4a4da4ab1898277ed7180c, type: 2}
   rayMaterial: {fileID: 2100000, guid: b59910d3569c5f848a65e9c538f51fbb, type: 2}
   doFlip: 1
+  doReverse: 1
+  hitTimer: 0
 --- !u!114 &7144284616150764426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,6 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 0
   defence: 0
+  defPositionY: 0
   minDefence: 2
   maxDefence: 3
   defenceParent: {fileID: 1517254607135314592, guid: dfd05796237413549aae0a3a9116eecc, type: 3}
@@ -252,9 +257,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 7254800682099514183, guid: 2f0c093a1be66784db1902a353197cc7, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 6d22e2245afd75c44a7630d6199e8a44, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f30604b42e87d094b8ffa98bc561c375, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.221
   m_Pitch: 1
   Loop: 0
   Mute: 0

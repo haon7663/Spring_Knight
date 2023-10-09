@@ -11,6 +11,7 @@ public class PropertyData : MonoBehaviour
     string propertyName;
     string longExplain;
     public int index;
+    public int countIndex;
 
     public void Start()
     {
@@ -27,7 +28,7 @@ public class PropertyData : MonoBehaviour
     {
         string disposition = GetDisposition(timeType);
 
-        UIManager.Inst.SetExplainPanel(propertyName, longExplain, disposition, spriteImage.sprite, PropertiesManager.Inst.GetFrame(index));
+        UIManager.Inst.SetExplainPanel(propertyName, longExplain, disposition, spriteImage.sprite, PropertiesManager.Inst.GetFrame(index), countIndex);
         PropertiesManager.Inst.SelectIndex(index);
     }
 

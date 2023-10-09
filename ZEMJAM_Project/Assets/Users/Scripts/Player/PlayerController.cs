@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] RectTransform joyPanel;
     [SerializeField] RectTransform joyStick;
+    [SerializeField] RectTransform[] joys;
     [SerializeField] Transform directionArrow;
 
     [SerializeField] LayerMask enemyLayer;
@@ -41,6 +42,8 @@ public class PlayerController : MonoBehaviour
     {
         if (!GameManager.Inst.onPlay) return;
         Dragment();
+        if (TutorialManager.Inst && Input.GetMouseButtonUp(0) || touch.phase == TouchPhase.Ended)
+            TutorialManager.Inst.touchTrigger = true;
     }
 
     #region Drag
@@ -48,7 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         var isTouch = (Input.GetMouseButton(0) || (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary));
 
-        if (m_Movement.count <= 0 )
+        if (m_Movement.count <= 0 && m_Collison.onCollision)
         {
             if (isTouch)
             {
@@ -103,9 +106,8 @@ public class PlayerController : MonoBehaviour
         endTouchPos = inputTouchPos;
 
         Vector3 offset = startTouchPos - endTouchPos;
-        float sqrlen = offset.sqrMagnitude;
-        var len = Mathf.Sqrt(sqrlen);
-        power = (int)((len + 0.5f) * maxPower / 1.5f);
+        float maglen = offset.magnitude;
+        power = (int)((maglen - 0.4f) * maxPower);
         if (power > maxPower)
             power = maxPower;
 
@@ -162,12 +164,20 @@ public class PlayerController : MonoBehaviour
     {
         var inputDir = endTouchPos - startTouchPos;
         var inputMag = inputDir.magnitude;
-        directionArrow.transform.rotation = Quaternion.Euler(0, 0, angle + 90);
-        directionArrow.transform.localScale = new Vector3(1, (inputMag <= 1.51f ? inputMag : 1.5f) * 2);
 
-        var clampedDir = inputMag <= 1.5f ? inputDir : inputDir.normalized * 1.51f;
+        var pointOver = EventSystem.current.IsPointerOverGameObject();
+        directionArrow.transform.rotation = Quaternion.Euler(0, 0, angle + 90);
+        directionArrow.transform.localScale = new Vector3(1, pointOver ? 0 : (inputMag <= 1.501f ? inputMag : 1.5f) * 2);
+
+        var clampedDir = inputMag <= 1.5f ? inputDir : inputDir.normalized * 1.501f;
         joyPanel.position = startTouchPos;
         joyStick.position = clampedDir + startTouchPos;
+
+        var dividedIndex = 1f / joys.Length;
+        for (int i = 0; i < joys.Length; i++)
+        {
+            joys[i].position = Vector2.Lerp(startTouchPos, clampedDir + startTouchPos, i * dividedIndex);
+        }
 
         var ray = m_Collison.rayOffset;
         for (int i = 0; i < ray.Length; i++)
